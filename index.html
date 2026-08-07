@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
-<title>VocabMaster ✨</title>
+<title>Kelime Öğren</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
@@ -24,40 +24,38 @@ button{font-family:inherit}
 [data-mode="light"]{--bg:#fffafb;--bg2:#ffffff;--bg3:#fff0f3;--bg-card:#ffffff;--bg-hover:#fff5f7;--text:#4a4e69;--text2:#72779a;--text3:#a0a4c0;--border:#ffe3e8;--border2:#ffd0d8;--shadow:0 8px 20px rgba(255,182,193,.18);--shadow2:0 12px 32px rgba(255,182,193,.25);--modal-bg:rgba(74,78,105,.25);--green:#6bcb77;--green-soft:#eef9f0;--red:#ff6b6b;--red-soft:#ffeef0;--amber:#ffd97d;--amber-soft:#fff9e6}
 body{background:var(--bg);color:var(--text)}
 
-/* ── Header ── */
-#header{position:fixed;top:0;left:0;right:0;z-index:100;background:var(--bg2);border-bottom:2px solid var(--border);padding:10px 20px 8px;border-radius:0 0 20px 20px}
-.h-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
-.logo{font-size:1.2rem;font-weight:900;letter-spacing:-.3px;display:flex;align-items:center;gap:6px;color:var(--primary)}
-.logo span{background:var(--gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-.h-btns{display:flex;gap:6px}
-.ib{width:36px;height:36px;border-radius:50%;border:2px solid var(--border);background:var(--bg3);color:var(--text2);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:transform .2s,background .2s;font-size:.9rem}
+/* ── Header (Kompakt Hale Getirildi) ── */
+#header{position:fixed;top:0;left:0;right:0;z-index:100;background:var(--bg2);border-bottom:2px solid var(--border);padding:4px 12px;border-radius:0 0 12px 12px}
+.h-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:2px}
+.logo{font-size:1.1rem;display:flex;align-items:center}
+.h-btns{display:flex;gap:4px}
+.ib{width:28px;height:28px;border-radius:50%;border:1.5px solid var(--border);background:var(--bg3);color:var(--text2);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:transform .2s,background .2s;font-size:.75rem}
 .ib:hover{transform:scale(1.08);border-color:var(--primary);color:var(--primary);background:var(--primary-soft)}
-.ib svg{pointer-events:none}
 [data-mode="dark"] .ti-light{display:none}[data-mode="light"] .ti-dark{display:none}
 
-.xp-row{display:flex;align-items:center;gap:8px}
-.lv{padding:4px 10px;border-radius:20px;background:var(--gradient);color:#fff;font-size:.68rem;font-weight:800;white-space:nowrap;box-shadow:0 2px 8px rgba(0,0,0,.08)}
-.xp-bar{flex:1;height:10px;border-radius:10px;background:var(--bg3);overflow:hidden;border:1px solid var(--border)}
-.xp-fill{height:100%;border-radius:10px;background:var(--gradient);transition:width .8s cubic-bezier(.34,1.56,.64,1);width:0%}
-.xp-txt{font-size:.65rem;font-weight:800;color:var(--text3);min-width:60px;text-align:right}
+.xp-row{display:flex;align-items:center;gap:6px}
+.lv{padding:2px 8px;border-radius:12px;background:var(--gradient);color:#fff;font-size:.62rem;font-weight:800;white-space:nowrap}
+.xp-bar{flex:1;height:7px;border-radius:8px;background:var(--bg3);overflow:hidden;border:1px solid var(--border)}
+.xp-fill{height:100%;border-radius:8px;background:var(--gradient);transition:width .8s cubic-bezier(.34,1.56,.64,1);width:0%}
+.xp-txt{font-size:.6rem;font-weight:800;color:var(--text3);min-width:45px;text-align:right}
 
 /* ── Tabs + Categories ── */
-#tabs-bar{position:fixed;top:76px;left:0;right:0;z-index:99;background:var(--bg);display:flex;flex-direction:column;gap:6px;padding:4px 0}
-.mode-tabs{display:flex;gap:8px;padding:0 20px}
-.mt{flex:1;padding:8px;text-align:center;font-size:.85rem;font-weight:800;color:var(--text2);background:var(--bg2);border:2px solid var(--border);border-radius:18px;cursor:pointer;transition:all .2s}
+#tabs-bar{position:fixed;top:44px;left:0;right:0;z-index:99;background:var(--bg);display:flex;flex-direction:column;gap:4px;padding:4px 0}
+.mode-tabs{display:flex;gap:6px;padding:0 12px}
+.mt{flex:1;padding:6px;text-align:center;font-size:.8rem;font-weight:800;color:var(--text2);background:var(--bg2);border:2px solid var(--border);border-radius:14px;cursor:pointer;transition:all .2s}
 .mt.active{color:#fff;background:var(--primary);border-color:var(--primary);box-shadow:var(--shadow)}
-.cat-row{display:flex;gap:6px;padding:4px 20px;overflow-x:auto;scrollbar-width:none}
+.cat-row{display:flex;gap:4px;padding:2px 12px;overflow-x:auto;scrollbar-width:none}
 .cat-row::-webkit-scrollbar{display:none}
-.cb{flex-shrink:0;padding:6px 14px;border-radius:20px;border:2px solid var(--border);background:var(--bg2);color:var(--text2);font-size:.75rem;font-weight:700;cursor:pointer;transition:all .2s;white-space:nowrap}
+.cb{flex-shrink:0;padding:4px 10px;border-radius:16px;border:1.5px solid var(--border);background:var(--bg2);color:var(--text2);font-size:.7rem;font-weight:700;cursor:pointer;transition:all .2s;white-space:nowrap}
 .cb:hover{border-color:var(--primary);color:var(--primary)}
 .cb.active{background:var(--primary-soft);color:var(--primary);border-color:var(--primary)}
 
 /* ── Main Area ── */
-#main{position:fixed;top:148px;left:0;right:0;bottom:0;overflow:hidden;display:flex;align-items:center;justify-content:center;padding:16px}
+#main{position:fixed;top:116px;left:0;right:0;bottom:0;overflow:hidden;display:flex;align-items:center;justify-content:center;padding:10px}
 
 /* ── CARD MODE ── */
 #card-mode{width:100%;max-width:400px;height:100%;position:relative}
-.wc{position:absolute;inset:0;border-radius:28px;background:var(--bg-card);border:2.5px solid var(--border);box-shadow:var(--shadow);display:flex;flex-direction:column;overflow:hidden;transition:transform .45s cubic-bezier(.34,1.56,.64,1),opacity .3s ease;will-change:transform,opacity;touch-action:none;user-select:none}
+.wc{position:absolute;inset:0;border-radius:24px;background:var(--bg-card);border:2px solid var(--border);box-shadow:var(--shadow);display:flex;flex-direction:column;overflow:hidden;transition:transform .45s cubic-bezier(.34,1.56,.64,1),opacity .3s ease;will-change:transform,opacity;touch-action:none;user-select:none}
 .wc.active{transform:translateY(0) scale(1);opacity:1}
 .wc.enter-b{transform:translateY(80px) scale(.95);opacity:0}
 .wc.enter-t{transform:translateY(-80px) scale(.95);opacity:0}
@@ -65,131 +63,116 @@ body{background:var(--bg);color:var(--text)}
 .wc.exit-b{transform:translateY(80px) scale(.95);opacity:0}
 .wc.drag{transition:none!important}
 
-.wc-cat{display:inline-flex;align-items:center;gap:4px;padding:4px 12px;border-radius:14px;background:var(--primary-soft);color:var(--primary);font-size:.7rem;font-weight:800;margin:16px 20px 0;align-self:flex-start}
-.wc-word{padding:12px 20px 8px;text-align:center}
-.wc-word h2{font-size:2.2rem;font-weight:900;color:var(--primary);line-height:1.1;letter-spacing:-.5px}
-.wc-word p{font-size:.72rem;font-weight:700;color:var(--text3);margin-top:2px}
-.wc-sents{flex:1;overflow-y:auto;padding:0 20px;scrollbar-width:none}
+.wc-cat{display:inline-flex;align-items:center;gap:4px;padding:3px 10px;border-radius:12px;background:var(--primary-soft);color:var(--primary);font-size:.65rem;font-weight:800;margin:12px 16px 0;align-self:flex-start}
+.wc-word{padding:8px 16px 4px;text-align:center}
+.wc-word h2{font-size:2rem;font-weight:900;color:var(--primary);line-height:1.1;letter-spacing:-.5px}
+.wc-word p{font-size:.7rem;font-weight:700;color:var(--text3);margin-top:2px}
+
+/* Cümleler & Tıklayınca Türkçe Açılma */
+.wc-sents{flex:1;overflow-y:auto;padding:0 16px;scrollbar-width:none}
 .wc-sents::-webkit-scrollbar{display:none}
-.s-label{font-size:.68rem;font-weight:800;color:var(--text3);margin-bottom:8px;text-align:center}
-.s-item{padding:12px 14px;border-radius:18px;background:var(--bg3);margin-bottom:8px;font-size:.85rem;line-height:1.5;color:var(--text);border:1px solid var(--border)}
-.s-item .hl{color:var(--primary);font-weight:800;background:var(--primary-soft);padding:1px 6px;border-radius:8px}
-.wc-div{height:2px;margin:8px 20px;background:var(--border)}
-.wc-reveal{padding:8px 20px 16px}
-.rv-btn{width:100%;padding:12px;border-radius:20px;border:2px dashed var(--primary);background:var(--primary-soft);color:var(--primary);font-size:.9rem;font-weight:800;cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:6px}
-.rv-btn:hover{background:var(--primary);color:#fff;border-style:solid;transform:scale(1.02)}
-.rv-btn:active{transform:scale(.97)}
-.wc-meaning{display:none;padding:0 20px 16px;animation:bounceUp .4s cubic-bezier(.34,1.56,.64,1)}
+.s-label{font-size:.65rem;font-weight:800;color:var(--text3);margin-bottom:6px;text-align:center}
+.s-item{padding:10px 12px;border-radius:14px;background:var(--bg3);margin-bottom:6px;font-size:.8rem;line-height:1.4;color:var(--text);border:1px solid var(--border);cursor:pointer;transition:all .2s}
+.s-item:hover{border-color:var(--primary-mid)}
+.s-item .hl{color:var(--primary);font-weight:800;background:var(--primary-soft);padding:1px 5px;border-radius:6px}
+.s-tr{display:none;margin-top:6px;padding-top:6px;border-top:1px dashed var(--border2);color:var(--primary);font-weight:700;font-size:.75rem;animation:fadeIn .2s ease}
+@keyframes fadeIn{from{opacity:0;transform:translateY(-3px)}to{opacity:1;transform:translateY(0)}}
+
+.wc-div{height:1.5px;margin:4px 16px;background:var(--border)}
+
+/* 3'lü Seçenek Kısımı */
+.wc-choices{padding:6px 16px;display:flex;flex-direction:column;gap:5px}
+.ch-title{font-size:.65rem;font-weight:800;color:var(--text3);text-align:center}
+.ch-btns{display:flex;gap:6px}
+.ch-btn{flex:1;padding:8px 4px;border-radius:12px;border:1.5px solid var(--border);background:var(--bg2);color:var(--text);font-size:.72rem;font-weight:800;cursor:pointer;transition:all .2s;text-align:center;box-shadow:0 2px 4px rgba(0,0,0,.02)}
+.ch-btn:hover{border-color:var(--primary);background:var(--primary-soft)}
+.ch-btn.correct{background:var(--green);color:#fff;border-color:var(--green)}
+.ch-btn.wrong{background:var(--red);color:#fff;border-color:var(--red);animation:shake .4s ease}
+
+.wc-reveal{padding:4px 16px 12px}
+.rv-btn{width:100%;padding:10px;border-radius:16px;border:2px dashed var(--primary);background:var(--primary-soft);color:var(--primary);font-size:.82rem;font-weight:800;cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:6px}
+.rv-btn:hover{background:var(--primary);color:#fff;border-style:solid}
+.wc-meaning{display:none;padding:0 16px 12px;animation:bounceUp .4s cubic-bezier(.34,1.56,.64,1)}
 .wc-meaning.show{display:block}
-@keyframes bounceUp{from{opacity:0;transform:translateY(16px) scale(.96)}to{opacity:1;transform:translateY(0) scale(1)}}
-.mg-box{padding:12px;border-radius:18px;background:var(--gradient);text-align:center;margin-bottom:10px;box-shadow:0 4px 12px rgba(0,0,0,.08)}
-.mg-box .flag{font-size:1.1rem}
-.mg-box .mg-txt{font-size:1.35rem;font-weight:900;color:#fff}
-.sc-btns{display:flex;gap:8px}
-.sc-b{flex:1;padding:10px;border-radius:16px;border:none;font-size:.82rem;font-weight:800;cursor:pointer;transition:transform .2s;display:flex;align-items:center;justify-content:center;gap:4px;box-shadow:0 4px 10px rgba(0,0,0,.05)}
-.sc-b:hover{transform:scale(1.03)}
-.sc-b:active{transform:scale(.96)}
+@keyframes bounceUp{from{opacity:0;transform:translateY(12px) scale(.96)}to{opacity:1;transform:translateY(0) scale(1)}}
+.mg-box{padding:10px;border-radius:16px;background:var(--gradient);text-align:center;margin-bottom:8px;box-shadow:0 4px 12px rgba(0,0,0,.08)}
+.mg-box .flag{font-size:1rem}
+.mg-box .mg-txt{font-size:1.25rem;font-weight:900;color:#fff}
+.sc-btns{display:flex;gap:6px}
+.sc-b{flex:1;padding:8px;border-radius:14px;border:none;font-size:.78rem;font-weight:800;cursor:pointer;transition:transform .2s;display:flex;align-items:center;justify-content:center;gap:4px}
 .sc-b.know{background:var(--green);color:#fff}
 .sc-b.learn{background:var(--amber);color:var(--text)}
-.sc-xp{font-size:.65rem;opacity:.85}
 
 /* ── MATCH MODE ── */
-#match-mode{width:100%;max-width:440px;display:none;flex-direction:column;gap:10px;height:100%;max-height:calc(100vh - 180px)}
+#match-mode{width:100%;max-width:440px;display:none;flex-direction:column;gap:8px;height:100%;max-height:calc(100vh - 140px)}
 #match-mode.active{display:flex}
 #card-mode.active{display:block}
 #card-mode{display:none}
 
 .match-header{text-align:center;padding:2px 0}
-.match-header h3{font-size:.9rem;font-weight:800;color:var(--text)}
-.match-header p{font-size:.72rem;color:var(--text3);font-weight:700;margin-top:2px}
+.match-header h3{font-size:.85rem;font-weight:800;color:var(--text)}
+.match-header p{font-size:.68rem;color:var(--text3);font-weight:700}
 
-.match-grid{flex:1;display:flex;gap:10px;min-height:0;overflow-y:auto}
-.match-col{flex:1;display:flex;flex-direction:column;gap:8px}
-.match-col-label{font-size:.65rem;font-weight:800;color:var(--text3);text-align:center;padding-bottom:2px}
-.mi{padding:12px 10px;border-radius:18px;border:2px solid var(--border);background:var(--bg-card);cursor:pointer;transition:all .2s;text-align:center;font-weight:800;font-size:.82rem;color:var(--text);position:relative;box-shadow:0 2px 6px rgba(0,0,0,.03)}
-.mi:hover{border-color:var(--primary);background:var(--primary-soft);transform:scale(1.02)}
-.mi.selected{border-color:var(--primary);background:var(--primary-soft);box-shadow:0 0 0 3px var(--primary-mid)}
-.mi.matched{border-color:var(--green);background:var(--green-soft);color:var(--green);opacity:.5;pointer-events:none;transform:none}
-.mi.matched::after{content:'🌸';position:absolute;top:2px;right:6px;font-size:.7rem}
+.match-grid{flex:1;display:flex;gap:8px;min-height:0;overflow-y:auto}
+.match-col{flex:1;display:flex;flex-direction:column;gap:6px}
+.match-col-label{font-size:.62rem;font-weight:800;color:var(--text3);text-align:center}
+.mi{padding:10px 8px;border-radius:14px;border:1.5px solid var(--border);background:var(--bg-card);cursor:pointer;transition:all .2s;text-align:center;font-weight:800;font-size:.78rem;color:var(--text);position:relative}
+.mi:hover{border-color:var(--primary);background:var(--primary-soft)}
+.mi.selected{border-color:var(--primary);background:var(--primary-soft);box-shadow:0 0 0 2px var(--primary-mid)}
+.mi.matched{border-color:var(--green);background:var(--green-soft);color:var(--green);opacity:.5;pointer-events:none}
 .mi.wrong{animation:shake .4s ease;border-color:var(--red);background:var(--red-soft)}
-@keyframes shake{0%,100%{transform:translateX(0)}20%{transform:translateX(-5px)}40%{transform:translateX(5px)}60%{transform:translateX(-3px)}80%{transform:translateX(3px)}}
+@keyframes shake{0%,100%{transform:translateX(0)}20%{transform:translateX(-4px)}40%{transform:translateX(4px)}60%{transform:translateX(-2px)}80%{transform:translateX(2px)}}
 
-.match-footer{text-align:center;padding:4px 0}
-.match-score{font-size:.78rem;font-weight:800;color:var(--text2);margin-bottom:6px}
+.match-footer{text-align:center;padding:2px 0}
+.match-score{font-size:.72rem;font-weight:800;color:var(--text2);margin-bottom:4px}
 .match-score b{color:var(--primary)}
-.match-next{padding:10px 24px;border-radius:18px;border:none;background:var(--gradient);color:#fff;font-size:.85rem;font-weight:800;cursor:pointer;transition:all .2s;display:none;box-shadow:var(--shadow)}
+.match-next{padding:8px 20px;border-radius:14px;border:none;background:var(--gradient);color:#fff;font-size:.8rem;font-weight:800;cursor:pointer;display:none}
 .match-next.show{display:inline-block}
-.match-next:hover{transform:scale(1.05)}
 
 /* ── Nav Arrows ── */
-.nav-a{position:fixed;top:52%;transform:translateY(-50%);z-index:50;width:42px;height:42px;border-radius:50%;border:2px solid var(--border);background:var(--bg2);color:var(--text2);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s;box-shadow:var(--shadow)}
-.nav-a:hover{border-color:var(--primary);color:var(--primary);background:var(--primary-soft);transform:translateY(-50%) scale(1.1)}
-.nav-l{left:16px}.nav-r{right:16px}
+.nav-a{position:fixed;top:55%;transform:translateY(-50%);z-index:50;width:38px;height:38px;border-radius:50%;border:1.5px solid var(--border);background:var(--bg2);color:var(--text2);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s;box-shadow:var(--shadow)}
+.nav-a:hover{border-color:var(--primary);color:var(--primary);background:var(--primary-soft)}
+.nav-l{left:12px}.nav-r{right:12px}
 
-.counter{position:fixed;bottom:14px;left:50%;transform:translateX(-50%);z-index:50;padding:4px 14px;border-radius:20px;background:var(--bg2);border:2px solid var(--border);color:var(--text3);font-size:.72rem;font-weight:800}
+.counter{position:fixed;bottom:10px;left:50%;transform:translateX(-50%);z-index:50;padding:3px 12px;border-radius:16px;background:var(--bg2);border:1.5px solid var(--border);color:var(--text3);font-size:.68rem;font-weight:800}
 
-/* ── Swipe hint ── */
-.swipe-h{position:absolute;bottom:10px;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:4px;color:var(--text3);font-size:.72rem;font-weight:700;opacity:.6;animation:hb 2s ease-in-out infinite;pointer-events:none}
-.swipe-h.hidden{display:none}
-@keyframes hb{0%,100%{opacity:.6}50%{opacity:.2}}
-
-/* ── Modal ── */
+/* Modals */
 .modal{position:fixed;inset:0;z-index:1000;display:flex;align-items:center;justify-content:center;opacity:0;visibility:hidden;transition:all .25s}
 .modal.open{opacity:1;visibility:visible}
 .m-bg{position:absolute;inset:0;background:var(--modal-bg);backdrop-filter:blur(4px)}
-.m-box{position:relative;z-index:1;width:88%;max-width:360px;padding:20px;border-radius:28px;background:var(--bg2);border:2.5px solid var(--border);box-shadow:var(--shadow2);transform:scale(.9);transition:transform .3s cubic-bezier(.34,1.56,.64,1)}
+.m-box{position:relative;z-index:1;width:88%;max-width:340px;padding:18px;border-radius:24px;background:var(--bg2);border:2px solid var(--border);box-shadow:var(--shadow2);transform:scale(.9);transition:transform .3s cubic-bezier(.34,1.56,.64,1)}
 .modal.open .m-box{transform:scale(1)}
-.m-box h3{font-size:1.1rem;font-weight:900;margin-bottom:14px;text-align:center;color:var(--primary)}
-.th-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:14px}
-.th-o{display:flex;flex-direction:column;align-items:center;gap:6px;padding:8px 4px;border-radius:18px;border:2px solid var(--border);background:transparent;cursor:pointer;transition:all .2s;color:var(--text);font-size:.72rem;font-weight:800}
-.th-o:hover{border-color:var(--primary)}
+.m-box h3{font-size:1rem;font-weight:900;margin-bottom:12px;text-align:center;color:var(--primary)}
+.th-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-bottom:12px}
+.th-o{display:flex;flex-direction:column;align-items:center;gap:4px;padding:6px 2px;border-radius:14px;border:1.5px solid var(--border);background:transparent;cursor:pointer;color:var(--text);font-size:.68rem;font-weight:800}
 .th-o.active{border-color:var(--primary);background:var(--primary-soft)}
-.th-sw{width:34px;height:34px;border-radius:50%}
-.m-close{width:100%;padding:10px;border-radius:18px;border:none;background:var(--gradient);color:#fff;font-size:.85rem;font-weight:800;cursor:pointer;transition:all .2s}
+.th-sw{width:28px;height:28px;border-radius:50%}
+.m-close{width:100%;padding:8px;border-radius:14px;border:none;background:var(--gradient);color:#fff;font-size:.8rem;font-weight:800;cursor:pointer}
 
 /* Stats */
-.st-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-bottom:14px}
-.st-c{padding:12px;border-radius:18px;background:var(--bg3);border:1px solid var(--border);text-align:center}
-.st-c .si{font-size:1.2rem;margin-bottom:2px}
-.st-c .sv{font-size:1.2rem;font-weight:900;color:var(--primary)}
-.st-c .sl{font-size:.62rem;color:var(--text3);font-weight:800;margin-top:2px}
-.st-cats{margin-bottom:14px}
-.st-cats h4{font-size:.8rem;font-weight:800;margin-bottom:8px;color:var(--text2)}
-.st-ci{display:flex;align-items:center;gap:8px;padding:8px 10px;border-radius:14px;background:var(--bg3);margin-bottom:4px;border:1px solid var(--border)}
-.st-ci .scl{flex:1;font-size:.72rem;font-weight:800;color:var(--text2)}
-.st-ci .scp{width:50px;height:6px;border-radius:6px;background:var(--bg);overflow:hidden}
-.st-ci .scf{height:100%;border-radius:6px;background:var(--gradient)}
-.st-ci .scc{font-size:.65rem;font-weight:800;color:var(--text3);min-width:28px;text-align:right}
+.st-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:6px;margin-bottom:12px}
+.st-c{padding:10px;border-radius:14px;background:var(--bg3);border:1px solid var(--border);text-align:center}
+.st-c .sv{font-size:1.1rem;font-weight:900;color:var(--primary)}
+.st-c .sl{font-size:.6rem;color:var(--text3);font-weight:800}
 
-/* ── Level Up & Completion ── */
+/* Overlays */
 .lv-ov, .comp{position:fixed;inset:0;z-index:2000;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.5);backdrop-filter:blur(6px);opacity:0;visibility:hidden;transition:all .3s}
 .lv-ov.show, .comp.show{opacity:1;visibility:visible}
-.lv-c, .comp-c{text-align:center;padding:28px;max-width:320px;width:88%;background:var(--bg2);border-radius:32px;border:3px solid var(--primary);box-shadow:var(--shadow2);animation:popIn .4s cubic-bezier(.34,1.56,.64,1)}
-@keyframes popIn{from{transform:scale(.7)}to{transform:scale(1)}}
-.lv-c h2, .comp-c h2{font-size:1.5rem;font-weight:900;color:var(--primary);margin-top:6px}
-.comp-stats{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin:16px 0}
-.comp-s{padding:10px;border-radius:16px;background:var(--bg3);border:1px solid var(--border)}
-.comp-s .cv{font-size:1.3rem;font-weight:900;color:var(--primary)}
-.comp-s .cl{font-size:.62rem;color:var(--text3);font-weight:800}
-.re-btn{padding:12px 28px;border-radius:20px;border:none;background:var(--gradient);color:#fff;font-size:.9rem;font-weight:800;cursor:pointer;box-shadow:var(--shadow)}
+.lv-c, .comp-c{text-align:center;padding:24px;max-width:300px;width:88%;background:var(--bg2);border-radius:28px;border:2px solid var(--primary);box-shadow:var(--shadow2)}
+.re-btn{padding:10px 24px;border-radius:16px;border:none;background:var(--gradient);color:#fff;font-size:.85rem;font-weight:800;cursor:pointer}
 
-/* ── XP popup ── */
-.xp-pop{position:fixed;top:80px;right:20px;z-index:500;padding:6px 14px;border-radius:16px;background:var(--gradient);color:#fff;font-size:.85rem;font-weight:900;animation:xpp 1.2s ease forwards;pointer-events:none;box-shadow:0 4px 12px rgba(0,0,0,.1)}
-@keyframes xpp{0%{opacity:0;transform:translateY(10px) scale(.8)}20%{opacity:1;transform:translateY(0) scale(1.1)}80%{opacity:1}100%{opacity:0;transform:translateY(-15px)}}
+.xp-pop{position:fixed;top:60px;right:16px;z-index:500;padding:4px 10px;border-radius:12px;background:var(--gradient);color:#fff;font-size:.78rem;font-weight:900;animation:xpp 1.2s ease forwards;pointer-events:none}
+@keyframes xpp{0%{opacity:0;transform:translateY(10px)}20%{opacity:1;transform:translateY(0)}80%{opacity:1}100%{opacity:0;transform:translateY(-15px)}}
 
-@media(max-width:767px){
-  .nav-a{display:none}
-  #main{padding:8px}
-  .counter{bottom:8px}
-}
+@media(max-width:767px){.nav-a{display:none}}
 </style>
 </head>
 <body>
 
-<!-- ═══ HEADER ═══ -->
+<!-- ═══ HEADER (Kompakt) ═══ -->
 <header id="header">
   <div class="h-top">
-    <div class="logo">🌸 <span>VocabMaster</span></div>
+    <div class="logo">🌸</div>
     <div class="h-btns">
       <button class="ib" id="stats-btn" title="İstatistikler">📊</button>
       <button class="ib" id="theme-tog" title="Mod"><span class="ti-dark">🌙</span><span class="ti-light">☀️</span></button>
@@ -197,7 +180,7 @@ body{background:var(--bg);color:var(--text)}
     </div>
   </div>
   <div class="xp-row">
-    <div class="lv" id="lv-badge">Lv.1 Başlangıç</div>
+    <div class="lv" id="lv-badge">Lv.1</div>
     <div class="xp-bar"><div class="xp-fill" id="xp-fill"></div></div>
     <span class="xp-txt" id="xp-txt">0/100</span>
   </div>
@@ -245,11 +228,6 @@ body{background:var(--bg);color:var(--text)}
       <button class="match-next" id="match-next">Sonraki Grup →</button>
     </div>
   </div>
-
-  <!-- Swipe hint -->
-  <div class="swipe-h" id="swipe-h">
-    <span>👆 Kaydırarak geçebilirsin</span>
-  </div>
 </main>
 
 <!-- Nav arrows -->
@@ -257,7 +235,7 @@ body{background:var(--bg);color:var(--text)}
 <button class="nav-a nav-r" id="next-btn">👉</button>
 <div class="counter" id="counter">1 / 35</div>
 
-<!-- ═══ THEME MODAL ═══ -->
+<!-- ═══ MODALS ═══ -->
 <div id="theme-modal" class="modal">
   <div class="m-bg" data-close="theme-modal"></div>
   <div class="m-box">
@@ -273,75 +251,72 @@ body{background:var(--bg);color:var(--text)}
   </div>
 </div>
 
-<!-- ═══ STATS MODAL ═══ -->
 <div id="stats-modal" class="modal">
   <div class="m-bg" data-close="stats-modal"></div>
-  <div class="m-box" style="max-height:80vh;overflow-y:auto">
+  <div class="m-box">
     <h3>📊 İstatistikler</h3>
     <div class="st-grid" id="st-grid"></div>
-    <div class="st-cats" id="st-cats"></div>
+    <div id="st-cats"></div>
     <button class="m-close" data-close="stats-modal">Kapat</button>
   </div>
 </div>
 
-<!-- ═══ LEVEL UP ═══ -->
 <div class="lv-ov" id="lv-ov">
   <div class="lv-c">
-    <div style="font-size:3rem">🎉</div>
-    <h2>Seviye Atladın!</h2>
-    <p id="lv-txt" style="color:var(--text2);font-size:.9rem;font-weight:800;margin-top:4px">Seviye 2</p>
+    <div style="font-size:2.5rem">🎉</div>
+    <h2 style="color:var(--primary)">Seviye Atladın!</h2>
+    <p id="lv-txt" style="color:var(--text2);font-size:.85rem;font-weight:800;margin-top:4px"></p>
   </div>
 </div>
 
-<!-- ═══ COMPLETION ═══ -->
 <div class="comp" id="comp">
   <div class="comp-c">
-    <div style="font-size:3rem">🏆</div>
-    <h2>Tebrikler!</h2>
-    <p style="color:var(--text2);font-size:.85rem;font-weight:700">Tüm kelimeleri tamamladın!</p>
-    <div class="comp-stats" id="comp-stats"></div>
+    <div style="font-size:2.5rem">🏆</div>
+    <h2 style="color:var(--primary)">Tebrikler!</h2>
+    <p style="color:var(--text2);font-size:.8rem;margin-bottom:12px">Tüm kelimeleri tamamladın!</p>
     <button class="re-btn" id="re-btn">🔄 Tekrar Başla</button>
   </div>
 </div>
 
 <script>
 const W=[
-{id:1,w:"increase",m:"artmak",cat:"verbs",cl:"Değişim Fiilleri",ci:"🔄",s:["The price of food will **increase** next year.","We need to **increase** our sales to grow.","The temperature will **increase** in summer."]},
-{id:2,w:"decline",m:"azalmak",cat:"verbs",cl:"Değişim Fiilleri",ci:"🔄",s:["The population started to **decline** slowly.","Sales **declined** by 20% last month.","His health began to **decline** after the accident."]},
-{id:3,w:"reduce",m:"azaltmak",cat:"verbs",cl:"Değişim Fiilleri",ci:"🔄",s:["We must **reduce** our costs to save money.","The company **reduced** the number of workers.","Try to **reduce** your sugar intake for better health."]},
-{id:4,w:"expand",m:"genişlemek",cat:"verbs",cl:"Değişim Fiilleri",ci:"🔄",s:["The company wants to **expand** to new markets.","The city will **expand** over the next decade.","They plan to **expand** their business overseas."]},
-{id:5,w:"maintain",m:"korumak / sürdürmek",cat:"verbs",cl:"Değişim Fiilleri",ci:"🔄",s:["It is important to **maintain** good health.","The team managed to **maintain** their lead.","We need to **maintain** high standards at work."]},
-{id:6,w:"implement",m:"uygulamak",cat:"verbs",cl:"Değişim Fiilleri",ci:"🔄",s:["The government will **implement** new rules soon.","We need to **implement** this plan quickly.","The school decided to **implement** a new program."]},
-{id:7,w:"significant(ly)",m:"önemli / önemli ölçüde",cat:"modifiers",cl:"Derece Belirteçleri",ci:"📏",s:["There was a **significant** change in the results.","The price dropped **significantly** last week.","This is a **significant** discovery for science."]},
-{id:8,w:"considerable(ly)",m:"hatırı sayılır",cat:"modifiers",cl:"Derece Belirteçleri",ci:"📏",s:["He has **considerable** experience in this field.","The cost has increased **considerably** this year.","She made a **considerable** effort to finish on time."]},
-{id:9,w:"widespread",m:"yaygın",cat:"modifiers",cl:"Derece Belirteçleri",ci:"📏",s:["The use of smartphones is now **widespread**.","There is **widespread** concern about pollution.","The disease became **widespread** in the region."]},
-{id:10,w:"primarily",m:"başlıca",cat:"modifiers",cl:"Derece Belirteçleri",ci:"📏",s:["The book is **primarily** for university students.","The problem is **primarily** caused by pollution.","She is **primarily** known as a great scientist."]},
-{id:11,w:"efficient",m:"verimli",cat:"modifiers",cl:"Derece Belirteçleri",ci:"📏",s:["This new machine is very **efficient**.","We need a more **efficient** system at work.","She is an **efficient** worker who never wastes time."]},
-{id:12,w:"regulations",m:"düzenlemeler",cat:"nouns",cl:"Akademik İsimler",ci:"📖",s:["The government introduced new **regulations**.","All companies must follow safety **regulations**.","Environmental **regulations** are becoming stricter."]},
-{id:13,w:"measures",m:"önlemler",cat:"nouns",cl:"Akademik İsimler",ci:"📖",s:["The government took **measures** to reduce crime.","Safety **measures** are very important in factories.","New **measures** were introduced to protect nature."]},
-{id:14,w:"concerns",m:"kaygılar",cat:"nouns",cl:"Akademik İsimler",ci:"📖",s:["There are growing **concerns** about climate change.","Parents expressed their **concerns** about the school.","Health **concerns** led to the ban of the product."]},
-{id:15,w:"tendency",m:"eğilim",cat:"nouns",cl:"Akademik İsimler",ci:"📖",s:["He has a **tendency** to arrive late to meetings.","There is a **tendency** for prices to rise in winter.","She has a **tendency** to worry too much about exams."]},
-{id:16,w:"correlation",m:"bağıntı",cat:"nouns",cl:"Akademik İsimler",ci:"📖",s:["There is a **correlation** between exercise and health.","Scientists found a **correlation** between the two factors.","The **correlation** between smoking and cancer is proven."]},
-{id:17,w:"exposure",m:"maruz kalma",cat:"nouns",cl:"Akademik İsimler",ci:"📖",s:["Too much **exposure** to the sun can be harmful.","Children should limit their **exposure** to screens.","Long **exposure** to loud noise can damage hearing."]},
-{id:18,w:"satisfaction",m:"memnuniyet",cat:"nouns",cl:"Akademik İsimler",ci:"📖",s:["Customer **satisfaction** is our top priority.","She felt a deep sense of **satisfaction** after finishing.","Job **satisfaction** is important for all workers."]},
-{id:19,w:"reputation",m:"itibar",cat:"nouns",cl:"Akademik İsimler",ci:"📖",s:["The company has a very good **reputation**.","His **reputation** was damaged by the scandal.","She built her **reputation** over many years of work."]},
-{id:20,w:"demand",m:"talep",cat:"nouns",cl:"Akademik İsimler",ci:"📖",s:["The **demand** for electric cars is growing fast.","There is high **demand** for skilled workers today.","Supply must always meet the **demand** of customers."]},
-{id:21,w:"solution",m:"çözüm",cat:"nouns",cl:"Akademik İsimler",ci:"📖",s:["We need to find a **solution** to this problem.","There is no easy **solution** for climate change.","The **solution** was simpler than we first thought."]},
-{id:22,w:"response",m:"tepki / yanıt",cat:"nouns",cl:"Akademik İsimler",ci:"📖",s:["The **response** to the crisis was very quick.","We received a positive **response** from customers.","His **response** to the question surprised everyone."]},
-{id:23,w:"attribute to",m:"atfetmek",cat:"abstract",cl:"Soyut Fiiller",ci:"💭",s:["She **attributes** her success **to** hard work.","The accident was **attributed to** bad weather.","Experts **attribute** the decline **to** economic changes."]},
-{id:24,w:"outweigh",m:"ağır basmak",cat:"abstract",cl:"Soyut Fiiller",ci:"💭",s:["The benefits **outweigh** the risks in this case.","The advantages clearly **outweigh** the disadvantages.","For many, the positives **outweigh** the negatives."]},
-{id:25,w:"disrupt",m:"bozmak",cat:"abstract",cl:"Soyut Fiiller",ci:"💭",s:["The storm **disrupted** all travel plans yesterday.","New technology can **disrupt** traditional industries.","The loud noise **disrupted** our important meeting."]},
-{id:26,w:"advocate",m:"savunmak",cat:"abstract",cl:"Soyut Fiiller",ci:"💭",s:["She **advocates** for equal rights for everyone.","Many doctors **advocate** a healthy, balanced diet.","He **advocates** major change in the education system."]},
-{id:27,w:"lack",m:"yoksun olmak",cat:"abstract",cl:"Soyut Fiiller",ci:"💭",s:["Many students **lack** motivation to study hard.","The project failed due to a **lack** of funding.","He **lacks** the experience needed for the job."]},
-{id:28,w:"established",m:"yerleşmiş / köklü",cat:"abstract",cl:"Soyut Fiiller",ci:"💭",s:["This is a well-**established** company with 50 years.","The **established** rules must be followed by all.","It is an **established** fact that exercise is healthy."]},
-{id:29,w:"regardless of",m:"fark etmeksizin",cat:"adjectives",cl:"Sıfatlar",ci:"🏷️",s:["Everyone is welcome, **regardless of** their age.","She will continue, **regardless of** the difficulties.","The rule applies to all, **regardless of** status."]},
-{id:30,w:"viable",m:"uygulanabilir",cat:"adjectives",cl:"Sıfatlar",ci:"🏷️",s:["This is not a **viable** option for our team.","We need to find a **viable** solution quickly.","Solar energy is a **viable** alternative to oil."]},
-{id:31,w:"conventional",m:"geleneksel",cat:"adjectives",cl:"Sıfatlar",ci:"🏷️",s:["She prefers **conventional** teaching methods.","This is not a **conventional** approach to the problem.","**Conventional** wisdom says that practice makes perfect."]},
-{id:32,w:"legitimate",m:"geçerli / meşru",cat:"adjectives",cl:"Sıfatlar",ci:"🏷️",s:["He raised a **legitimate** concern about safety.","This is a completely **legitimate** business.","Her complaint was **legitimate** and was taken seriously."]},
-{id:33,w:"competing",m:"çelişen / rakip",cat:"adjectives",cl:"Sıfatlar",ci:"🏷️",s:["There are **competing** theories about this topic.","The two companies have **competing** interests.","Scientists hold **competing** views on this issue."]},
-{id:34,w:"vulnerable",m:"savunmasız",cat:"adjectives",cl:"Sıfatlar",ci:"🏷️",s:["Children are more **vulnerable** to diseases.","The old building is **vulnerable** to earthquakes.","Elderly people are particularly **vulnerable** in winter."]},
-{id:35,w:"unaware",m:"farkında olmayan",cat:"adjectives",cl:"Sıfatlar",ci:"🏷️",s:["He was completely **unaware** of the danger.","Many people are **unaware** of this serious problem.","She was **unaware** of the changes made to the plan."]}
+{id:1,w:"increase",m:"artmak",cat:"verbs",cl:"Değişim Fiilleri",ci:"🔄",s:[{e:"The price of food will **increase** next year.",t:"Gıda fiyatları gelecek yıl artacak."},{e:"We need to **increase** our sales to grow.",t:"Büyümek için satışlarımızı artırmamız gerekiyor."},{e:"The temperature will **increase** in summer.",t:"Sıcaklık yazın artacak."}]},
+{id:2,w:"decline",m:"azalmak",cat:"verbs",cl:"Değişim Fiilleri",ci:"🔄",s:[{e:"The population started to **decline** slowly.",t:"Nüfus yavaşça azalmaya başladı."},{e:"Sales **declined** by 20% last month.",t:"Satışlar geçen ay %20 azaldı."},{e:"His health began to **decline** after the accident.",t:"Sağlığı kazadan sonra bozulmaya başladı."}]},
+{id:3,w:"reduce",m:"azaltmak",cat:"verbs",cl:"Değişim Fiilleri",ci:"🔄",s:[{e:"We must **reduce** our costs to save money.",t:"Para tasarrufu için maliyetlerimizi azaltmalıyız."},{e:"The company **reduced** the number of workers.",t:"Şirket çalışan sayısını azalttı."},{e:"Try to **reduce** your sugar intake for better health.",t:"Daha iyi sağlık için şeker alımınızı azaltmaya çalışın."}]},
+{id:4,w:"expand",m:"genişlemek",cat:"verbs",cl:"Değişim Fiilleri",ci:"🔄",s:[{e:"The company wants to **expand** to new markets.",t:"Şirket yeni pazarlara genişlemek istiyor."},{e:"The city will **expand** over the next decade.",t:"Şehir önümüzdeki on yılda genişleyecek."},{e:"They plan to **expand** their business overseas.",t:"İşlerini yurt dışına genişletmeyi planlıyorlar."}]},
+{id:5,w:"maintain",m:"korumak / sürdürmek",cat:"verbs",cl:"Değişim Fiilleri",ci:"🔄",s:[{e:"It is important to **maintain** good health.",t:"İyi sağlığı korumak önemlidir."},{e:"The team managed to **maintain** their lead.",t:"Liderliklerini sürdürmeyi başardılar."},{e:"We need to **maintain** high standards at work.",t:"İşte yüksek standartları korumamız gerekiyor."}]},
+{id:6,w:"implement",m:"uygulamak",cat:"verbs",cl:"Değişim Fiilleri",ci:"🔄",s:[{e:"The government will **implement** new rules soon.",t:"Hükümet yakında yeni kurallar uygulayacak."},{e:"We need to **implement** this plan quickly.",t:"Bu planı hızlıca uygulamamız gerekiyor."},{e:"The school decided to **implement** a new program.",t:"Okul yeni bir program uygulamaya karar verdi."}]},
+{id:7,w:"significant(ly)",m:"önemli / önemli ölçüde",cat:"modifiers",cl:"Derece Belirteçleri",ci:"📏",s:[{e:"There was a **significant** change in the results.",t:"Sonuçlarda önemli bir değişiklik vardı."},{e:"The price dropped **significantly** last week.",t:"Fiyat geçen hafta önemli ölçüde düştü."},{e:"This is a **significant** discovery for science.",t:"Bu bilim için önemli bir keşiftir."}]},
+{id:8,w:"considerable(ly)",m:"hatırı sayılır",cat:"modifiers",cl:"Derece Belirteçleri",ci:"📏",s:[{e:"He has **considerable** experience in this field.",t:"Bu alanda hatırı sayılır bir tecrübesi var."},{e:"The cost has increased **considerably** this year.",t:"Maliyet bu yıl hatırı sayılır ölçüde arttı."},{e:"She made a **considerable** effort to finish on time.",t:"Zamanında bitirmek için hatırı sayılır çaba sarf etti."}]},
+{id:9,w:"widespread",m:"yaygın",cat:"modifiers",cl:"Derece Belirteçleri",ci:"📏",s:[{e:"The use of smartphones is now **widespread**.",t:"Akıllı telefon kullanımı artık çok yaygın."},{e:"There is **widespread** concern about pollution.",t:"Kirlilik hakkında yaygın bir endişe var."},{e:"The disease became **widespread** in the region.",t:"Hastalık bölgede yaygın hale geldi."}]},
+{id:10,w:"primarily",m:"başlıca",cat:"modifiers",cl:"Derece Belirteçleri",ci:"📏",s:[{e:"The book is **primarily** for university students.",t:"Kitap başlıca üniversite öğrencileri içindir."},{e:"The problem is **primarily** caused by pollution.",t:"Sorun başlıca kirlilikten kaynaklanmaktadır."},{e:"She is **primarily** known as a great scientist.",t:"Başlıca harika bir bilim insanı olarak bilinir."}]},
+{id:11,w:"efficient",m:"verimli",cat:"modifiers",cl:"Derece Belirteçleri",ci:"📏",s:[{e:"This new machine is very **efficient**.",t:"Bu yeni makine oldukça verimlidir."},{e:"We need a more **efficient** system at work.",t:"İşte daha verimli bir sisteme ihtiyacımız var."},{e:"She is an **efficient** worker who never wastes time.",t:"O hiç zaman kaybetmeyen verimli bir çalışandır."}]},
+{id:12,w:"regulations",m:"düzenlemeler",cat:"nouns",cl:"Akademik İsimler",ci:"📖",s:[{e:"The government introduced new **regulations**.",t:"Hükümet yeni düzenlemeler getirdi."},{e:"All companies must follow safety **regulations**.",t:"Tüm şirketler güvenlik düzenlemelerine uymalıdır."},{e:"Environmental **regulations** are becoming stricter.",t:"Çevre düzenlemeleri giderek sertleşiyor."}]},
+{id:13,w:"measures",m:"önlemler",cat:"nouns",cl:"Akademik İsimler",ci:"📖",s:[{e:"The government took **measures** to reduce crime.",t:"Hükümet suçu azaltmak için önlemler aldı."},{e:"Safety **measures** are very important in factories.",t:"Fabrikalarda güvenlik önlemleri çok önemlidir."},{e:"New **measures** were introduced to protect nature.",t:"Doğayı korumak için yeni önlemler alındı."}]},
+{id:14,w:"concerns",m:"kaygılar",cat:"nouns",cl:"Akademik İsimler",ci:"📖",s:[{e:"There are growing **concerns** about climate change.",t:"İklim değişikliği hakkında artan kaygılar var."},{e:"Parents expressed their **concerns** about the school.",t:"Ebeveynler okul hakkındaki kaygılarını dile getirdi."},{e:"Health **concerns** led to the ban of the product.",t:"Sağlık kaygıları ürünün yasaklanmasına yol açtı."}]},
+{id:15,w:"tendency",m:"eğilim",cat:"nouns",cl:"Akademik İsimler",ci:"📖",s:[{e:"He has a **tendency** to arrive late to meetings.",t:"Toplantılara geç gelme eğilimi var."},{e:"There is a **tendency** for prices to rise in winter.",t:"Kışın fiyatların yükselme eğilimi vardır."},{e:"She has a **tendency** to worry too much about exams.",t:"Sınavlar hakkında çok fazla endişelenme eğilimi var."}]},
+{id:16,w:"correlation",m:"bağıntı",cat:"nouns",cl:"Akademik İsimler",ci:"📖",s:[{e:"There is a **correlation** between exercise and health.",t:"Egzersiz ile sağlık arasında bir bağıntı vardır."},{e:"Scientists found a **correlation** between the two factors.",t:"Bilim insanları iki faktör arasında bağıntı buldu."},{e:"The **correlation** between smoking and cancer is proven.",t:"Sigara ile kanser arasındaki bağıntı kanıtlanmıştır."}]},
+{id:17,w:"exposure",m:"maruz kalma",cat:"nouns",cl:"Akademik İsimler",ci:"📖",s:[{e:"Too much **exposure** to the sun can be harmful.",t:"Güneşe çok fazla maruz kalmak zararlı olabilir."},{e:"Children should limit their **exposure** to screens.",t:"Çocuklar ekrana maruz kalmalarını sınırlamalıdır."},{e:"Long **exposure** to loud noise can damage hearing.",t:"Yüksek sese uzun süre maruz kalma işitmeye zarar verebilir."}]},
+{id:18,w:"satisfaction",m:"memnuniyet",cat:"nouns",cl:"Akademik İsimler",ci:"📖",s:[{e:"Customer **satisfaction** is our top priority.",t:"Müşteri memnuniyeti bizim en önemli önceliğimizdir."},{e:"She felt a deep sense of **satisfaction** after finishing.",t:"Bitirdikten sonra derin bir memnuniyet hissetti."},{e:"Job **satisfaction** is important for all workers.",t:"İş memnuniyeti tüm çalışanlar için önemlidir."}]},
+{id:19,w:"reputation",m:"itibar",cat:"nouns",cl:"Akademik İsimler",ci:"📖",s:[{e:"The company has a very good **reputation**.",t:"Şirketin çok iyi bir itibarı var."},{e:"His **reputation** was damaged by the scandal.",t:"Skandal yüzünden itibarı zedelendi."},{e:"She built her **reputation** over many years of work.",t:"İtibarını uzun yıllar süren çalışmalarla inşa etti."}]},
+{id:20,w:"demand",m:"talep",cat:"nouns",cl:"Akademik İsimler",ci:"📖",s:[{e:"The **demand** for electric cars is growing fast.",t:"Elektrikli arabalara olan talep hızla büyüyor."},{e:"There is high **demand** for skilled workers today.",t:"Bugün vasıflı çalışanlara yüksek talep var."},{e:"Supply must always meet the **demand** of customers.",t:"Arz her zaman müşterilerin talebini karşılamalıdır."}]},
+{id:21,w:"solution",m:"çözüm",cat:"nouns",cl:"Akademik İsimler",ci:"📖",s:[{e:"We need to find a **solution** to this problem.",t:"Bu soruna bir çözüm bulmamız gerekiyor."},{e:"There is no easy **solution** for climate change.",t:"İklim değişikliği için kolay bir çözüm yoktur."},{e:"The **solution** was simpler than we first thought.",t:"Çözüm ilk düşündüğümüzden daha basitti."}]},
+{id:22,w:"response",m:"tepki / yanıt",cat:"nouns",cl:"Akademik İsimler",ci:"📖",s:[{e:"The **response** to the crisis was very quick.",t:"Krize verilen yanıt çok hızlıydı."},{e:"We received a positive **response** from customers.",t:"Müşterilerden olumlu bir tepki aldık."},{e:"His **response** to the question surprised everyone.",t:"Soruya verdiği yanıt herkesi şaşırttı."}]},
+{id:23,w:"attribute to",m:"atfetmek",cat:"abstract",cl:"Soyut Fiiller",ci:"💭",s:[{e:"She **attributes** her success **to** hard work.",t:"Başarısını çok çalışmaya atfediyor."},{e:"The accident was **attributed to** bad weather.",t:"Kaza kötü hava koşullarına atfedildi."},{e:"Experts **attribute** the decline **to** economic changes.",t:"Uzmanlar düşüşü ekonomik değişikliklere atfediyor."}]},
+{id:24,w:"outweigh",m:"ağır basmak",cat:"abstract",cl:"Soyut Fiiller",ci:"💭",s:[{e:"The benefits **outweigh** the risks in this case.",t:"Bu durumda faydalar risklerden ağır basmaktadır."},{e:"The advantages clearly **outweigh** the disadvantages.",t:"Avantajlar açıkça dezavantajlardan ağır basıyor."},{e:"For many, the positives **outweigh** the negatives.",t:"Birçok kişi için olumlu yönler olumsuzlardan ağır basar."}]},
+{id:25,w:"disrupt",m:"bozmak",cat:"abstract",cl:"Soyut Fiiller",ci:"💭",s:[{e:"The storm **disrupted** all travel plans yesterday.",t:"Fırtına dün tüm seyahat planlarını bozdu."},{e:"New technology can **disrupt** traditional industries.",t:"Yeni teknoloji geleneksel endüstrileri bozabilir."},{e:"The loud noise **disrupted** our important meeting.",t:"Yüksek ses önemli toplantımızı bozdu."}]},
+{id:26,w:"advocate",m:"savunmak",cat:"abstract",cl:"Soyut Fiiller",ci:"💭",s:[{e:"She **advocates** for equal rights for everyone.",t:"Herkes için eşit hakları savunuyor."},{e:"Many doctors **advocate** a healthy, balanced diet.",t:"Birçok doktor sağlıklı ve dengeli beslenmeyi savunur."},{e:"He **advocates** major change in the education system.",t:"Eğitim sisteminde büyük bir değişimi savunuyor."}]},
+{id:27,w:"lack",m:"yoksun olmak",cat:"abstract",cl:"Soyut Fiiller",ci:"💭",s:[{e:"Many students **lack** motivation to study hard.",t:"Birçok öğrenci çok çalışma motivasyonundan yoksun."},{e:"The project failed due to a **lack** of funding.",t:"Proje fon yetersizliği/yoksunluğu yüzünden başarısız oldu."},{e:"He **lacks** the experience needed for the job.",t:"İş için gerekli tecrübeden yoksun."}]},
+{id:28,w:"established",m:"yerleşmiş / köklü",cat:"abstract",cl:"Soyut Fiiller",ci:"💭",s:[{e:"This is a well-**established** company with 50 years.",t:"Bu 50 yıllık köklü bir şirkettir."},{e:"The **established** rules must be followed by all.",t:"Yerleşmiş kurallara herkes uymalıdır."},{e:"It is an **established** fact that exercise is healthy.",t:"Egzersizin sağlıklı olduğu yerleşmiş bir gerçektir."}]},
+{id:29,w:"regardless of",m:"fark etmeksizin",cat:"adjectives",cl:"Sıfatlar",ci:"🏷️",s:[{e:"Everyone is welcome, **regardless of** their age.",t:"Yaşına fark etmeksizin herkes davetlidir."},{e:"She will continue, **regardless of** the difficulties.",t:"Zorluklara fark etmeksizin devam edecek."},{e:"The rule applies to all, **regardless of** status.",t:"Kural statüye fark etmeksizin herkese uygulanır."}]},
+{id:30,w:"viable",m:"uygulanabilir",cat:"adjectives",cl:"Sıfatlar",ci:"🏷️",s:[{e:"This is not a **viable** option for our team.",t:"Bu ekibimiz için uygulanabilir bir seçenek değil."},{e:"We need to find a **viable** solution quickly.",t:"Hızlıca uygulanabilir bir çözüm bulmamız gerekiyor."},{e:"Solar energy is a **viable** alternative to oil.",t:"Güneş enerjisi petrole uygulanabilir bir alternatiftir."}]},
+{id:31,w:"conventional",m:"geleneksel",cat:"adjectives",cl:"Sıfatlar",ci:"🏷️",s:[{e:"She prefers **conventional** teaching methods.",t:"Geleneksel öğretim yöntemlerini tercih ediyor."},{e:"This is not a **conventional** approach to the problem.",t:"Bu soruna geleneksel bir yaklaşım değil."},{e:"**Conventional** wisdom says that practice makes perfect.",t:"Geleneksel bilgelik pratiğin mükemmelleştirdiğini söyler."}]},
+{id:32,w:"legitimate",m:"geçerli / meşru",cat:"adjectives",cl:"Sıfatlar",ci:"🏷️",s:[{e:"He raised a **legitimate** concern about safety.",t:"Güvenlik konusunda geçerli bir kaygı dile getirdi."},{e:"This is a completely **legitimate** business.",t:"Bu tamamen meşru bir iş."},{e:"Her complaint was **legitimate** and was taken seriously.",t:"Şikayeti geçerliydi ve ciddiye alındı."}]},
+{id:33,w:"competing",m:"çelişen / rakip",cat:"adjectives",cl:"Sıfatlar",ci:"🏷️",s:[{e:"There are **competing** theories about this topic.",t:"Bu konu hakkında çelişen teoriler var."},{e:"The two companies have **competing** interests.",t:"İki şirketin çelişen/rakip çıkarları var."},{e:"Scientists hold **competing** views on this issue.",t:"Bilim insanları bu konuda çelişen görüşlere sahip."}]},
+{id:34,w:"vulnerable",m:"savunmasız",cat:"adjectives",cl:"Sıfatlar",ci:"🏷️",s:[{e:"Children are more **vulnerable** to diseases.",t:"Çocuklar hastalıklara karşı daha savunmasızdır."},{e:"The old building is **vulnerable** to earthquakes.",t:"Eski bina depremlere karşı savunmasız."},{e:"Elderly people are particularly **vulnerable** in winter.",t:"Yaşlı insanlar kışın özellikle savunmasızdır."}]},
+{id:35,w:"unaware",m:"farkında olmayan",cat:"adjectives",cl:"Sıfatlar",ci:"🏷️",s:[{e:"He was completely **unaware** of the danger.",t:"Tehlikenin tamamen farkında değildi."},{e:"Many people are **unaware** of this serious problem.",t:"Birçok insan bu ciddi sorunun farkında değil."},{e:"She was **unaware** of the changes made to the plan.",t:"Plana yapılan değişikliklerin farkında değildi."}]}
 ];
+
 const LVS=[{l:1,n:"Başlangıç",r:0,t:100},{l:2,n:"Çırak",r:100,t:150},{l:3,n:"Öğrenci",r:250,t:200},{l:4,n:"Bilgili",r:450,t:250},{l:5,n:"Uzman",r:700,t:300},{l:6,n:"Usta",r:1000,t:400},{l:7,n:"Efsane",r:1400,t:600},{l:8,n:"Dahi",r:2000,t:1000},{l:9,n:"Sonsuzluk",r:3000,t:Infinity}];
 const CATS=[{id:"all",l:"Tümü",i:"✨"},{id:"verbs",l:"Değişim Fiilleri",i:"🔄"},{id:"modifiers",l:"Derece Belirteçleri",i:"📏"},{id:"nouns",l:"Akademik İsimler",i:"📖"},{id:"abstract",l:"Soyut Fiiller",i:"💭"},{id:"adjectives",l:"Sıfatlar",i:"🏷️"}];
 
@@ -358,7 +333,7 @@ const E={
   ttog:$('#theme-tog'),cbtn:$('#color-btn'),tmod:$('#theme-modal'),
   sbtn:$('#stats-btn'),smod:$('#stats-modal'),sg:$('#st-grid'),sc:$('#st-cats'),
   xf:$('#xp-fill'),xt:$('#xp-txt'),lb:$('#lv-badge'),
-  lov:$('#lv-ov'),ltx:$('#lv-txt'),comp:$('#comp'),cst:$('#comp-stats'),rbtn:$('#re-btn'),sh:$('#swipe-h')
+  lov:$('#lv-ov'),ltx:$('#lv-txt'),comp:$('#comp'),rbtn:$('#re-btn')
 };
 
 function init(){load();applyTh();filterW();if(S.appMode==='match'){showMatchMode();}else{showCardMode();}updXP();bind();}
@@ -375,20 +350,58 @@ function setCat(c){if(S.curCat===c)return;S.curCat=c;$$('.cb').forEach(b=>b.clas
 function setAppMode(m){
   S.appMode=m;$$('.mt').forEach(b=>b.classList.toggle('active',b.dataset.mode===m));
   if(m==='cards'){showCardMode();}else{showMatchMode();}
-  E.prev.style.display=m==='cards'?'':'none';E.next.style.display=m==='cards'?'':'none';E.cnt.style.display=m==='cards'?'':'none';E.sh.style.display=m==='cards'?'':'none';
+  E.prev.style.display=m==='cards'?'':'none';E.next.style.display=m==='cards'?'':'none';E.cnt.style.display=m==='cards'?'':'none';
   save();
 }
 function showCardMode(){E.cm.classList.add('active');E.cm.style.display='block';E.mm.classList.remove('active');E.mm.style.display='none';renderCard(null,'none');updCnt();}
 function showMatchMode(){E.mm.classList.add('active');E.mm.style.display='flex';E.cm.classList.remove('active');E.cm.style.display='none';MS.batch=0;loadBatch();}
 
+function getRandomChoices(correctMeaning){
+  const choices=[correctMeaning];
+  const otherMeanings=W.map(w=>w.m).filter(m=>m!==correctMeaning);
+  while(choices.length<3 && otherMeanings.length>0){
+    const randIndex=Math.floor(Math.random()*otherMeanings.length);
+    choices.push(otherMeanings.splice(randIndex,1)[0]);
+  }
+  return choices.sort(()=>Math.random()-.5);
+}
+
 function mkCard(wd,i){
   const c=document.createElement('div');c.className='wc';c.dataset.wid=wd.id;
-  const sHTML=wd.s.map(s=>`<div class="s-item">${s.replace(/\*\*(.*?)\*\*/g,'<span class="hl">$1</span>')}</div>`).join('');
+  const sHTML=wd.s.map(s=>`<div class="s-item" onclick="VM.toggleTr(this)"><div>${s.e.replace(/\*\*(.*?)\*\*/g,'<span class="hl">$1</span>')}</div><div class="s-tr">🇹🇷 ${s.t}</div></div>`).join('');
+  const choices=getRandomChoices(wd.m);
+  const chHTML=choices.map(m=>`<button class="ch-btn" onclick="VM.checkChoice(this, '${wd.m.replace(/'/g,"\\'")}')">${m}</button>`).join('');
   const isK=S.known.has(wd.id),isL=S.learning.has(wd.id);
   let badge=isK?' ✨':isL?' 🎀':'';
-  c.innerHTML=`<div class="wc-cat">${wd.ci} ${wd.cl}</div><div class="wc-word"><h2>${wd.w}${badge}</h2><p>${i+1} / ${S.fw.length}</p></div><div class="wc-sents"><div class="s-label">💭 Cümlelerden anlamı tahmin et</div>${sHTML}</div><div class="wc-div"></div><div class="wc-reveal"><button class="rv-btn" onclick="VM.reveal(this)">🌸 Anlamını Gör</button></div><div class="wc-meaning"><div class="mg-box"><div class="flag">🇹🇷</div><div class="mg-txt">${wd.m}</div></div><div class="sc-btns"><button class="sc-b know" onclick="VM.score(${wd.id},'k')">✅ Biliyorum <span class="sc-xp">+10</span></button><button class="sc-b learn" onclick="VM.score(${wd.id},'l')">📖 Öğreniyorum <span class="sc-xp">+3</span></button></div></div>`;
+  
+  c.innerHTML=`
+    <div class="wc-cat">${wd.ci} ${wd.cl}</div>
+    <div class="wc-word"><h2>${wd.w}${badge}</h2><p>${i+1} / ${S.fw.length}</p></div>
+    <div class="wc-sents"><div class="s-label">💡 Cümleye tıklayarak Türkçe çevirisini gör</div>${sHTML}</div>
+    <div class="wc-div"></div>
+    <div class="wc-choices"><div class="ch-title">🎯 Doğru Anlamı Seç:</div><div class="ch-btns">${chHTML}</div></div>
+    <div class="wc-reveal"><button class="rv-btn" onclick="VM.reveal(this)">🌸 Anlamını Gör</button></div>
+    <div class="wc-meaning"><div class="mg-box"><div class="flag">🇹🇷</div><div class="mg-txt">${wd.m}</div></div><div class="sc-btns"><button class="sc-b know" onclick="VM.score(${wd.id},'k')">✅ Biliyorum (+10)</button><button class="sc-b learn" onclick="VM.score(${wd.id},'l')">📖 Öğreniyorum (+3)</button></div></div>
+  `;
   return c;
 }
+
+function toggleTr(el){
+  const tr=el.querySelector('.s-tr');
+  if(tr){tr.style.display=tr.style.display==='block'?'none':'block';}
+}
+
+function checkChoice(btn, correctMeaning){
+  const card=btn.closest('.wc');
+  if(btn.textContent.trim()===correctMeaning.trim()){
+    btn.classList.add('correct');
+    addXP(5);
+    setTimeout(()=>reveal(card.querySelector('.rv-btn')), 300);
+  } else {
+    btn.classList.add('wrong');
+  }
+}
+
 function renderCard(dir=null,tr='default'){
   if(!S.fw.length)return;const wd=S.fw[S.idx],nc=mkCard(wd,S.idx);
   const oc=E.cm.querySelector('.wc.active');
@@ -396,10 +409,11 @@ function renderCard(dir=null,tr='default'){
   if(dir==='next'){nc.classList.add('enter-b');E.cm.appendChild(nc);oc.classList.remove('active');oc.classList.add('exit-t');requestAnimationFrame(()=>requestAnimationFrame(()=>{nc.classList.remove('enter-b');nc.classList.add('active');}));setTimeout(()=>{if(oc.parentNode)oc.remove();},450);}
   else if(dir==='prev'){nc.classList.add('enter-t');E.cm.appendChild(nc);oc.classList.remove('active');oc.classList.add('exit-b');requestAnimationFrame(()=>requestAnimationFrame(()=>{nc.classList.remove('enter-t');nc.classList.add('active');}));setTimeout(()=>{if(oc.parentNode)oc.remove();},450);}
 }
+
 function goN(){if(S.idx<S.fw.length-1){S.idx++;renderCard('next');updCnt();}else if(!S.done){showComp();}}
 function goP(){if(S.idx>0){S.idx--;renderCard('prev');updCnt();}}
 function updCnt(){E.cnt.textContent=`${S.idx+1} / ${S.fw.length}`;}
-function reveal(btn){const c=btn.closest('.wc');c.querySelector('.wc-reveal').style.display='none';c.querySelector('.wc-meaning').classList.add('show');}
+function reveal(btn){const c=btn.closest('.wc');const rv=c.querySelector('.wc-reveal');if(rv)rv.style.display='none';c.querySelector('.wc-meaning').classList.add('show');}
 function scoreW(wid,t){
   const xp=t==='k'?10:3;
   if(t==='k'){S.known.add(wid);S.learning.delete(wid);}else{if(!S.known.has(wid))S.learning.add(wid);}
@@ -441,25 +455,24 @@ function selTurkish(idx){
 
 function addXP(a){const ol=S.lv;S.xp+=a;const nl=getLv(S.xp);S.lv=nl.l;updXP();xpPop(a);if(S.lv>ol)lvUp(nl);save();}
 function getLv(xp){let c=LVS[0];for(let i=LVS.length-1;i>=0;i--)if(xp>=LVS[i].r){c=LVS[i];break;}return c;}
-function updXP(){const d=getLv(S.xp),inL=S.xp-d.r,need=d.t;const p=need===Infinity?100:Math.min(inL/need*100,100);E.xf.style.width=p+'%';E.xt.textContent=need===Infinity?S.xp+' XP ⭐':inL+'/'+need;E.lb.textContent=`Lv.${d.l} ${d.n}`;}
+function updXP(){const d=getLv(S.xp),inL=S.xp-d.r,need=d.t;const p=need===Infinity?100:Math.min(inL/need*100,100);E.xf.style.width=p+'%';E.xt.textContent=need===Infinity?S.xp+' XP ⭐':inL+'/'+need;E.lb.textContent=`Lv.${d.l}`;}
 function xpPop(a){const p=document.createElement('div');p.className='xp-pop';p.textContent='+'+a+' XP ✨';document.body.appendChild(p);setTimeout(()=>p.remove(),1200);}
 function lvUp(d){E.ltx.textContent=`Seviye ${d.l} — ${d.n}`;E.lov.classList.add('show');setTimeout(()=>E.lov.classList.remove('show'),2200);}
 
-function showComp(){S.done=true;const kn=S.fw.filter(w=>S.known.has(w.id)).length,lr=S.fw.filter(w=>S.learning.has(w.id)).length;E.cst.innerHTML=`<div class="comp-s"><div class="cv">${S.xp}</div><div class="cl">Toplam XP</div></div><div class="comp-s"><div class="cv">${S.lv}</div><div class="cl">Seviye</div></div><div class="comp-s"><div class="cv">${kn}</div><div class="cl">Bilinen</div></div><div class="comp-s"><div class="cv">${lr}</div><div class="cl">Öğrenilen</div></div>`;E.comp.classList.add('show');}
+function showComp(){S.done=true;E.comp.classList.add('show');}
 function restart(){S.idx=0;S.done=false;E.comp.classList.remove('show');if(S.appMode==='cards'){renderCard(null,'none');updCnt();}else{MS.batch=0;loadBatch();}}
 
 function showStats(){
-  const kn=S.known.size,lr=S.learning.size,un=W.length-kn-lr;
-  E.sg.innerHTML=`<div class="st-c"><div class="si">⭐</div><div class="sv">${S.xp}</div><div class="sl">XP</div></div><div class="st-c"><div class="si">🏆</div><div class="sv">${S.lv}</div><div class="sl">Seviye</div></div><div class="st-c"><div class="si">✅</div><div class="sv">${kn}</div><div class="sl">Bilinen</div></div><div class="st-c"><div class="si">🎀</div><div class="sv">${lr}</div><div class="sl">Öğrenilen</div></div>`;
-  const cats=CATS.filter(c=>c.id!=='all').map(c=>{const cw=W.filter(w=>w.cat===c.id),k=cw.filter(w=>S.known.has(w.id)).length,t=cw.length,p=t?Math.round(k/t*100):0;return `<div class="st-ci"><span>${c.i}</span><span class="scl">${c.l}</span><div class="scp"><div class="scf" style="width:${p}%"></div></div><span class="scc">${k}/${t}</span></div>`;}).join('');
-  E.sc.innerHTML=`<h4>Kategori İlerlemesi</h4>${cats}`;openM('stats-modal');
+  const kn=S.known.size,lr=S.learning.size;
+  E.sg.innerHTML=`<div class="st-c"><div class="sv">${S.xp}</div><div class="sl">XP</div></div><div class="st-c"><div class="sv">${S.lv}</div><div class="sl">Seviye</div></div><div class="st-c"><div class="sv">${kn}</div><div class="sl">Bilinen</div></div><div class="st-c"><div class="sv">${lr}</div><div class="sl">Öğrenilen</div></div>`;
+  openM('stats-modal');
 }
 
 function openM(id){const m=document.getElementById(id);if(m)m.classList.add('open');}
 function closeM(id){const m=document.getElementById(id);if(m)m.classList.remove('open');}
 
-let tsy=0,tsx=0,tst=0,drag=false,doff=0;
-function onTS(e){if(S.done||S.appMode!=='cards')return;const t=e.touches[0];tsy=t.clientY;tsx=t.clientX;tst=Date.now();drag=true;doff=0;const a=E.cm.querySelector('.wc.active');if(a)a.classList.add('drag');}
+let tsy=0,tsx=0,drag=false,doff=0;
+function onTS(e){if(S.done||S.appMode!=='cards')return;const t=e.touches[0];tsy=t.clientY;tsx=t.clientX;drag=true;doff=0;const a=E.cm.querySelector('.wc.active');if(a)a.classList.add('drag');}
 function onTM(e){if(!drag||S.done||S.appMode!=='cards')return;const t=e.touches[0],dy=t.clientY-tsy,dx=t.clientX-tsx;if(Math.abs(dx)>Math.abs(dy)&&Math.abs(dy)<15)return;e.preventDefault();doff=dy;const a=E.cm.querySelector('.wc.active');if(a){let o=dy;if((S.idx===0&&dy>0)||(S.idx>=S.fw.length-1&&dy<0))o=dy*.3;a.style.transform=`translateY(${o}px)`;a.style.opacity=Math.max(.4,1-Math.abs(o)/400);}}
 function onTE(){if(!drag||S.done||S.appMode!=='cards')return;drag=false;const a=E.cm.querySelector('.wc.active');if(a){a.classList.remove('drag');a.style.transform='';a.style.opacity='';}if(Math.abs(doff)>60){if(doff<0)goN();else goP();}doff=0;}
 
@@ -477,7 +490,7 @@ function bind(){
   E.mnxt.addEventListener('click',()=>{MS.batch++;loadBatch();});
 }
 
-window.VM={reveal,score:scoreW};
+window.VM={reveal,score:scoreW,toggleTr,checkChoice};
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
 })();
 </script>
