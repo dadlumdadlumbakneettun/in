@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="tr" data-theme="cherry" data-mode="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>VocabMaster ✨</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+html{font-family:'Nunito','Quicksand',sans-serif;-webkit-font-smoothing:antialiased;overflow:hidden;height:100%}
+body{height:100%;overflow:hidden;transition:background .3s,color .3s;position:relative}
+button{font-family:inherit}
+
+/* ── Kawaii Themes & Colors ── */
+[data-theme="cherry"]{--primary:#ff85a1;--primary-soft:#ffe5ec;--primary-mid:#ffb3c1;--gradient:linear-gradient(135deg,#ff85a1,#ffb3c1)}
+[data-theme="ocean"]{--primary:#4ea8de;--primary-soft:#e0f2fe;--primary-mid:#90e0ef;--gradient:linear-gradient(135deg,#4ea8de,#56cfe1)}
+[data-theme="sunset"]{--primary:#ff9f1c;--primary-soft:#ffeedd;--primary-mid:#ffe5ec;--gradient:linear-gradient(135deg,#ff9f1c,#ffbf69)}
+[data-theme="forest"]{--primary:#70e000;--primary-soft:#f0fdf4;--primary-mid:#ccff33;--gradient:linear-gradient(135deg,#52b788,#74c69d)}
+[data-theme="purple"]{--primary:#b5179e;--primary-soft:#f3e8ff;--primary-mid:#7209b7;--gradient:linear-gradient(135deg,#b5179e,#7209b7)}
+
+[data-mode="dark"]{--bg:#1a1921;--bg2:#23222d;--bg3:#2c2a38;--bg-card:#23222d;--bg-hover:#343242;--text:#f7f7f9;--text2:#b8b5c8;--text3:#7c7893;--border:rgba(255,255,255,.08);--border2:rgba(255,255,255,.15);--shadow:0 8px 24px rgba(0,0,0,.25);--shadow2:0 12px 32px rgba(0,0,0,.35);--modal-bg:rgba(15,14,20,.65);--green:#4ebd60;--green-soft:rgba(78,189,96,.15);--red:#ff6b6b;--red-soft:rgba(255,107,107,.15);--amber:#ffd166;--amber-soft:rgba(255,209,102,.15)}
+[data-mode="light"]{--bg:#fffafb;--bg2:#ffffff;--bg3:#fff0f3;--bg-card:#ffffff;--bg-hover:#fff5f7;--text:#4a4e69;--text2:#72779a;--text3:#a0a4c0;--border:#ffe3e8;--border2:#ffd0d8;--shadow:0 8px 20px rgba(255,182,193,.18);--shadow2:0 12px 32px rgba(255,182,193,.25);--modal-bg:rgba(74,78,105,.25);--green:#6bcb77;--green-soft:#eef9f0;--red:#ff6b6b;--red-soft:#ffeef0;--amber:#ffd97d;--amber-soft:#fff9e6}
+body{background:var(--bg);color:var(--text)}
+
+/* ── Header ── */
+#header{position:fixed;top:0;left:0;right:0;z-index:100;background:var(--bg2);border-bottom:2px solid var(--border);padding:10px 20px 8px;border-radius:0 0 20px 20px}
+.h-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+.logo{font-size:1.2rem;font-weight:900;letter-spacing:-.3px;display:flex;align-items:center;gap:6px;color:var(--primary)}
+.logo span{background:var(--gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.h-btns{display:flex;gap:6px}
+.ib{width:36px;height:36px;border-radius:50%;border:2px solid var(--border);background:var(--bg3);color:var(--text2);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:transform .2s,background .2s;font-size:.9rem}
+.ib:hover{transform:scale(1.08);border-color:var(--primary);color:var(--primary);background:var(--primary-soft)}
+.ib svg{pointer-events:none}
+[data-mode="dark"] .ti-light{display:none}[data-mode="light"] .ti-dark{display:none}
+
+.xp-row{display:flex;align-items:center;gap:8px}
+.lv{padding:4px 10px;border-radius:20px;background:var(--gradient);color:#fff;font-size:.68rem;font-weight:800;white-space:nowrap;box-shadow:0 2px 8px rgba(0,0,0,.08)}
+.xp-bar{flex:1;height:10px;border-radius:10px;background:var(--bg3);overflow:hidden;border:1px solid var(--border)}
+.xp-fill{height:100%;border-radius:10px;background:var(--gradient);transition:width .8s cubic-bezier(.34,1.56,.64,1);width:0%}
+.xp-txt{font-size:.65rem;font-weight:800;color:var(--text3);min-width:60px;text-align:right}
+
+/* ── Tabs + Categories ── */
+#tabs-bar{position:fixed;top:76px;left:0;right:0;z-index:99;background:var(--bg);display:flex;flex-direction:column;gap:6px;padding:4px 0}
+.mode-tabs{display:flex;gap:8px;padding:0 20px}
+.mt{flex:1;padding:8px;text-align:center;font-size:.85rem;font-weight:800;color:var(--text2);background:var(--bg2);border:2px solid var(--border);border-radius:18px;cursor:pointer;transition:all .2s}
+.mt.active{color:#fff;background:var(--primary);border-color:var(--primary);box-shadow:var(--shadow)}
+.cat-row{display:flex;gap:6px;padding:4px 20px;overflow-x:auto;scrollbar-width:none}
+.cat-row::-webkit-scrollbar{display:none}
+.cb{flex-shrink:0;padding:6px 14px;border-radius:20px;border:2px solid var(--border);background:var(--bg2);color:var(--text2);font-size:.75rem;font-weight:700;cursor:pointer;transition:all .2s;white-space:nowrap}
+.cb:hover{border-color:var(--primary);color:var(--primary)}
+.cb.active{background:var(--primary-soft);color:var(--primary);border-color:var(--primary)}
+
+/* ── Main Area ── */
+#main{position:fixed;top:148px;left:0;right:0;bottom:0;overflow:hidden;display:flex;align-items:center;justify-content:center;padding:16px}
+
+/* ── CARD MODE ── */
+#card-mode{width:100%;max-width:400px;height:100%;position:relative}
+.wc{position:absolute;inset:0;border-radius:28px;background:var(--bg-card);border:2.5px solid var(--border);box-shadow:var(--shadow);display:flex;flex-direction:column;overflow:hidden;transition:transform .45s cubic-bezier(.34,1.56,.64,1),opacity .3s ease;will-change:transform,opacity;touch-action:none;user-select:none}
+.wc.active{transform:translateY(0) scale(1);opacity:1}
+.wc.enter-b{transform:translateY(80px) scale(.95);opacity:0}
+.wc.enter-t{transform:translateY(-80px) scale(.95);opacity:0}
+.wc.exit-t{transform:translateY(-80px) scale(.95);opacity:0}
+.wc.exit-b{transform:translateY(80px) scale(.95);opacity:0}
+.wc.drag{transition:none!important}
+
+.wc-cat{display:inline-flex;align-items:center;gap:4px;padding:4px 12px;border-radius:14px;background:var(--primary-soft);color:var(--primary);font-size:.7rem;font-weight:800;margin:16px 20px 0;align-self:flex-start}
+.wc-word{padding:12px 20px 8px;text-align:center}
+.wc-word h2{font-size:2.2rem;font-weight:900;color:var(--primary);line-height:1.1;letter-spacing:-.5px}
+.wc-word p{font-size:.72rem;font-weight:700;color:var(--text3);margin-top:2px}
+.wc-sents{flex:1;overflow-y:auto;padding:0 20px;scrollbar-width:none}
+.wc-sents::-webkit-scrollbar{display:none}
+.s-label{font-size:.68rem;font-weight:800;color:var(--text3);margin-bottom:8px;text-align:center}
+.s-item{padding:12px 14px;border-radius:18px;background:var(--bg3);margin-bottom:8px;font-size:.85rem;line-height:1.5;color:var(--text);border:1px solid var(--border)}
+.s-item .hl{color:var(--primary);font-weight:800;background:var(--primary-soft);padding:1px 6px;border-radius:8px}
+.wc-div{height:2px;margin:8px 20px;background:var(--border)}
+.wc-reveal{padding:8px 20px 16px}
+.rv-btn{width:100%;padding:12px;border-radius:20px;border:2px dashed var(--primary);background:var(--primary-soft);color:var(--primary);font-size:.9rem;font-weight:800;cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:6px}
+.rv-btn:hover{background:var(--primary);color:#fff;border-style:solid;transform:scale(1.02)}
+.rv-btn:active{transform:scale(.97)}
+.wc-meaning{display:none;padding:0 20px 16px;animation:bounceUp .4s cubic-bezier(.34,1.56,.64,1)}
+.wc-meaning.show{display:block}
+@keyframes bounceUp{from{opacity:0;transform:translateY(16px) scale(.96)}to{opacity:1;transform:translateY(0) scale(1)}}
+.mg-box{padding:12px;border-radius:18px;background:var(--gradient);text-align:center;margin-bottom:10px;box-shadow:0 4px 12px rgba(0,0,0,.08)}
+.mg-box .flag{font-size:1.1rem}
+.mg-box .mg-txt{font-size:1.35rem;font-weight:900;color:#fff}
+.sc-btns{display:flex;gap:8px}
+.sc-b{flex:1;padding:10px;border-radius:16px;border:none;font-size:.82rem;font-weight:800;cursor:pointer;transition:transform .2s;display:flex;align-items:center;justify-content:center;gap:4px;box-shadow:0 4px 10px rgba(0,0,0,.05)}
+.sc-b:hover{transform:scale(1.03)}
+.sc-b:active{transform:scale(.96)}
+.sc-b.know{background:var(--green);color:#fff}
+.sc-b.learn{background:var(--amber);color:var(--text)}
+.sc-xp{font-size:.65rem;opacity:.85}
+
+/* ── MATCH MODE ── */
+#match-mode{width:100%;max-width:440px;display:none;flex-direction:column;gap:10px;height:100%;max-height:calc(100vh - 180px)}
+#match-mode.active{display:flex}
+#card-mode.active{display:block}
+#card-mode{display:none}
+
+.match-header{text-align:center;padding:2px 0}
+.match-header h3{font-size:.9rem;font-weight:800;color:var(--text)}
+.match-header p{font-size:.72rem;color:var(--text3);font-weight:700;margin-top:2px}
+
+.match-grid{flex:1;display:flex;gap:10px;min-height:0;overflow-y:auto}
+.match-col{flex:1;display:flex;flex-direction:column;gap:8px}
+.match-col-label{font-size:.65rem;font-weight:800;color:var(--text3);text-align:center;padding-bottom:2px}
+.mi{padding:12px 10px;border-radius:18px;border:2px solid var(--border);background:var(--bg-card);cursor:pointer;transition:all .2s;text-align:center;font-weight:800;font-size:.82rem;color:var(--text);position:relative;box-shadow:0 2px 6px rgba(0,0,0,.03)}
+.mi:hover{border-color:var(--primary);background:var(--primary-soft);transform:scale(1.02)}
+.mi.selected{border-color:var(--primary);background:var(--primary-soft);box-shadow:0 0 0 3px var(--primary-mid)}
+.mi.matched{border-color:var(--green);background:var(--green-soft);color:var(--green);opacity:.5;pointer-events:none;transform:none}
+.mi.matched::after{content:'🌸';position:absolute;top:2px;right:6px;font-size:.7rem}
+.mi.wrong{animation:shake .4s ease;border-color:var(--red);background:var(--red-soft)}
+@keyframes shake{0%,100%{transform:translateX(0)}20%{transform:translateX(-5px)}40%{transform:translateX(5px)}60%{transform:translateX(-3px)}80%{transform:translateX(3px)}}
+
+.match-footer{text-align:center;padding:4px 0}
+.match-score{font-size:.78rem;font-weight:800;color:var(--text2);margin-bottom:6px}
+.match-score b{color:var(--primary)}
+.match-next{padding:10px 24px;border-radius:18px;border:none;background:var(--gradient);color:#fff;font-size:.85rem;font-weight:800;cursor:pointer;transition:all .2s;display:none;box-shadow:var(--shadow)}
+.match-next.show{display:inline-block}
+.match-next:hover{transform:scale(1.05)}
+
+/* ── Nav Arrows ── */
+.nav-a{position:fixed;top:52%;transform:translateY(-50%);z-index:50;width:42px;height:42px;border-radius:50%;border:2px solid var(--border);background:var(--bg2);color:var(--text2);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s;box-shadow:var(--shadow)}
+.nav-a:hover{border-color:var(--primary);color:var(--primary);background:var(--primary-soft);transform:translateY(-50%) scale(1.1)}
+.nav-l{left:16px}.nav-r{right:16px}
+
+.counter{position:fixed;bottom:14px;left:50%;transform:translateX(-50%);z-index:50;padding:4px 14px;border-radius:20px;background:var(--bg2);border:2px solid var(--border);color:var(--text3);font-size:.72rem;font-weight:800}
+
+/* ── Swipe hint ── */
+.swipe-h{position:absolute;bottom:10px;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:4px;color:var(--text3);font-size:.72rem;font-weight:700;opacity:.6;animation:hb 2s ease-in-out infinite;pointer-events:none}
+.swipe-h.hidden{display:none}
+@keyframes hb{0%,100%{opacity:.6}50%{opacity:.2}}
+
+/* ── Modal ── */
+.modal{position:fixed;inset:0;z-index:1000;display:flex;align-items:center;justify-content:center;opacity:0;visibility:hidden;transition:all .25s}
+.modal.open{opacity:1;visibility:visible}
+.m-bg{position:absolute;inset:0;background:var(--modal-bg);backdrop-filter:blur(4px)}
+.m-box{position:relative;z-index:1;width:88%;max-width:360px;padding:20px;border-radius:28px;background:var(--bg2);border:2.5px solid var(--border);box-shadow:var(--shadow2);transform:scale(.9);transition:transform .3s cubic-bezier(.34,1.56,.64,1)}
+.modal.open .m-box{transform:scale(1)}
+.m-box h3{font-size:1.1rem;font-weight:900;margin-bottom:14px;text-align:center;color:var(--primary)}
+.th-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:14px}
+.th-o{display:flex;flex-direction:column;align-items:center;gap:6px;padding:8px 4px;border-radius:18px;border:2px solid var(--border);background:transparent;cursor:pointer;transition:all .2s;color:var(--text);font-size:.72rem;font-weight:800}
+.th-o:hover{border-color:var(--primary)}
+.th-o.active{border-color:var(--primary);background:var(--primary-soft)}
+.th-sw{width:34px;height:34px;border-radius:50%}
+.m-close{width:100%;padding:10px;border-radius:18px;border:none;background:var(--gradient);color:#fff;font-size:.85rem;font-weight:800;cursor:pointer;transition:all .2s}
+
+/* Stats */
+.st-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-bottom:14px}
+.st-c{padding:12px;border-radius:18px;background:var(--bg3);border:1px solid var(--border);text-align:center}
+.st-c .si{font-size:1.2rem;margin-bottom:2px}
+.st-c .sv{font-size:1.2rem;font-weight:900;color:var(--primary)}
+.st-c .sl{font-size:.62rem;color:var(--text3);font-weight:800;margin-top:2px}
+.st-cats{margin-bottom:14px}
+.st-cats h4{font-size:.8rem;font-weight:800;margin-bottom:8px;color:var(--text2)}
+.st-ci{display:flex;align-items:center;gap:8px;padding:8px 10px;border-radius:14px;background:var(--bg3);margin-bottom:4px;border:1px solid var(--border)}
+.st-ci .scl{flex:1;font-size:.72rem;font-weight:800;color:var(--text2)}
+.st-ci .scp{width:50px;height:6px;border-radius:6px;background:var(--bg);overflow:hidden}
+.st-ci .scf{height:100%;border-radius:6px;background:var(--gradient)}
+.st-ci .scc{font-size:.65rem;font-weight:800;color:var(--text3);min-width:28px;text-align:right}
+
+/* ── Level Up & Completion ── */
+.lv-ov, .comp{position:fixed;inset:0;z-index:2000;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.5);backdrop-filter:blur(6px);opacity:0;visibility:hidden;transition:all .3s}
+.lv-ov.show, .comp.show{opacity:1;visibility:visible}
+.lv-c, .comp-c{text-align:center;padding:28px;max-width:320px;width:88%;background:var(--bg2);border-radius:32px;border:3px solid var(--primary);box-shadow:var(--shadow2);animation:popIn .4s cubic-bezier(.34,1.56,.64,1)}
+@keyframes popIn{from{transform:scale(.7)}to{transform:scale(1)}}
+.lv-c h2, .comp-c h2{font-size:1.5rem;font-weight:900;color:var(--primary);margin-top:6px}
+.comp-stats{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin:16px 0}
+.comp-s{padding:10px;border-radius:16px;background:var(--bg3);border:1px solid var(--border)}
+.comp-s .cv{font-size:1.3rem;font-weight:900;color:var(--primary)}
+.comp-s .cl{font-size:.62rem;color:var(--text3);font-weight:800}
+.re-btn{padding:12px 28px;border-radius:20px;border:none;background:var(--gradient);color:#fff;font-size:.9rem;font-weight:800;cursor:pointer;box-shadow:var(--shadow)}
+
+/* ── XP popup ── */
+.xp-pop{position:fixed;top:80px;right:20px;z-index:500;padding:6px 14px;border-radius:16px;background:var(--gradient);color:#fff;font-size:.85rem;font-weight:900;animation:xpp 1.2s ease forwards;pointer-events:none;box-shadow:0 4px 12px rgba(0,0,0,.1)}
+@keyframes xpp{0%{opacity:0;transform:translateY(10px) scale(.8)}20%{opacity:1;transform:translateY(0) scale(1.1)}80%{opacity:1}100%{opacity:0;transform:translateY(-15px)}}
+
+@media(max-width:767px){
+  .nav-a{display:none}
+  #main{padding:8px}
+  .counter{bottom:8px}
+}
+</style>
+</head>
+<body>
+
+<!-- ═══ HEADER ═══ -->
+<header id="header">
+  <div class="h-top">
+    <div class="logo">🌸 <span>VocabMaster</span></div>
+    <div class="h-btns">
+      <button class="ib" id="stats-btn" title="İstatistikler">📊</button>
+      <button class="ib" id="theme-tog" title="Mod"><span class="ti-dark">🌙</span><span class="ti-light">☀️</span></button>
+      <button class="ib" id="color-btn" title="Renk">🎨</button>
+    </div>
+  </div>
+  <div class="xp-row">
+    <div class="lv" id="lv-badge">Lv.1 Başlangıç</div>
+    <div class="xp-bar"><div class="xp-fill" id="xp-fill"></div></div>
+    <span class="xp-txt" id="xp-txt">0/100</span>
+  </div>
+</header>
+
+<!-- ═══ TABS + CATEGORIES ═══ -->
+<div id="tabs-bar">
+  <div class="mode-tabs">
+    <button class="mt active" data-mode="cards">📇 Kartlar</button>
+    <button class="mt" data-mode="match">🔗 Eşleştir</button>
+  </div>
+  <div class="cat-row">
+    <button class="cb active" data-cat="all">✨ Tümü</button>
+    <button class="cb" data-cat="verbs">🔄 Fiiller</button>
+    <button class="cb" data-cat="modifiers">📏 Belirteçler</button>
+    <button class="cb" data-cat="nouns">📖 İsimler</button>
+    <button class="cb" data-cat="abstract">💭 Soyut</button>
+    <button class="cb" data-cat="adjectives">🏷️ Sıfatlar</button>
+  </div>
+</div>
+
+<!-- ═══ MAIN ═══ -->
+<main id="main">
+  <!-- Card Mode -->
+  <div id="card-mode" class="active"></div>
+
+  <!-- Match Mode -->
+  <div id="match-mode">
+    <div class="match-header">
+      <h3>İngilizce – Türkçe Eşleştir</h3>
+      <p id="match-group-info">Grup 1 / 7</p>
+    </div>
+    <div class="match-grid">
+      <div class="match-col">
+        <div class="match-col-label">English</div>
+        <div id="match-left"></div>
+      </div>
+      <div class="match-col">
+        <div class="match-col-label">Türkçe</div>
+        <div id="match-right"></div>
+      </div>
+    </div>
+    <div class="match-footer">
+      <div class="match-score" id="match-score">Eşleşme: <b>0</b> / <b>5</b></div>
+      <button class="match-next" id="match-next">Sonraki Grup →</button>
+    </div>
+  </div>
+
+  <!-- Swipe hint -->
+  <div class="swipe-h" id="swipe-h">
+    <span>👆 Kaydırarak geçebilirsin</span>
+  </div>
+</main>
+
+<!-- Nav arrows -->
+<button class="nav-a nav-l" id="prev-btn">👈</button>
+<button class="nav-a nav-r" id="next-btn">👉</button>
+<div class="counter" id="counter">1 / 35</div>
+
+<!-- ═══ THEME MODAL ═══ -->
+<div id="theme-modal" class="modal">
+  <div class="m-bg" data-close="theme-modal"></div>
+  <div class="m-box">
+    <h3>🎨 Renk Paleti</h3>
+    <div class="th-grid">
+      <button class="th-o active" data-theme="cherry"><div class="th-sw" style="background:linear-gradient(135deg,#ff85a1,#ffb3c1)"></div>🌸 Kiraz</button>
+      <button class="th-o" data-theme="ocean"><div class="th-sw" style="background:linear-gradient(135deg,#4ea8de,#56cfe1)"></div>🩵 Bulut</button>
+      <button class="th-o" data-theme="sunset"><div class="th-sw" style="background:linear-gradient(135deg,#ff9f1c,#ffbf69)"></div>🍑 Şeftali</button>
+      <button class="th-o" data-theme="forest"><div class="th-sw" style="background:linear-gradient(135deg,#52b788,#74c69d)"></div>🍵 Matcha</button>
+      <button class="th-o" data-theme="purple"><div class="th-sw" style="background:linear-gradient(135deg,#b5179e,#7209b7)"></div>🍇 Lavanta</button>
+    </div>
+    <button class="m-close" data-close="theme-modal">Tamam</button>
+  </div>
+</div>
+
+<!-- ═══ STATS MODAL ═══ -->
+<div id="stats-modal" class="modal">
+  <div class="m-bg" data-close="stats-modal"></div>
+  <div class="m-box" style="max-height:80vh;overflow-y:auto">
+    <h3>📊 İstatistikler</h3>
+    <div class="st-grid" id="st-grid"></div>
+    <div class="st-cats" id="st-cats"></div>
+    <button class="m-close" data-close="stats-modal">Kapat</button>
+  </div>
+</div>
+
+<!-- ═══ LEVEL UP ═══ -->
+<div class="lv-ov" id="lv-ov">
+  <div class="lv-c">
+    <div style="font-size:3rem">🎉</div>
+    <h2>Seviye Atladın!</h2>
+    <p id="lv-txt" style="color:var(--text2);font-size:.9rem;font-weight:800;margin-top:4px">Seviye 2</p>
+  </div>
+</div>
+
+<!-- ═══ COMPLETION ═══ -->
+<div class="comp" id="comp">
+  <div class="comp-c">
+    <div style="font-size:3rem">🏆</div>
+    <h2>Tebrikler!</h2>
+    <p style="color:var(--text2);font-size:.85rem;font-weight:700">Tüm kelimeleri tamamladın!</p>
+    <div class="comp-stats" id="comp-stats"></div>
+    <button class="re-btn" id="re-btn">🔄 Tekrar Başla</button>
+  </div>
+</div>
+
+<script>
+const W=[
+{id:1,w:"increase",m:"artmak",cat:"verbs",cl:"Değişim Fiilleri",ci:"🔄",s:["The price of food will **increase** next year.","We need to **increase** our sales to grow.","The temperature will **increase** in summer."]},
+{id:2,w:"decline",m:"azalmak",cat:"verbs",cl:"Değişim Fiilleri",ci:"🔄",s:["The population started to **decline** slowly.","Sales **declined** by 20% last month.","His health began to **decline** after the accident."]},
+{id:3,w:"reduce",m:"azaltmak",cat:"verbs",cl:"Değişim Fiilleri",ci:"🔄",s:["We must **reduce** our costs to save money.","The company **reduced** the number of workers.","Try to **reduce** your sugar intake for better health."]},
+{id:4,w:"expand",m:"genişlemek",cat:"verbs",cl:"Değişim Fiilleri",ci:"🔄",s:["The company wants to **expand** to new markets.","The city will **expand** over the next decade.","They plan to **expand** their business overseas."]},
+{id:5,w:"maintain",m:"korumak / sürdürmek",cat:"verbs",cl:"Değişim Fiilleri",ci:"🔄",s:["It is important to **maintain** good health.","The team managed to **maintain** their lead.","We need to **maintain** high standards at work."]},
+{id:6,w:"implement",m:"uygulamak",cat:"verbs",cl:"Değişim Fiilleri",ci:"🔄",s:["The government will **implement** new rules soon.","We need to **implement** this plan quickly.","The school decided to **implement** a new program."]},
+{id:7,w:"significant(ly)",m:"önemli / önemli ölçüde",cat:"modifiers",cl:"Derece Belirteçleri",ci:"📏",s:["There was a **significant** change in the results.","The price dropped **significantly** last week.","This is a **significant** discovery for science."]},
+{id:8,w:"considerable(ly)",m:"hatırı sayılır",cat:"modifiers",cl:"Derece Belirteçleri",ci:"📏",s:["He has **considerable** experience in this field.","The cost has increased **considerably** this year.","She made a **considerable** effort to finish on time."]},
+{id:9,w:"widespread",m:"yaygın",cat:"modifiers",cl:"Derece Belirteçleri",ci:"📏",s:["The use of smartphones is now **widespread**.","There is **widespread** concern about pollution.","The disease became **widespread** in the region."]},
+{id:10,w:"primarily",m:"başlıca",cat:"modifiers",cl:"Derece Belirteçleri",ci:"📏",s:["The book is **primarily** for university students.","The problem is **primarily** caused by pollution.","She is **primarily** known as a great scientist."]},
+{id:11,w:"efficient",m:"verimli",cat:"modifiers",cl:"Derece Belirteçleri",ci:"📏",s:["This new machine is very **efficient**.","We need a more **efficient** system at work.","She is an **efficient** worker who never wastes time."]},
+{id:12,w:"regulations",m:"düzenlemeler",cat:"nouns",cl:"Akademik İsimler",ci:"📖",s:["The government introduced new **regulations**.","All companies must follow safety **regulations**.","Environmental **regulations** are becoming stricter."]},
+{id:13,w:"measures",m:"önlemler",cat:"nouns",cl:"Akademik İsimler",ci:"📖",s:["The government took **measures** to reduce crime.","Safety **measures** are very important in factories.","New **measures** were introduced to protect nature."]},
+{id:14,w:"concerns",m:"kaygılar",cat:"nouns",cl:"Akademik İsimler",ci:"📖",s:["There are growing **concerns** about climate change.","Parents expressed their **concerns** about the school.","Health **concerns** led to the ban of the product."]},
+{id:15,w:"tendency",m:"eğilim",cat:"nouns",cl:"Akademik İsimler",ci:"📖",s:["He has a **tendency** to arrive late to meetings.","There is a **tendency** for prices to rise in winter.","She has a **tendency** to worry too much about exams."]},
+{id:16,w:"correlation",m:"bağıntı",cat:"nouns",cl:"Akademik İsimler",ci:"📖",s:["There is a **correlation** between exercise and health.","Scientists found a **correlation** between the two factors.","The **correlation** between smoking and cancer is proven."]},
+{id:17,w:"exposure",m:"maruz kalma",cat:"nouns",cl:"Akademik İsimler",ci:"📖",s:["Too much **exposure** to the sun can be harmful.","Children should limit their **exposure** to screens.","Long **exposure** to loud noise can damage hearing."]},
+{id:18,w:"satisfaction",m:"memnuniyet",cat:"nouns",cl:"Akademik İsimler",ci:"📖",s:["Customer **satisfaction** is our top priority.","She felt a deep sense of **satisfaction** after finishing.","Job **satisfaction** is important for all workers."]},
+{id:19,w:"reputation",m:"itibar",cat:"nouns",cl:"Akademik İsimler",ci:"📖",s:["The company has a very good **reputation**.","His **reputation** was damaged by the scandal.","She built her **reputation** over many years of work."]},
+{id:20,w:"demand",m:"talep",cat:"nouns",cl:"Akademik İsimler",ci:"📖",s:["The **demand** for electric cars is growing fast.","There is high **demand** for skilled workers today.","Supply must always meet the **demand** of customers."]},
+{id:21,w:"solution",m:"çözüm",cat:"nouns",cl:"Akademik İsimler",ci:"📖",s:["We need to find a **solution** to this problem.","There is no easy **solution** for climate change.","The **solution** was simpler than we first thought."]},
+{id:22,w:"response",m:"tepki / yanıt",cat:"nouns",cl:"Akademik İsimler",ci:"📖",s:["The **response** to the crisis was very quick.","We received a positive **response** from customers.","His **response** to the question surprised everyone."]},
+{id:23,w:"attribute to",m:"atfetmek",cat:"abstract",cl:"Soyut Fiiller",ci:"💭",s:["She **attributes** her success **to** hard work.","The accident was **attributed to** bad weather.","Experts **attribute** the decline **to** economic changes."]},
+{id:24,w:"outweigh",m:"ağır basmak",cat:"abstract",cl:"Soyut Fiiller",ci:"💭",s:["The benefits **outweigh** the risks in this case.","The advantages clearly **outweigh** the disadvantages.","For many, the positives **outweigh** the negatives."]},
+{id:25,w:"disrupt",m:"bozmak",cat:"abstract",cl:"Soyut Fiiller",ci:"💭",s:["The storm **disrupted** all travel plans yesterday.","New technology can **disrupt** traditional industries.","The loud noise **disrupted** our important meeting."]},
+{id:26,w:"advocate",m:"savunmak",cat:"abstract",cl:"Soyut Fiiller",ci:"💭",s:["She **advocates** for equal rights for everyone.","Many doctors **advocate** a healthy, balanced diet.","He **advocates** major change in the education system."]},
+{id:27,w:"lack",m:"yoksun olmak",cat:"abstract",cl:"Soyut Fiiller",ci:"💭",s:["Many students **lack** motivation to study hard.","The project failed due to a **lack** of funding.","He **lacks** the experience needed for the job."]},
+{id:28,w:"established",m:"yerleşmiş / köklü",cat:"abstract",cl:"Soyut Fiiller",ci:"💭",s:["This is a well-**established** company with 50 years.","The **established** rules must be followed by all.","It is an **established** fact that exercise is healthy."]},
+{id:29,w:"regardless of",m:"fark etmeksizin",cat:"adjectives",cl:"Sıfatlar",ci:"🏷️",s:["Everyone is welcome, **regardless of** their age.","She will continue, **regardless of** the difficulties.","The rule applies to all, **regardless of** status."]},
+{id:30,w:"viable",m:"uygulanabilir",cat:"adjectives",cl:"Sıfatlar",ci:"🏷️",s:["This is not a **viable** option for our team.","We need to find a **viable** solution quickly.","Solar energy is a **viable** alternative to oil."]},
+{id:31,w:"conventional",m:"geleneksel",cat:"adjectives",cl:"Sıfatlar",ci:"🏷️",s:["She prefers **conventional** teaching methods.","This is not a **conventional** approach to the problem.","**Conventional** wisdom says that practice makes perfect."]},
+{id:32,w:"legitimate",m:"geçerli / meşru",cat:"adjectives",cl:"Sıfatlar",ci:"🏷️",s:["He raised a **legitimate** concern about safety.","This is a completely **legitimate** business.","Her complaint was **legitimate** and was taken seriously."]},
+{id:33,w:"competing",m:"çelişen / rakip",cat:"adjectives",cl:"Sıfatlar",ci:"🏷️",s:["There are **competing** theories about this topic.","The two companies have **competing** interests.","Scientists hold **competing** views on this issue."]},
+{id:34,w:"vulnerable",m:"savunmasız",cat:"adjectives",cl:"Sıfatlar",ci:"🏷️",s:["Children are more **vulnerable** to diseases.","The old building is **vulnerable** to earthquakes.","Elderly people are particularly **vulnerable** in winter."]},
+{id:35,w:"unaware",m:"farkında olmayan",cat:"adjectives",cl:"Sıfatlar",ci:"🏷️",s:["He was completely **unaware** of the danger.","Many people are **unaware** of this serious problem.","She was **unaware** of the changes made to the plan."]}
+];
+const LVS=[{l:1,n:"Başlangıç",r:0,t:100},{l:2,n:"Çırak",r:100,t:150},{l:3,n:"Öğrenci",r:250,t:200},{l:4,n:"Bilgili",r:450,t:250},{l:5,n:"Uzman",r:700,t:300},{l:6,n:"Usta",r:1000,t:400},{l:7,n:"Efsane",r:1400,t:600},{l:8,n:"Dahi",r:2000,t:1000},{l:9,n:"Sonsuzluk",r:3000,t:Infinity}];
+const CATS=[{id:"all",l:"Tümü",i:"✨"},{id:"verbs",l:"Değişim Fiilleri",i:"🔄"},{id:"modifiers",l:"Derece Belirteçleri",i:"📏"},{id:"nouns",l:"Akademik İsimler",i:"📖"},{id:"abstract",l:"Soyut Fiiller",i:"💭"},{id:"adjectives",l:"Sıfatlar",i:"🏷️"}];
+
+(function(){
+'use strict';
+const $=s=>document.querySelector(s),$$=s=>document.querySelectorAll(s);
+const S={idx:0,curCat:'all',fw:[...W],xp:0,lv:1,known:new Set(),learning:new Set(),rev:0,mode:'light',theme:'cherry',done:false,appMode:'cards'};
+const MS={batch:0,words:[],shuffled:[],selEn:null,matched:new Set(),count:0};
+
+const E={
+  cm:$('#card-mode'),mm:$('#match-mode'),ml:$('#match-left'),mr:$('#match-right'),
+  msc:$('#match-score'),mnxt:$('#match-next'),mgi:$('#match-group-info'),
+  prev:$('#prev-btn'),next:$('#next-btn'),cnt:$('#counter'),
+  ttog:$('#theme-tog'),cbtn:$('#color-btn'),tmod:$('#theme-modal'),
+  sbtn:$('#stats-btn'),smod:$('#stats-modal'),sg:$('#st-grid'),sc:$('#st-cats'),
+  xf:$('#xp-fill'),xt:$('#xp-txt'),lb:$('#lv-badge'),
+  lov:$('#lv-ov'),ltx:$('#lv-txt'),comp:$('#comp'),cst:$('#comp-stats'),rbtn:$('#re-btn'),sh:$('#swipe-h')
+};
+
+function init(){load();applyTh();filterW();if(S.appMode==='match'){showMatchMode();}else{showCardMode();}updXP();bind();}
+function load(){try{const d=JSON.parse(localStorage.getItem('vm2_k'));if(d){S.xp=d.xp||0;S.lv=d.lv||1;S.known=new Set(d.kn||[]);S.learning=new Set(d.lr||[]);S.rev=d.rv||0;S.mode=d.md||'light';S.theme=d.th||'cherry';S.appMode=d.am||'cards';}}catch(e){}}
+function save(){try{localStorage.setItem('vm2_k',JSON.stringify({xp:S.xp,lv:S.lv,kn:[...S.known],lr:[...S.learning],rv:S.rev,md:S.mode,th:S.theme,am:S.appMode}));}catch(e){}}
+
+function applyTh(){document.documentElement.setAttribute('data-mode',S.mode);document.documentElement.setAttribute('data-theme',S.theme);$$('.th-o').forEach(b=>b.classList.toggle('active',b.dataset.theme===S.theme));}
+function togMode(){S.mode=S.mode==='dark'?'light':'dark';applyTh();save();}
+function setTh(t){S.theme=t;applyTh();save();}
+
+function filterW(){S.fw=S.curCat==='all'?[...W]:W.filter(w=>w.cat===S.curCat);S.idx=0;S.done=false;}
+function setCat(c){if(S.curCat===c)return;S.curCat=c;$$('.cb').forEach(b=>b.classList.toggle('active',b.dataset.cat===c));filterW();if(S.appMode==='cards'){renderCard(null,'none');updCnt();}else{MS.batch=0;loadBatch();}}
+
+function setAppMode(m){
+  S.appMode=m;$$('.mt').forEach(b=>b.classList.toggle('active',b.dataset.mode===m));
+  if(m==='cards'){showCardMode();}else{showMatchMode();}
+  E.prev.style.display=m==='cards'?'':'none';E.next.style.display=m==='cards'?'':'none';E.cnt.style.display=m==='cards'?'':'none';E.sh.style.display=m==='cards'?'':'none';
+  save();
+}
+function showCardMode(){E.cm.classList.add('active');E.cm.style.display='block';E.mm.classList.remove('active');E.mm.style.display='none';renderCard(null,'none');updCnt();}
+function showMatchMode(){E.mm.classList.add('active');E.mm.style.display='flex';E.cm.classList.remove('active');E.cm.style.display='none';MS.batch=0;loadBatch();}
+
+function mkCard(wd,i){
+  const c=document.createElement('div');c.className='wc';c.dataset.wid=wd.id;
+  const sHTML=wd.s.map(s=>`<div class="s-item">${s.replace(/\*\*(.*?)\*\*/g,'<span class="hl">$1</span>')}</div>`).join('');
+  const isK=S.known.has(wd.id),isL=S.learning.has(wd.id);
+  let badge=isK?' ✨':isL?' 🎀':'';
+  c.innerHTML=`<div class="wc-cat">${wd.ci} ${wd.cl}</div><div class="wc-word"><h2>${wd.w}${badge}</h2><p>${i+1} / ${S.fw.length}</p></div><div class="wc-sents"><div class="s-label">💭 Cümlelerden anlamı tahmin et</div>${sHTML}</div><div class="wc-div"></div><div class="wc-reveal"><button class="rv-btn" onclick="VM.reveal(this)">🌸 Anlamını Gör</button></div><div class="wc-meaning"><div class="mg-box"><div class="flag">🇹🇷</div><div class="mg-txt">${wd.m}</div></div><div class="sc-btns"><button class="sc-b know" onclick="VM.score(${wd.id},'k')">✅ Biliyorum <span class="sc-xp">+10</span></button><button class="sc-b learn" onclick="VM.score(${wd.id},'l')">📖 Öğreniyorum <span class="sc-xp">+3</span></button></div></div>`;
+  return c;
+}
+function renderCard(dir=null,tr='default'){
+  if(!S.fw.length)return;const wd=S.fw[S.idx],nc=mkCard(wd,S.idx);
+  const oc=E.cm.querySelector('.wc.active');
+  if(tr==='none'||!oc){E.cm.innerHTML='';nc.classList.add('active');E.cm.appendChild(nc);return;}
+  if(dir==='next'){nc.classList.add('enter-b');E.cm.appendChild(nc);oc.classList.remove('active');oc.classList.add('exit-t');requestAnimationFrame(()=>requestAnimationFrame(()=>{nc.classList.remove('enter-b');nc.classList.add('active');}));setTimeout(()=>{if(oc.parentNode)oc.remove();},450);}
+  else if(dir==='prev'){nc.classList.add('enter-t');E.cm.appendChild(nc);oc.classList.remove('active');oc.classList.add('exit-b');requestAnimationFrame(()=>requestAnimationFrame(()=>{nc.classList.remove('enter-t');nc.classList.add('active');}));setTimeout(()=>{if(oc.parentNode)oc.remove();},450);}
+}
+function goN(){if(S.idx<S.fw.length-1){S.idx++;renderCard('next');updCnt();}else if(!S.done){showComp();}}
+function goP(){if(S.idx>0){S.idx--;renderCard('prev');updCnt();}}
+function updCnt(){E.cnt.textContent=`${S.idx+1} / ${S.fw.length}`;}
+function reveal(btn){const c=btn.closest('.wc');c.querySelector('.wc-reveal').style.display='none';c.querySelector('.wc-meaning').classList.add('show');}
+function scoreW(wid,t){
+  const xp=t==='k'?10:3;
+  if(t==='k'){S.known.add(wid);S.learning.delete(wid);}else{if(!S.known.has(wid))S.learning.add(wid);}
+  S.rev++;addXP(xp);save();setTimeout(goN,300);
+}
+
+function shuffle(a){const b=[...a];for(let i=b.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[b[i],b[j]]=[b[j],b[i]];}return b;}
+function loadBatch(){
+  const batchSize=5,start=MS.batch*batchSize;
+  if(start>=S.fw.length){showComp();return;}
+  const end=Math.min(start+batchSize,S.fw.length);
+  MS.words=S.fw.slice(start,end);
+  MS.shuffled=shuffle(MS.words.map(w=>({id:w.id,m:w.m})));
+  MS.selEn=null;MS.matched=new Set();MS.count=0;
+  E.mgi.textContent=`Grup ${MS.batch+1} / ${Math.ceil(S.fw.length/batchSize)}`;
+  renderMatch();
+}
+function renderMatch(){
+  E.ml.innerHTML=MS.words.map((w,i)=>`<div class="mi${MS.matched.has(w.id)?' matched':''}${MS.selEn===i?' selected':''}" data-idx="${i}" data-id="${w.id}">${w.w}</div>`).join('');
+  E.mr.innerHTML=MS.shuffled.map((w,i)=>`<div class="mi${MS.matched.has(w.id)?' matched':''}" data-idx="${i}" data-id="${w.id}">${w.m}</div>`).join('');
+  E.msc.innerHTML=`Eşleşme: <b>${MS.count}</b> / <b>${MS.words.length}</b>`;
+  E.mnxt.classList.toggle('show',MS.count===MS.words.length);
+  E.ml.querySelectorAll('.mi:not(.matched)').forEach(el=>el.addEventListener('click',()=>selEnglish(parseInt(el.dataset.idx))));
+  E.mr.querySelectorAll('.mi:not(.matched)').forEach(el=>el.addEventListener('click',()=>selTurkish(parseInt(el.dataset.idx))));
+}
+function selEnglish(idx){MS.selEn=idx;renderMatch();}
+function selTurkish(idx){
+  if(MS.selEn===null)return;
+  const enWord=MS.words[MS.selEn],trWord=MS.shuffled[idx];
+  if(enWord.id===trWord.id){
+    MS.matched.add(enWord.id);MS.count++;MS.selEn=null;
+    S.known.add(enWord.id);S.learning.delete(enWord.id);S.rev++;
+    addXP(8);save();renderMatch();
+  } else {
+    const trEl=E.mr.querySelectorAll('.mi')[idx];
+    trEl.classList.add('wrong');setTimeout(()=>trEl.classList.remove('wrong'),400);
+  }
+}
+
+function addXP(a){const ol=S.lv;S.xp+=a;const nl=getLv(S.xp);S.lv=nl.l;updXP();xpPop(a);if(S.lv>ol)lvUp(nl);save();}
+function getLv(xp){let c=LVS[0];for(let i=LVS.length-1;i>=0;i--)if(xp>=LVS[i].r){c=LVS[i];break;}return c;}
+function updXP(){const d=getLv(S.xp),inL=S.xp-d.r,need=d.t;const p=need===Infinity?100:Math.min(inL/need*100,100);E.xf.style.width=p+'%';E.xt.textContent=need===Infinity?S.xp+' XP ⭐':inL+'/'+need;E.lb.textContent=`Lv.${d.l} ${d.n}`;}
+function xpPop(a){const p=document.createElement('div');p.className='xp-pop';p.textContent='+'+a+' XP ✨';document.body.appendChild(p);setTimeout(()=>p.remove(),1200);}
+function lvUp(d){E.ltx.textContent=`Seviye ${d.l} — ${d.n}`;E.lov.classList.add('show');setTimeout(()=>E.lov.classList.remove('show'),2200);}
+
+function showComp(){S.done=true;const kn=S.fw.filter(w=>S.known.has(w.id)).length,lr=S.fw.filter(w=>S.learning.has(w.id)).length;E.cst.innerHTML=`<div class="comp-s"><div class="cv">${S.xp}</div><div class="cl">Toplam XP</div></div><div class="comp-s"><div class="cv">${S.lv}</div><div class="cl">Seviye</div></div><div class="comp-s"><div class="cv">${kn}</div><div class="cl">Bilinen</div></div><div class="comp-s"><div class="cv">${lr}</div><div class="cl">Öğrenilen</div></div>`;E.comp.classList.add('show');}
+function restart(){S.idx=0;S.done=false;E.comp.classList.remove('show');if(S.appMode==='cards'){renderCard(null,'none');updCnt();}else{MS.batch=0;loadBatch();}}
+
+function showStats(){
+  const kn=S.known.size,lr=S.learning.size,un=W.length-kn-lr;
+  E.sg.innerHTML=`<div class="st-c"><div class="si">⭐</div><div class="sv">${S.xp}</div><div class="sl">XP</div></div><div class="st-c"><div class="si">🏆</div><div class="sv">${S.lv}</div><div class="sl">Seviye</div></div><div class="st-c"><div class="si">✅</div><div class="sv">${kn}</div><div class="sl">Bilinen</div></div><div class="st-c"><div class="si">🎀</div><div class="sv">${lr}</div><div class="sl">Öğrenilen</div></div>`;
+  const cats=CATS.filter(c=>c.id!=='all').map(c=>{const cw=W.filter(w=>w.cat===c.id),k=cw.filter(w=>S.known.has(w.id)).length,t=cw.length,p=t?Math.round(k/t*100):0;return `<div class="st-ci"><span>${c.i}</span><span class="scl">${c.l}</span><div class="scp"><div class="scf" style="width:${p}%"></div></div><span class="scc">${k}/${t}</span></div>`;}).join('');
+  E.sc.innerHTML=`<h4>Kategori İlerlemesi</h4>${cats}`;openM('stats-modal');
+}
+
+function openM(id){const m=document.getElementById(id);if(m)m.classList.add('open');}
+function closeM(id){const m=document.getElementById(id);if(m)m.classList.remove('open');}
+
+let tsy=0,tsx=0,tst=0,drag=false,doff=0;
+function onTS(e){if(S.done||S.appMode!=='cards')return;const t=e.touches[0];tsy=t.clientY;tsx=t.clientX;tst=Date.now();drag=true;doff=0;const a=E.cm.querySelector('.wc.active');if(a)a.classList.add('drag');}
+function onTM(e){if(!drag||S.done||S.appMode!=='cards')return;const t=e.touches[0],dy=t.clientY-tsy,dx=t.clientX-tsx;if(Math.abs(dx)>Math.abs(dy)&&Math.abs(dy)<15)return;e.preventDefault();doff=dy;const a=E.cm.querySelector('.wc.active');if(a){let o=dy;if((S.idx===0&&dy>0)||(S.idx>=S.fw.length-1&&dy<0))o=dy*.3;a.style.transform=`translateY(${o}px)`;a.style.opacity=Math.max(.4,1-Math.abs(o)/400);}}
+function onTE(){if(!drag||S.done||S.appMode!=='cards')return;drag=false;const a=E.cm.querySelector('.wc.active');if(a){a.classList.remove('drag');a.style.transform='';a.style.opacity='';}if(Math.abs(doff)>60){if(doff<0)goN();else goP();}doff=0;}
+
+function bind(){
+  E.prev.addEventListener('click',goP);E.next.addEventListener('click',goN);
+  const ma=$('#main');ma.addEventListener('touchstart',onTS,{passive:true});ma.addEventListener('touchmove',onTM,{passive:false});ma.addEventListener('touchend',onTE,{passive:true});
+  E.ttog.addEventListener('click',togMode);
+  E.cbtn.addEventListener('click',()=>openM('theme-modal'));
+  $$('.th-o').forEach(b=>b.addEventListener('click',()=>{setTh(b.dataset.theme);closeM('theme-modal');}));
+  E.sbtn.addEventListener('click',showStats);
+  $$('[data-close]').forEach(el=>el.addEventListener('click',()=>closeM(el.dataset.close)));
+  $$('.cb').forEach(b=>b.addEventListener('click',()=>setCat(b.dataset.cat)));
+  $$('.mt').forEach(b=>b.addEventListener('click',()=>setAppMode(b.dataset.mode)));
+  E.rbtn.addEventListener('click',restart);
+  E.mnxt.addEventListener('click',()=>{MS.batch++;loadBatch();});
+}
+
+window.VM={reveal,score:scoreW};
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
+})();
+</script>
+</body>
+</html>
