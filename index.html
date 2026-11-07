@@ -131,6 +131,8 @@
     }
     .steam-card:hover { transform: translateY(-3px); }
     .steam-card img {
+      position: absolute;
+      inset: 0;
       width: 100%; height: 100%; object-fit: cover; display: block;
     }
     .steam-placeholder {
@@ -257,7 +259,8 @@
     const TIKTOK_REGEX    = /tiktok\.com\/(?:@[\w.-]+\/video\/(\d+)|v\/(\d+))/i;
     const INSTAGRAM_REGEX = /instagram\.com\/(p|reel|reels|tv)\/([a-zA-Z0-9_-]+)/i;
     const TWITTER_REGEX   = /(?:twitter\.com|x\.com)\/(?:#!\/)?(?:\w+)\/status(?:es)?\/(\d+)/i;
-    const STEAM_REGEX     = /store\.steampowered\.com\/app\/(\d+)/i;
+    const STEAM_REGEX     = /(?:store\.steampowered\.com|steamcommunity\.com)\/app\/(\d+)/i;
+    const STEAM_IMG_REGEX = /steamstatic\.com\/(?:store_item_assets\/)?steam\/apps\/(\d+)\/[^\s]*?\.(?:jpg|jpeg|png|webp|gif)/i;
     const DISCORD_REGEX   = /cdn\.discordapp\.com\/attachments\/\d+\/\d+\/[^\s?]+/i;
 
     let pusher = null, channel = null, reconnectAttempts = 0, reconnectTimer = null;
@@ -334,6 +337,9 @@
 
         const tw = url.match(TWITTER_REGEX);
         if (tw) { addTwitterCard(tw[1]); return; }
+
+        const si = url.match(STEAM_IMG_REGEX);
+        if (si) { addSteamImageCard(url, si[1]); return; }
 
         const st = url.match(STEAM_REGEX);
         if (st) { addSteamCard(st[1], url); return; }
@@ -461,51 +467,167 @@
       }, 300);
     }
 
+    /* ---------- STEAM ---------- */
+
+    // Steam appdetails API CORS izni vermez; bu yüzden proxy üzerinden çekiyoruz.
+    const STEAM_PROXIES = [
+      (u) => `https://api.allorigins.win/raw?url=${encodeURIComponent(u)}`,
+      (u) => `https://corsproxy.io/?${encodeURIComponent(u)}`,
+    ];
+
+    async function fetchSteamDetails(appId) {
+      const apiUrl = `https://store.steampowered.com/api/appdetails?appids=${appId}&l=turkish`;
+      for (const build of STEAM_PROXIES) {
+        try {
+          const r = await fetch(build(apiUrl));
+          if (!r.ok) continue;
+          const json = await r.json();
+          const entry = json && json[appId];
+          if (entry && entry.success && entry.data) return entry.data;
+        } catch (_) {}
+      }
+      return null;
+    }
+
+    async function fetchSteamOgImage(appId) {
+      const pageUrl = `https://store.steampowered.com/app/${appId}/?l=english`;
+      for (const build of STEAM_PROXIES) {
+        try {
+          const r = await fetch(build(pageUrl));
+          if (!r.ok) continue;
+          const html = await r.text();
+          const m = html.match(/<meta\s+property=["']og:image["']\s+content=["']([^"']+)["']/i)
+                 || html.match(/<meta\s+content=["']([^"']+)["']\s+property=["']og:image["']/i);
+          if (m) return m[1].replace(/&amp;/g, '&');
+        } catch (_) {}
+      }
+      return null;
+    }
+
+    // Doğrudan Steam CDN görsel adresi atıldığında
+    function addSteamImageCard(imageUrl, appId) {
+      const card = document.createElement('a');
+      card.className = 'steam-card';
+      card.href = `https://store.steampowered.com/app/${appId}/`;
+      card.target = '_blank';
+      card.rel = 'noopener noreferrer';
+
+      const placeholder = document.createElement('div');
+      placeholder.className = 'steam-placeholder';
+      placeholder.textContent = 'Steam Oyunu';
+
+      const img = document.createElement('img');
+      img.alt = 'Steam Oyunu';
+      img.referrerPolicy = 'no-referrer';
+      img.onload = () => { placeholder.style.display = 'none'; };
+
+      const cleanUrl = imageUrl.split('?')[0];
+      img.onerror = () => {
+        if (img.src !== cleanUrl) { img.src = cleanUrl; return; }
+        img.onerror = null;
+        img.style.display = 'none';
+      };
+      img.src = imageUrl;
+
+      card.appendChild(placeholder);
+      card.appendChild(img);
+      row.prepend(card);
+      trimRow(row, CONFIG.maxVertical);
+    }
+
     function addSteamCard(appId, originalUrl) {
       const card = document.createElement('a');
       card.className = 'steam-card';
-      card.href = originalUrl;
+      card.href = `https://store.steampowered.com/app/${appId}/`;
       card.target = '_blank';
       card.rel = 'noopener noreferrer';
 
       const img = document.createElement('img');
       img.alt = 'Steam Oyunu';
-      img.loading = 'lazy';
+      img.referrerPolicy = 'no-referrer';
+      img.decoding = 'async';
+      img.style.display = 'none';
 
       const placeholder = document.createElement('div');
       placeholder.className = 'steam-placeholder';
       placeholder.textContent = 'Steam Oyunu';
-      placeholder.style.display = 'none';
+
+      card.appendChild(placeholder);
+      card.appendChild(img);
+      row.prepend(card);
+      trimRow(row, CONFIG.maxVertical);
+
+      img.onload = () => {
+        img.style.display = 'block';
+        placeholder.style.display = 'none';
+      };
 
       const urls = [
+        `https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/${appId}/header.jpg`,
         `https://cdn.akamai.steamstatic.com/steam/apps/${appId}/header.jpg`,
         `https://cdn.cloudflare.steamstatic.com/steam/apps/${appId}/header.jpg`,
         `https://steamcdn-a.akamaihd.net/steam/apps/${appId}/header.jpg`,
-        `https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/${appId}/header.jpg`,
         `https://cdn.cloudflare.steamstatic.com/steam/apps/${appId}/capsule_616x353.jpg`,
         `https://cdn.cloudflare.steamstatic.com/steam/apps/${appId}/capsule_467x181.jpg`,
         `https://cdn.cloudflare.steamstatic.com/steam/apps/${appId}/capsule_231x87.jpg`,
       ];
 
       let idx = 0;
-      const tryNext = () => {
+      let apiTried = false;
+
+      const tryNext = async () => {
         if (idx < urls.length) {
           img.src = urls[idx++];
-        } else {
-          img.onerror = null;
-          img.style.display = 'none';
-          placeholder.style.display = 'flex';
+          return;
         }
+        // Doğrudan adreslerin hepsi başarısız: API'den gerçek adresi al
+        if (!apiTried) {
+          apiTried = true;
+          const data = await fetchSteamDetails(appId);
+          if (data) {
+            if (data.name) {
+              card.title = data.name;
+              placeholder.textContent = data.name;
+            }
+            const apiImgs = [data.header_image, data.capsule_image, data.capsule_imagev5]
+              .filter(Boolean);
+            if (apiImgs.length) {
+              urls.push(...apiImgs);
+              tryNext();
+              return;
+            }
+          }
+        }
+        const og = await fetchSteamOgImage(appId);
+        if (og) {
+          img.onerror = () => {
+            img.onerror = null;
+            img.style.display = 'none';
+            placeholder.style.display = 'flex';
+          };
+          img.src = og;
+          return;
+        }
+        img.onerror = null;
+        img.style.display = 'none';
+        placeholder.style.display = 'flex';
       };
 
       img.onerror = tryNext;
       tryNext();
 
-      card.appendChild(img);
-      card.appendChild(placeholder);
-      row.prepend(card);
-      trimRow(row, CONFIG.maxVertical);
+      // Oyun adını arka planda al (görsel yüklense bile tooltip için)
+      if (!card.title) {
+        fetchSteamDetails(appId).then((data) => {
+          if (data && data.name) {
+            card.title = data.name;
+            if (placeholder.style.display !== 'none') placeholder.textContent = data.name;
+          }
+        });
+      }
     }
+
+    /* ---------- DISCORD ---------- */
 
     function addDiscordCard(imageUrl) {
       const card = document.createElement('div');
