@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Sakovata — Link Önizleme</title>
+  <title>Atlassya</title>
   <script src="https://js.pusher.com/7.0/pusher.min.js"></script>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -268,13 +268,13 @@
       maxYoutube: 4,
       maxVertical: 6,
       maxReconnectAttempts: 8,
-      bigKeyword: 'sakovata',   // linkten önce bu kelime yazılırsa ekranda kocaman açılır
+      bigKeyword: 'büyük',
     };
 
     const pane       = document.querySelector('.preview-pane');
-    const ytRow      = document.getElementById('ytRow');      // YouTube (en üstte)
-    const vRow       = document.getElementById('vRow');       // TikTok + Reels (yan yana)
-    const otherRow   = document.getElementById('otherRow');   // Twitter, Steam, Discord
+    const ytRow      = document.getElementById('ytRow');
+    const vRow       = document.getElementById('vRow');
+    const otherRow   = document.getElementById('otherRow');
     const statusDot  = document.getElementById('statusDot');
     const statusText = document.getElementById('statusText');
 
@@ -285,6 +285,7 @@
     const TWITTER_REGEX   = /(?:twitter\.com|x\.com)\/(?:#!\/)?(?:\w+)\/status(?:es)?\/(\d+)/i;
     const STEAM_REGEX     = /(?:store\.steampowered\.com|steamcommunity\.com)\/app\/(\d+)/i;
     const STEAM_IMG_REGEX = /steamstatic\.com\/(?:store_item_assets\/)?steam\/apps\/(\d+)\/[^\s]*?\.(?:jpg|jpeg|png|webp|gif)/i;
+    const PINIMG_REGEX    = /i\.pinimg\.com\/[^\s?]+\.(?:jpg|jpeg|png|webp|gif)/i;
     const DISCORD_REGEX   = /(?:cdn\.discordapp\.com|media\.discordapp\.net)\/attachments\/\d+\/\d+\/[^\s?]+/i;
 
     let pusher = null, channel = null, reconnectAttempts = 0, reconnectTimer = null;
@@ -335,6 +336,13 @@
       }, delay);
     }
 
+    function hostOk(u, suffixes) {
+      try {
+        const h = new URL(u).hostname.toLowerCase();
+        return suffixes.some((x) => h === x || h.endsWith('.' + x));
+      } catch (_) { return false; }
+    }
+
     const DEBUG = new URLSearchParams(location.search).has('debug');
     function dbg(...a) { console.log('[preview]', ...a); }
 
@@ -349,8 +357,9 @@
       const content = data.content || '';
       const links = content.match(URL_REGEX);
       const firstIdx = content.search(/https?:\/\//i);
+      const norm = (t) => t.toLocaleLowerCase('tr').replace(/ü/g, 'u').replace(/ı/g, 'i');
       const bigRequested = firstIdx >= 0 &&
-        content.slice(0, firstIdx).toLowerCase().includes(CONFIG.bigKeyword.toLowerCase());
+        norm(content.slice(0, firstIdx)).includes(norm(CONFIG.bigKeyword));
       let bigUsed = false;
       const wantBig = () => (bigRequested && !bigUsed) ? (bigUsed = true) : false;
       if (DEBUG) dbg('bulunan linkler:', links);
@@ -377,13 +386,18 @@
         if (tw) { addTwitterCard(tw[1], url, wantBig()); return; }
 
         const si = url.match(STEAM_IMG_REGEX);
-        if (si) { addSteamImageCard(url, si[1], wantBig()); return; }
+        if (si && hostOk(url, ['steamstatic.com'])) { addSteamImageCard(url, si[1], wantBig()); return; }
 
         const st = url.match(STEAM_REGEX);
         if (st) { addSteamCard(st[1], url, wantBig()); return; }
 
         const dc = url.match(DISCORD_REGEX);
-        if (dc) { addDiscordCard(url, wantBig()); return; }
+        if (dc && hostOk(url, ['cdn.discordapp.com', 'media.discordapp.net'])) {
+          addDiscordCard(url, wantBig()); return;
+        }
+
+        const pin = url.match(PINIMG_REGEX);
+        if (pin && hostOk(url, ['pinimg.com'])) { addDiscordCard(url, wantBig()); return; }
       });
     }
 
@@ -391,7 +405,7 @@
       if (big) showBigFrame('big-yt', `https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0`, 'autoplay; encrypted-media; fullscreen; picture-in-picture');
       const card = document.createElement('a');
       card.className = 'yt-card';
-      card.href = originalUrl;
+      card.href = `https://www.youtube.com/watch?v=${videoId}`;
       card.target = '_blank';
       card.rel = 'noopener noreferrer';
 
@@ -508,9 +522,6 @@
       }, 300);
     }
 
-    /* ---------- STEAM ---------- */
-
-    // Steam appdetails API CORS izni vermez; bu yüzden proxy üzerinden çekiyoruz.
     const STEAM_PROXIES = [
       (u) => `https://api.allorigins.win/raw?url=${encodeURIComponent(u)}`,
       (u) => `https://corsproxy.io/?${encodeURIComponent(u)}`,
@@ -545,7 +556,6 @@
       return null;
     }
 
-    // Doğrudan Steam CDN görsel adresi atıldığında
     function addSteamImageCard(imageUrl, appId, big) {
       if (big) openFullscreen(imageUrl, imageUrl.split('?')[0]);
       const card = document.createElement('a');
@@ -621,7 +631,6 @@
           img.src = urls[idx++];
           return;
         }
-        // Doğrudan adreslerin hepsi başarısız: API'den gerçek adresi al
         if (!apiTried) {
           apiTried = true;
           const data = await fetchSteamDetails(appId);
@@ -631,7 +640,7 @@
               placeholder.textContent = data.name;
             }
             const apiImgs = [data.header_image, data.capsule_image, data.capsule_imagev5]
-              .filter(Boolean);
+              .filter((u) => u && hostOk(u, ['steamstatic.com', 'akamaihd.net']));
             if (apiImgs.length) {
               urls.push(...apiImgs);
               tryNext();
@@ -640,7 +649,7 @@
           }
         }
         const og = await fetchSteamOgImage(appId);
-        if (og) {
+        if (og && hostOk(og, ['steamstatic.com', 'akamaihd.net'])) {
           img.onerror = () => {
             img.onerror = null;
             img.style.display = 'none';
@@ -657,7 +666,6 @@
       img.onerror = tryNext;
       tryNext();
 
-      // Oyun adını arka planda al (görsel yüklense bile tooltip için)
       if (!card.title) {
         fetchSteamDetails(appId).then((data) => {
           if (data && data.name) {
@@ -668,8 +676,6 @@
       }
     }
 
-    /* ---------- DISCORD ---------- */
-
     function addDiscordCard(imageUrl, big) {
       if (big) openFullscreen(imageUrl, imageUrl.split('?')[0]);
       const card = document.createElement('div');
@@ -679,6 +685,7 @@
       const img = document.createElement('img');
       img.src = imageUrl;
       img.alt = '';
+      img.referrerPolicy = 'no-referrer';
       img.loading = 'lazy';
       img.onerror = () => {
         img.onerror = null;
@@ -689,8 +696,6 @@
       card.addEventListener('click', () => openFullscreen(imageUrl, cleanUrl));
       otherRow.prepend(card);
     }
-
-    /* ---------- BÜYÜK (ekran ortası) GÖSTERİM ---------- */
 
     function openOverlay(node) {
       const existing = document.querySelector('.fullscreen-overlay');
@@ -751,7 +756,6 @@
       });
     }
 
-    // Tıklanınca kart siyah-beyaz + soluk olur, 20 sn sonra otomatik silinir
     const REMOVE_AFTER_MS = 20000;
 
     function markClicked(e) {
@@ -768,7 +772,6 @@
     pane.addEventListener('click', markClicked);
     pane.addEventListener('auxclick', markClicked);
 
-    // TikTok / Instagram / Twitter gömmelerine "yeni sekmede aç" düğmesi
     function addOpenButton(card, url) {
       const a = document.createElement('a');
       a.className = 'open-btn';
@@ -780,7 +783,6 @@
       card.appendChild(a);
     }
 
-    // Test modu: sayfa adresinin sonuna ?test ekle, sohbet olmadan Steam kartını dener
     if (new URLSearchParams(location.search).has('test')) {
       addSteamImageCard(
         'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/4656000/99c086faba625a8d3bc459bab444087d257ccbe1/header.jpg?t=1792877964',
