@@ -162,6 +162,8 @@
     .discord-card img {
       width: 100%; height: 100%; object-fit: cover; display: block;
     }
+    .yt-card, .steam-card, .discord-card { transition: transform 0.2s ease, opacity 0.25s ease; }
+    .yt-card.clicked, .steam-card.clicked, .discord-card.clicked { opacity: 0.4; }
     .fullscreen-overlay {
       position: fixed;
       inset: 0;
@@ -688,9 +690,24 @@
       document.body.appendChild(overlay);
     }
 
+    // Sadece yeni eklenen kartın türündekileri sınırla; diğer türlere dokunma
     function trimRow(rowEl, max) {
-      while (rowEl.children.length > max) rowEl.lastElementChild.remove();
+      const newest = rowEl.firstElementChild;
+      if (!newest) return;
+      const cls = ['yt-card', 'v-card', 'tw-card', 'steam-card', 'discord-card']
+        .find((c) => newest.classList.contains(c));
+      if (!cls) return;
+      const same = Array.from(rowEl.children).filter((el) => el.classList.contains(cls));
+      same.slice(max).forEach((el) => el.remove());
     }
+
+    // Tıklanan link kartı soluklaşsın (TikTok/Instagram/Twitter gömmeleri hariç)
+    function markClicked(e) {
+      const card = e.target.closest('a.yt-card, a.steam-card, .discord-card');
+      if (card) card.classList.add('clicked');
+    }
+    row.addEventListener('click', markClicked);
+    row.addEventListener('auxclick', markClicked);
 
     // Test modu: sayfa adresinin sonuna ?test ekle, sohbet olmadan Steam kartını dener
     if (new URLSearchParams(location.search).has('test')) {
