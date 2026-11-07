@@ -1,498 +1,568 @@
 <!DOCTYPE html>
-<html lang="tr" data-theme="cherry" data-mode="light">
+<html lang="tr">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
-<title>Kelime Öğren</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
-<style>
-*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
-html{font-family:'Nunito','Quicksand',sans-serif;-webkit-font-smoothing:antialiased;overflow:hidden;height:100%}
-body{height:100%;overflow:hidden;transition:background .3s,color .3s;position:relative}
-button{font-family:inherit}
-
-/* ── Kawaii Themes & Colors ── */
-[data-theme="cherry"]{--primary:#ff85a1;--primary-soft:#ffe5ec;--primary-mid:#ffb3c1;--gradient:linear-gradient(135deg,#ff85a1,#ffb3c1)}
-[data-theme="ocean"]{--primary:#4ea8de;--primary-soft:#e0f2fe;--primary-mid:#90e0ef;--gradient:linear-gradient(135deg,#4ea8de,#56cfe1)}
-[data-theme="sunset"]{--primary:#ff9f1c;--primary-soft:#ffeedd;--primary-mid:#ffe5ec;--gradient:linear-gradient(135deg,#ff9f1c,#ffbf69)}
-[data-theme="forest"]{--primary:#70e000;--primary-soft:#f0fdf4;--primary-mid:#ccff33;--gradient:linear-gradient(135deg,#52b788,#74c69d)}
-[data-theme="purple"]{--primary:#b5179e;--primary-soft:#f3e8ff;--primary-mid:#7209b7;--gradient:linear-gradient(135deg,#b5179e,#7209b7)}
-
-[data-mode="dark"]{--bg:#1a1921;--bg2:#23222d;--bg3:#2c2a38;--bg-card:#23222d;--bg-hover:#343242;--text:#f7f7f9;--text2:#b8b5c8;--text3:#7c7893;--border:rgba(255,255,255,.08);--border2:rgba(255,255,255,.15);--shadow:0 8px 24px rgba(0,0,0,.25);--shadow2:0 12px 32px rgba(0,0,0,.35);--modal-bg:rgba(15,14,20,.65);--green:#4ebd60;--green-soft:rgba(78,189,96,.15);--red:#ff6b6b;--red-soft:rgba(255,107,107,.15);--amber:#ffd166;--amber-soft:rgba(255,209,102,.15)}
-[data-mode="light"]{--bg:#fffafb;--bg2:#ffffff;--bg3:#fff0f3;--bg-card:#ffffff;--bg-hover:#fff5f7;--text:#4a4e69;--text2:#72779a;--text3:#a0a4c0;--border:#ffe3e8;--border2:#ffd0d8;--shadow:0 8px 20px rgba(255,182,193,.18);--shadow2:0 12px 32px rgba(255,182,193,.25);--modal-bg:rgba(74,78,105,.25);--green:#6bcb77;--green-soft:#eef9f0;--red:#ff6b6b;--red-soft:#ffeef0;--amber:#ffd97d;--amber-soft:#fff9e6}
-body{background:var(--bg);color:var(--text)}
-
-/* ── Header (Kompakt Hale Getirildi) ── */
-#header{position:fixed;top:0;left:0;right:0;z-index:100;background:var(--bg2);border-bottom:2px solid var(--border);padding:4px 12px;border-radius:0 0 12px 12px}
-.h-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:2px}
-.logo{font-size:1.1rem;display:flex;align-items:center}
-.h-btns{display:flex;gap:4px}
-.ib{width:28px;height:28px;border-radius:50%;border:1.5px solid var(--border);background:var(--bg3);color:var(--text2);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:transform .2s,background .2s;font-size:.75rem}
-.ib:hover{transform:scale(1.08);border-color:var(--primary);color:var(--primary);background:var(--primary-soft)}
-[data-mode="dark"] .ti-light{display:none}[data-mode="light"] .ti-dark{display:none}
-
-.xp-row{display:flex;align-items:center;gap:6px}
-.lv{padding:2px 8px;border-radius:12px;background:var(--gradient);color:#fff;font-size:.62rem;font-weight:800;white-space:nowrap}
-.xp-bar{flex:1;height:7px;border-radius:8px;background:var(--bg3);overflow:hidden;border:1px solid var(--border)}
-.xp-fill{height:100%;border-radius:8px;background:var(--gradient);transition:width .8s cubic-bezier(.34,1.56,.64,1);width:0%}
-.xp-txt{font-size:.6rem;font-weight:800;color:var(--text3);min-width:45px;text-align:right}
-
-/* ── Tabs + Categories ── */
-#tabs-bar{position:fixed;top:44px;left:0;right:0;z-index:99;background:var(--bg);display:flex;flex-direction:column;gap:4px;padding:4px 0}
-.mode-tabs{display:flex;gap:6px;padding:0 12px}
-.mt{flex:1;padding:6px;text-align:center;font-size:.8rem;font-weight:800;color:var(--text2);background:var(--bg2);border:2px solid var(--border);border-radius:14px;cursor:pointer;transition:all .2s}
-.mt.active{color:#fff;background:var(--primary);border-color:var(--primary);box-shadow:var(--shadow)}
-.cat-row{display:flex;gap:4px;padding:2px 12px;overflow-x:auto;scrollbar-width:none}
-.cat-row::-webkit-scrollbar{display:none}
-.cb{flex-shrink:0;padding:4px 10px;border-radius:16px;border:1.5px solid var(--border);background:var(--bg2);color:var(--text2);font-size:.7rem;font-weight:700;cursor:pointer;transition:all .2s;white-space:nowrap}
-.cb:hover{border-color:var(--primary);color:var(--primary)}
-.cb.active{background:var(--primary-soft);color:var(--primary);border-color:var(--primary)}
-
-/* ── Main Area ── */
-#main{position:fixed;top:116px;left:0;right:0;bottom:0;overflow:hidden;display:flex;align-items:center;justify-content:center;padding:10px}
-
-/* ── CARD MODE ── */
-#card-mode{width:100%;max-width:400px;height:100%;position:relative}
-.wc{position:absolute;inset:0;border-radius:24px;background:var(--bg-card);border:2px solid var(--border);box-shadow:var(--shadow);display:flex;flex-direction:column;overflow:hidden;transition:transform .45s cubic-bezier(.34,1.56,.64,1),opacity .3s ease;will-change:transform,opacity;touch-action:none;user-select:none}
-.wc.active{transform:translateY(0) scale(1);opacity:1}
-.wc.enter-b{transform:translateY(80px) scale(.95);opacity:0}
-.wc.enter-t{transform:translateY(-80px) scale(.95);opacity:0}
-.wc.exit-t{transform:translateY(-80px) scale(.95);opacity:0}
-.wc.exit-b{transform:translateY(80px) scale(.95);opacity:0}
-.wc.drag{transition:none!important}
-
-.wc-cat{display:inline-flex;align-items:center;gap:4px;padding:3px 10px;border-radius:12px;background:var(--primary-soft);color:var(--primary);font-size:.65rem;font-weight:800;margin:12px 16px 0;align-self:flex-start}
-.wc-word{padding:8px 16px 4px;text-align:center}
-.wc-word h2{font-size:2rem;font-weight:900;color:var(--primary);line-height:1.1;letter-spacing:-.5px}
-.wc-word p{font-size:.7rem;font-weight:700;color:var(--text3);margin-top:2px}
-
-/* Cümleler & Tıklayınca Türkçe Açılma */
-.wc-sents{flex:1;overflow-y:auto;padding:0 16px;scrollbar-width:none}
-.wc-sents::-webkit-scrollbar{display:none}
-.s-label{font-size:.65rem;font-weight:800;color:var(--text3);margin-bottom:6px;text-align:center}
-.s-item{padding:10px 12px;border-radius:14px;background:var(--bg3);margin-bottom:6px;font-size:.8rem;line-height:1.4;color:var(--text);border:1px solid var(--border);cursor:pointer;transition:all .2s}
-.s-item:hover{border-color:var(--primary-mid)}
-.s-item .hl{color:var(--primary);font-weight:800;background:var(--primary-soft);padding:1px 5px;border-radius:6px}
-.s-tr{display:none;margin-top:6px;padding-top:6px;border-top:1px dashed var(--border2);color:var(--primary);font-weight:700;font-size:.75rem;animation:fadeIn .2s ease}
-@keyframes fadeIn{from{opacity:0;transform:translateY(-3px)}to{opacity:1;transform:translateY(0)}}
-
-.wc-div{height:1.5px;margin:4px 16px;background:var(--border)}
-
-/* 3'lü Seçenek Kısımı */
-.wc-choices{padding:6px 16px;display:flex;flex-direction:column;gap:5px}
-.ch-title{font-size:.65rem;font-weight:800;color:var(--text3);text-align:center}
-.ch-btns{display:flex;gap:6px}
-.ch-btn{flex:1;padding:8px 4px;border-radius:12px;border:1.5px solid var(--border);background:var(--bg2);color:var(--text);font-size:.72rem;font-weight:800;cursor:pointer;transition:all .2s;text-align:center;box-shadow:0 2px 4px rgba(0,0,0,.02)}
-.ch-btn:hover{border-color:var(--primary);background:var(--primary-soft)}
-.ch-btn.correct{background:var(--green);color:#fff;border-color:var(--green)}
-.ch-btn.wrong{background:var(--red);color:#fff;border-color:var(--red);animation:shake .4s ease}
-
-.wc-reveal{padding:4px 16px 12px}
-.rv-btn{width:100%;padding:10px;border-radius:16px;border:2px dashed var(--primary);background:var(--primary-soft);color:var(--primary);font-size:.82rem;font-weight:800;cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:6px}
-.rv-btn:hover{background:var(--primary);color:#fff;border-style:solid}
-.wc-meaning{display:none;padding:0 16px 12px;animation:bounceUp .4s cubic-bezier(.34,1.56,.64,1)}
-.wc-meaning.show{display:block}
-@keyframes bounceUp{from{opacity:0;transform:translateY(12px) scale(.96)}to{opacity:1;transform:translateY(0) scale(1)}}
-.mg-box{padding:10px;border-radius:16px;background:var(--gradient);text-align:center;margin-bottom:8px;box-shadow:0 4px 12px rgba(0,0,0,.08)}
-.mg-box .flag{font-size:1rem}
-.mg-box .mg-txt{font-size:1.25rem;font-weight:900;color:#fff}
-.sc-btns{display:flex;gap:6px}
-.sc-b{flex:1;padding:8px;border-radius:14px;border:none;font-size:.78rem;font-weight:800;cursor:pointer;transition:transform .2s;display:flex;align-items:center;justify-content:center;gap:4px}
-.sc-b.know{background:var(--green);color:#fff}
-.sc-b.learn{background:var(--amber);color:var(--text)}
-
-/* ── MATCH MODE ── */
-#match-mode{width:100%;max-width:440px;display:none;flex-direction:column;gap:8px;height:100%;max-height:calc(100vh - 140px)}
-#match-mode.active{display:flex}
-#card-mode.active{display:block}
-#card-mode{display:none}
-
-.match-header{text-align:center;padding:2px 0}
-.match-header h3{font-size:.85rem;font-weight:800;color:var(--text)}
-.match-header p{font-size:.68rem;color:var(--text3);font-weight:700}
-
-.match-grid{flex:1;display:flex;gap:8px;min-height:0;overflow-y:auto}
-.match-col{flex:1;display:flex;flex-direction:column;gap:6px}
-.match-col-label{font-size:.62rem;font-weight:800;color:var(--text3);text-align:center}
-.mi{padding:10px 8px;border-radius:14px;border:1.5px solid var(--border);background:var(--bg-card);cursor:pointer;transition:all .2s;text-align:center;font-weight:800;font-size:.78rem;color:var(--text);position:relative}
-.mi:hover{border-color:var(--primary);background:var(--primary-soft)}
-.mi.selected{border-color:var(--primary);background:var(--primary-soft);box-shadow:0 0 0 2px var(--primary-mid)}
-.mi.matched{border-color:var(--green);background:var(--green-soft);color:var(--green);opacity:.5;pointer-events:none}
-.mi.wrong{animation:shake .4s ease;border-color:var(--red);background:var(--red-soft)}
-@keyframes shake{0%,100%{transform:translateX(0)}20%{transform:translateX(-4px)}40%{transform:translateX(4px)}60%{transform:translateX(-2px)}80%{transform:translateX(2px)}}
-
-.match-footer{text-align:center;padding:2px 0}
-.match-score{font-size:.72rem;font-weight:800;color:var(--text2);margin-bottom:4px}
-.match-score b{color:var(--primary)}
-.match-next{padding:8px 20px;border-radius:14px;border:none;background:var(--gradient);color:#fff;font-size:.8rem;font-weight:800;cursor:pointer;display:none}
-.match-next.show{display:inline-block}
-
-/* ── Nav Arrows ── */
-.nav-a{position:fixed;top:55%;transform:translateY(-50%);z-index:50;width:38px;height:38px;border-radius:50%;border:1.5px solid var(--border);background:var(--bg2);color:var(--text2);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s;box-shadow:var(--shadow)}
-.nav-a:hover{border-color:var(--primary);color:var(--primary);background:var(--primary-soft)}
-.nav-l{left:12px}.nav-r{right:12px}
-
-.counter{position:fixed;bottom:10px;left:50%;transform:translateX(-50%);z-index:50;padding:3px 12px;border-radius:16px;background:var(--bg2);border:1.5px solid var(--border);color:var(--text3);font-size:.68rem;font-weight:800}
-
-/* Modals */
-.modal{position:fixed;inset:0;z-index:1000;display:flex;align-items:center;justify-content:center;opacity:0;visibility:hidden;transition:all .25s}
-.modal.open{opacity:1;visibility:visible}
-.m-bg{position:absolute;inset:0;background:var(--modal-bg);backdrop-filter:blur(4px)}
-.m-box{position:relative;z-index:1;width:88%;max-width:340px;padding:18px;border-radius:24px;background:var(--bg2);border:2px solid var(--border);box-shadow:var(--shadow2);transform:scale(.9);transition:transform .3s cubic-bezier(.34,1.56,.64,1)}
-.modal.open .m-box{transform:scale(1)}
-.m-box h3{font-size:1rem;font-weight:900;margin-bottom:12px;text-align:center;color:var(--primary)}
-.th-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-bottom:12px}
-.th-o{display:flex;flex-direction:column;align-items:center;gap:4px;padding:6px 2px;border-radius:14px;border:1.5px solid var(--border);background:transparent;cursor:pointer;color:var(--text);font-size:.68rem;font-weight:800}
-.th-o.active{border-color:var(--primary);background:var(--primary-soft)}
-.th-sw{width:28px;height:28px;border-radius:50%}
-.m-close{width:100%;padding:8px;border-radius:14px;border:none;background:var(--gradient);color:#fff;font-size:.8rem;font-weight:800;cursor:pointer}
-
-/* Stats */
-.st-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:6px;margin-bottom:12px}
-.st-c{padding:10px;border-radius:14px;background:var(--bg3);border:1px solid var(--border);text-align:center}
-.st-c .sv{font-size:1.1rem;font-weight:900;color:var(--primary)}
-.st-c .sl{font-size:.6rem;color:var(--text3);font-weight:800}
-
-/* Overlays */
-.lv-ov, .comp{position:fixed;inset:0;z-index:2000;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.5);backdrop-filter:blur(6px);opacity:0;visibility:hidden;transition:all .3s}
-.lv-ov.show, .comp.show{opacity:1;visibility:visible}
-.lv-c, .comp-c{text-align:center;padding:24px;max-width:300px;width:88%;background:var(--bg2);border-radius:28px;border:2px solid var(--primary);box-shadow:var(--shadow2)}
-.re-btn{padding:10px 24px;border-radius:16px;border:none;background:var(--gradient);color:#fff;font-size:.85rem;font-weight:800;cursor:pointer}
-
-.xp-pop{position:fixed;top:60px;right:16px;z-index:500;padding:4px 10px;border-radius:12px;background:var(--gradient);color:#fff;font-size:.78rem;font-weight:900;animation:xpp 1.2s ease forwards;pointer-events:none}
-@keyframes xpp{0%{opacity:0;transform:translateY(10px)}20%{opacity:1;transform:translateY(0)}80%{opacity:1}100%{opacity:0;transform:translateY(-15px)}}
-
-@media(max-width:767px){.nav-a{display:none}}
-</style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sakovata — Link Önizleme</title>
+  <script src="https://js.pusher.com/7.0/pusher.min.js"></script>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #0d0d0f;
+      --border: #26272e;
+      --text: #e8e8ed;
+      --muted: #8b8b9a;
+      --accent: #53fc18;
+      --radius: 14px;
+    }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+    .top-bar {
+      padding: 10px 20px;
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      gap: 6px;
+      font-size: 10px;
+      color: var(--muted);
+      flex-shrink: 0;
+    }
+    .status-dot {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: #f59e0b;
+    }
+    .status-dot.connected    { background: var(--accent); box-shadow: 0 0 6px var(--accent); }
+    .status-dot.disconnected { background: #ef4444; }
+    .app-body { flex: 1; display: flex; overflow: hidden; }
+    .preview-pane {
+      flex: 1;
+      padding: 16px 20px;
+      overflow-y: auto;
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .row { display: flex; flex-wrap: wrap; gap: 14px; }
+    .row:empty { display: none; }
+    .yt-card {
+      display: block;
+      width: 380px;
+      background: transparent;
+      text-decoration: none;
+      color: var(--text);
+      transition: transform 0.2s ease;
+      animation: cardIn 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .yt-card:hover { transform: translateY(-3px); }
+    .yt-thumb {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      background: #000;
+      overflow: hidden;
+      border-radius: var(--radius);
+    }
+    .yt-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .yt-info { padding: 10px 4px 0; }
+    .yt-title {
+      font-size: 15px; font-weight: 600; line-height: 1.35;
+      display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+    .yt-author { font-size: 12px; color: var(--muted); margin-top: 4px; }
+    .v-card {
+      position: relative;
+      width: 220px;
+      height: 391px;
+      background: #000;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      animation: cardIn 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .v-card iframe,
+    .v-card video {
+      width: 100%; height: 100%; border: none; display: block;
+      background: #000; object-fit: contain;
+    }
+    .v-card img {
+      width: 100%; height: 100%; object-fit: cover; display: block;
+    }
+    .instagram-media {
+      margin: 0 !important; min-width: 0 !important;
+      width: 100% !important; border-radius: var(--radius) !important;
+    }
+    .tw-card {
+      position: relative;
+      width: 300px;
+      height: 225px;
+      background: #000;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      animation: cardIn 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .tw-card .twitter-container {
+      width: 100%; height: 100%;
+      overflow-y: auto; overflow-x: hidden;
+      background: #000;
+    }
+    .tw-card .twitter-tweet { margin: 0 !important; }
+    .steam-card {
+      display: block;
+      width: 220px;
+      height: 103px;
+      border-radius: var(--radius);
+      overflow: hidden;
+      text-decoration: none;
+      background: linear-gradient(135deg, #1b2838, #2a475e);
+      transition: transform 0.2s ease;
+      animation: cardIn 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+      position: relative;
+    }
+    .steam-card:hover { transform: translateY(-3px); }
+    .steam-card img {
+      width: 100%; height: 100%; object-fit: cover; display: block;
+    }
+    .steam-placeholder {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #c7d5e0;
+      font-size: 12px;
+      font-weight: 600;
+      text-align: center;
+      padding: 8px;
+      pointer-events: none;
+    }
+    .discord-card {
+      position: relative;
+      width: 220px;
+      height: 160px;
+      background: #000;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      cursor: pointer;
+      animation: cardIn 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .discord-card img {
+      width: 100%; height: 100%; object-fit: cover; display: block;
+    }
+    .fullscreen-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.92);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      z-index: 99999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 40px;
+      animation: fadeIn 0.2s ease;
+    }
+    .fullscreen-overlay img {
+      max-width: 90vw;
+      max-height: 85vh;
+      object-fit: contain;
+      border-radius: 12px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
+    }
+    .fullscreen-close {
+      position: absolute;
+      top: 20px;
+      right: 24px;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.12);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      color: #fff;
+      font-size: 20px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.15s;
+    }
+    .fullscreen-close:hover { background: rgba(255, 255, 255, 0.25); }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to   { opacity: 1; }
+    }
+    @keyframes cardIn {
+      from { opacity: 0; transform: translateY(20px) scale(0.96); }
+      to   { opacity: 1; transform: translateY(0) scale(1); }
+    }
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: #33343c; border-radius: 3px; }
+    @media (max-width: 900px) {
+      .yt-card { width: 320px; }
+      .v-card { width: 190px; height: 338px; }
+      .tw-card { width: 260px; height: 195px; }
+    }
+    @media (max-width: 700px) {
+      .preview-pane { padding: 12px; }
+      .yt-card { width: 100%; }
+      .v-card { width: calc(50% - 7px); height: auto; aspect-ratio: 9 / 16; }
+      .tw-card { width: 100%; height: auto; aspect-ratio: 4 / 3; }
+    }
+  </style>
 </head>
 <body>
-
-<!-- ═══ HEADER (Kompakt) ═══ -->
-<header id="header">
-  <div class="h-top">
-    <div class="logo">🌸</div>
-    <div class="h-btns">
-      <button class="ib" id="stats-btn" title="İstatistikler">📊</button>
-      <button class="ib" id="theme-tog" title="Mod"><span class="ti-dark">🌙</span><span class="ti-light">☀️</span></button>
-      <button class="ib" id="color-btn" title="Renk">🎨</button>
-    </div>
+  <div class="top-bar">
+    <span class="status-dot" id="statusDot"></span>
+    <span id="statusText">Bağlanıyor…</span>
   </div>
-  <div class="xp-row">
-    <div class="lv" id="lv-badge">Lv.1</div>
-    <div class="xp-bar"><div class="xp-fill" id="xp-fill"></div></div>
-    <span class="xp-txt" id="xp-txt">0/100</span>
+
+  <div class="app-body">
+    <main class="preview-pane">
+      <div id="row" class="row"></div>
+    </main>
   </div>
-</header>
 
-<!-- ═══ TABS + CATEGORIES ═══ -->
-<div id="tabs-bar">
-  <div class="mode-tabs">
-    <button class="mt active" data-mode="cards">📇 Kartlar</button>
-    <button class="mt" data-mode="match">🔗 Eşleştir</button>
-  </div>
-  <div class="cat-row">
-    <button class="cb active" data-cat="all">✨ Tümü</button>
-    <button class="cb" data-cat="verbs">🔄 Fiiller</button>
-    <button class="cb" data-cat="modifiers">📏 Belirteçler</button>
-    <button class="cb" data-cat="nouns">📖 İsimler</button>
-    <button class="cb" data-cat="abstract">💭 Soyut</button>
-    <button class="cb" data-cat="adjectives">🏷️ Sıfatlar</button>
-  </div>
-</div>
+  <script async defer src="https://www.instagram.com/embed.js"></script>
+  <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
 
-<!-- ═══ MAIN ═══ -->
-<main id="main">
-  <!-- Card Mode -->
-  <div id="card-mode" class="active"></div>
+  <script>
+    const CONFIG = {
+      pusherKey: '34bf7a0ff419a2a775b9',
+      pusherCluster: 'us2',
+      chatroomId: 27644613,
+      allowedSenderId: 28966226,
+      maxYoutube: 4,
+      maxVertical: 6,
+      maxReconnectAttempts: 8,
+    };
 
-  <!-- Match Mode -->
-  <div id="match-mode">
-    <div class="match-header">
-      <h3>İngilizce – Türkçe Eşleştir</h3>
-      <p id="match-group-info">Grup 1 / 7</p>
-    </div>
-    <div class="match-grid">
-      <div class="match-col">
-        <div class="match-col-label">English</div>
-        <div id="match-left"></div>
-      </div>
-      <div class="match-col">
-        <div class="match-col-label">Türkçe</div>
-        <div id="match-right"></div>
-      </div>
-    </div>
-    <div class="match-footer">
-      <div class="match-score" id="match-score">Eşleşme: <b>0</b> / <b>5</b></div>
-      <button class="match-next" id="match-next">Sonraki Grup →</button>
-    </div>
-  </div>
-</main>
+    const row        = document.getElementById('row');
+    const statusDot  = document.getElementById('statusDot');
+    const statusText = document.getElementById('statusText');
 
-<!-- Nav arrows -->
-<button class="nav-a nav-l" id="prev-btn">👈</button>
-<button class="nav-a nav-r" id="next-btn">👉</button>
-<div class="counter" id="counter">1 / 35</div>
+    const URL_REGEX       = /(https?:\/\/[^\s<>"']+)/gi;
+    const YOUTUBE_REGEX   = /(?:youtube\.com\/(?:watch\?(?:[^\s]*&)?v=|shorts\/|embed\/|live\/|v\/)|youtu\.be\/)([a-zA-Z0-9_-]{11})/i;
+    const TIKTOK_REGEX    = /tiktok\.com\/(?:@[\w.-]+\/video\/(\d+)|v\/(\d+))/i;
+    const INSTAGRAM_REGEX = /instagram\.com\/(p|reel|reels|tv)\/([a-zA-Z0-9_-]+)/i;
+    const TWITTER_REGEX   = /(?:twitter\.com|x\.com)\/(?:#!\/)?(?:\w+)\/status(?:es)?\/(\d+)/i;
+    const STEAM_REGEX     = /store\.steampowered\.com\/app\/(\d+)/i;
+    const DISCORD_REGEX   = /cdn\.discordapp\.com\/attachments\/\d+\/\d+\/[^\s?]+/i;
 
-<!-- ═══ MODALS ═══ -->
-<div id="theme-modal" class="modal">
-  <div class="m-bg" data-close="theme-modal"></div>
-  <div class="m-box">
-    <h3>🎨 Renk Paleti</h3>
-    <div class="th-grid">
-      <button class="th-o active" data-theme="cherry"><div class="th-sw" style="background:linear-gradient(135deg,#ff85a1,#ffb3c1)"></div>🌸 Kiraz</button>
-      <button class="th-o" data-theme="ocean"><div class="th-sw" style="background:linear-gradient(135deg,#4ea8de,#56cfe1)"></div>🩵 Bulut</button>
-      <button class="th-o" data-theme="sunset"><div class="th-sw" style="background:linear-gradient(135deg,#ff9f1c,#ffbf69)"></div>🍑 Şeftali</button>
-      <button class="th-o" data-theme="forest"><div class="th-sw" style="background:linear-gradient(135deg,#52b788,#74c69d)"></div>🍵 Matcha</button>
-      <button class="th-o" data-theme="purple"><div class="th-sw" style="background:linear-gradient(135deg,#b5179e,#7209b7)"></div>🍇 Lavanta</button>
-    </div>
-    <button class="m-close" data-close="theme-modal">Tamam</button>
-  </div>
-</div>
+    let pusher = null, channel = null, reconnectAttempts = 0, reconnectTimer = null;
 
-<div id="stats-modal" class="modal">
-  <div class="m-bg" data-close="stats-modal"></div>
-  <div class="m-box">
-    <h3>📊 İstatistikler</h3>
-    <div class="st-grid" id="st-grid"></div>
-    <div id="st-cats"></div>
-    <button class="m-close" data-close="stats-modal">Kapat</button>
-  </div>
-</div>
+    function setStatus(state, text) {
+      statusDot.className = 'status-dot ' + state;
+      statusText.textContent = text;
+    }
 
-<div class="lv-ov" id="lv-ov">
-  <div class="lv-c">
-    <div style="font-size:2.5rem">🎉</div>
-    <h2 style="color:var(--primary)">Seviye Atladın!</h2>
-    <p id="lv-txt" style="color:var(--text2);font-size:.85rem;font-weight:800;margin-top:4px"></p>
-  </div>
-</div>
+    function initPusher() {
+      clearTimeout(reconnectTimer);
+      setStatus('', 'Bağlanıyor…');
+      pusher = new Pusher(CONFIG.pusherKey, {
+        cluster: CONFIG.pusherCluster,
+        forceTLS: true,
+        enabledTransports: ['ws', 'wss'],
+      });
 
-<div class="comp" id="comp">
-  <div class="comp-c">
-    <div style="font-size:2.5rem">🏆</div>
-    <h2 style="color:var(--primary)">Tebrikler!</h2>
-    <p style="color:var(--text2);font-size:.8rem;margin-bottom:12px">Tüm kelimeleri tamamladın!</p>
-    <button class="re-btn" id="re-btn">🔄 Tekrar Başla</button>
-  </div>
-</div>
+      pusher.connection.bind('connected', () => {
+        reconnectAttempts = 0;
+        setStatus('connected', 'Bağlı');
+      });
+      pusher.connection.bind('disconnected', () => {
+        setStatus('disconnected', 'Bağlantı koptu');
+        scheduleReconnect();
+      });
+      pusher.connection.bind('error', () => {
+        setStatus('disconnected', 'Hata');
+        scheduleReconnect();
+      });
 
-<script>
-const W=[
-{id:1,w:"increase",m:"artmak",cat:"verbs",cl:"Değişim Fiilleri",ci:"🔄",s:[{e:"The price of food will **increase** next year.",t:"Gıda fiyatları gelecek yıl artacak."},{e:"We need to **increase** our sales to grow.",t:"Büyümek için satışlarımızı artırmamız gerekiyor."},{e:"The temperature will **increase** in summer.",t:"Sıcaklık yazın artacak."}]},
-{id:2,w:"decline",m:"azalmak",cat:"verbs",cl:"Değişim Fiilleri",ci:"🔄",s:[{e:"The population started to **decline** slowly.",t:"Nüfus yavaşça azalmaya başladı."},{e:"Sales **declined** by 20% last month.",t:"Satışlar geçen ay %20 azaldı."},{e:"His health began to **decline** after the accident.",t:"Sağlığı kazadan sonra bozulmaya başladı."}]},
-{id:3,w:"reduce",m:"azaltmak",cat:"verbs",cl:"Değişim Fiilleri",ci:"🔄",s:[{e:"We must **reduce** our costs to save money.",t:"Para tasarrufu için maliyetlerimizi azaltmalıyız."},{e:"The company **reduced** the number of workers.",t:"Şirket çalışan sayısını azalttı."},{e:"Try to **reduce** your sugar intake for better health.",t:"Daha iyi sağlık için şeker alımınızı azaltmaya çalışın."}]},
-{id:4,w:"expand",m:"genişlemek",cat:"verbs",cl:"Değişim Fiilleri",ci:"🔄",s:[{e:"The company wants to **expand** to new markets.",t:"Şirket yeni pazarlara genişlemek istiyor."},{e:"The city will **expand** over the next decade.",t:"Şehir önümüzdeki on yılda genişleyecek."},{e:"They plan to **expand** their business overseas.",t:"İşlerini yurt dışına genişletmeyi planlıyorlar."}]},
-{id:5,w:"maintain",m:"korumak / sürdürmek",cat:"verbs",cl:"Değişim Fiilleri",ci:"🔄",s:[{e:"It is important to **maintain** good health.",t:"İyi sağlığı korumak önemlidir."},{e:"The team managed to **maintain** their lead.",t:"Liderliklerini sürdürmeyi başardılar."},{e:"We need to **maintain** high standards at work.",t:"İşte yüksek standartları korumamız gerekiyor."}]},
-{id:6,w:"implement",m:"uygulamak",cat:"verbs",cl:"Değişim Fiilleri",ci:"🔄",s:[{e:"The government will **implement** new rules soon.",t:"Hükümet yakında yeni kurallar uygulayacak."},{e:"We need to **implement** this plan quickly.",t:"Bu planı hızlıca uygulamamız gerekiyor."},{e:"The school decided to **implement** a new program.",t:"Okul yeni bir program uygulamaya karar verdi."}]},
-{id:7,w:"significant(ly)",m:"önemli / önemli ölçüde",cat:"modifiers",cl:"Derece Belirteçleri",ci:"📏",s:[{e:"There was a **significant** change in the results.",t:"Sonuçlarda önemli bir değişiklik vardı."},{e:"The price dropped **significantly** last week.",t:"Fiyat geçen hafta önemli ölçüde düştü."},{e:"This is a **significant** discovery for science.",t:"Bu bilim için önemli bir keşiftir."}]},
-{id:8,w:"considerable(ly)",m:"hatırı sayılır",cat:"modifiers",cl:"Derece Belirteçleri",ci:"📏",s:[{e:"He has **considerable** experience in this field.",t:"Bu alanda hatırı sayılır bir tecrübesi var."},{e:"The cost has increased **considerably** this year.",t:"Maliyet bu yıl hatırı sayılır ölçüde arttı."},{e:"She made a **considerable** effort to finish on time.",t:"Zamanında bitirmek için hatırı sayılır çaba sarf etti."}]},
-{id:9,w:"widespread",m:"yaygın",cat:"modifiers",cl:"Derece Belirteçleri",ci:"📏",s:[{e:"The use of smartphones is now **widespread**.",t:"Akıllı telefon kullanımı artık çok yaygın."},{e:"There is **widespread** concern about pollution.",t:"Kirlilik hakkında yaygın bir endişe var."},{e:"The disease became **widespread** in the region.",t:"Hastalık bölgede yaygın hale geldi."}]},
-{id:10,w:"primarily",m:"başlıca",cat:"modifiers",cl:"Derece Belirteçleri",ci:"📏",s:[{e:"The book is **primarily** for university students.",t:"Kitap başlıca üniversite öğrencileri içindir."},{e:"The problem is **primarily** caused by pollution.",t:"Sorun başlıca kirlilikten kaynaklanmaktadır."},{e:"She is **primarily** known as a great scientist.",t:"Başlıca harika bir bilim insanı olarak bilinir."}]},
-{id:11,w:"efficient",m:"verimli",cat:"modifiers",cl:"Derece Belirteçleri",ci:"📏",s:[{e:"This new machine is very **efficient**.",t:"Bu yeni makine oldukça verimlidir."},{e:"We need a more **efficient** system at work.",t:"İşte daha verimli bir sisteme ihtiyacımız var."},{e:"She is an **efficient** worker who never wastes time.",t:"O hiç zaman kaybetmeyen verimli bir çalışandır."}]},
-{id:12,w:"regulations",m:"düzenlemeler",cat:"nouns",cl:"Akademik İsimler",ci:"📖",s:[{e:"The government introduced new **regulations**.",t:"Hükümet yeni düzenlemeler getirdi."},{e:"All companies must follow safety **regulations**.",t:"Tüm şirketler güvenlik düzenlemelerine uymalıdır."},{e:"Environmental **regulations** are becoming stricter.",t:"Çevre düzenlemeleri giderek sertleşiyor."}]},
-{id:13,w:"measures",m:"önlemler",cat:"nouns",cl:"Akademik İsimler",ci:"📖",s:[{e:"The government took **measures** to reduce crime.",t:"Hükümet suçu azaltmak için önlemler aldı."},{e:"Safety **measures** are very important in factories.",t:"Fabrikalarda güvenlik önlemleri çok önemlidir."},{e:"New **measures** were introduced to protect nature.",t:"Doğayı korumak için yeni önlemler alındı."}]},
-{id:14,w:"concerns",m:"kaygılar",cat:"nouns",cl:"Akademik İsimler",ci:"📖",s:[{e:"There are growing **concerns** about climate change.",t:"İklim değişikliği hakkında artan kaygılar var."},{e:"Parents expressed their **concerns** about the school.",t:"Ebeveynler okul hakkındaki kaygılarını dile getirdi."},{e:"Health **concerns** led to the ban of the product.",t:"Sağlık kaygıları ürünün yasaklanmasına yol açtı."}]},
-{id:15,w:"tendency",m:"eğilim",cat:"nouns",cl:"Akademik İsimler",ci:"📖",s:[{e:"He has a **tendency** to arrive late to meetings.",t:"Toplantılara geç gelme eğilimi var."},{e:"There is a **tendency** for prices to rise in winter.",t:"Kışın fiyatların yükselme eğilimi vardır."},{e:"She has a **tendency** to worry too much about exams.",t:"Sınavlar hakkında çok fazla endişelenme eğilimi var."}]},
-{id:16,w:"correlation",m:"bağıntı",cat:"nouns",cl:"Akademik İsimler",ci:"📖",s:[{e:"There is a **correlation** between exercise and health.",t:"Egzersiz ile sağlık arasında bir bağıntı vardır."},{e:"Scientists found a **correlation** between the two factors.",t:"Bilim insanları iki faktör arasında bağıntı buldu."},{e:"The **correlation** between smoking and cancer is proven.",t:"Sigara ile kanser arasındaki bağıntı kanıtlanmıştır."}]},
-{id:17,w:"exposure",m:"maruz kalma",cat:"nouns",cl:"Akademik İsimler",ci:"📖",s:[{e:"Too much **exposure** to the sun can be harmful.",t:"Güneşe çok fazla maruz kalmak zararlı olabilir."},{e:"Children should limit their **exposure** to screens.",t:"Çocuklar ekrana maruz kalmalarını sınırlamalıdır."},{e:"Long **exposure** to loud noise can damage hearing.",t:"Yüksek sese uzun süre maruz kalma işitmeye zarar verebilir."}]},
-{id:18,w:"satisfaction",m:"memnuniyet",cat:"nouns",cl:"Akademik İsimler",ci:"📖",s:[{e:"Customer **satisfaction** is our top priority.",t:"Müşteri memnuniyeti bizim en önemli önceliğimizdir."},{e:"She felt a deep sense of **satisfaction** after finishing.",t:"Bitirdikten sonra derin bir memnuniyet hissetti."},{e:"Job **satisfaction** is important for all workers.",t:"İş memnuniyeti tüm çalışanlar için önemlidir."}]},
-{id:19,w:"reputation",m:"itibar",cat:"nouns",cl:"Akademik İsimler",ci:"📖",s:[{e:"The company has a very good **reputation**.",t:"Şirketin çok iyi bir itibarı var."},{e:"His **reputation** was damaged by the scandal.",t:"Skandal yüzünden itibarı zedelendi."},{e:"She built her **reputation** over many years of work.",t:"İtibarını uzun yıllar süren çalışmalarla inşa etti."}]},
-{id:20,w:"demand",m:"talep",cat:"nouns",cl:"Akademik İsimler",ci:"📖",s:[{e:"The **demand** for electric cars is growing fast.",t:"Elektrikli arabalara olan talep hızla büyüyor."},{e:"There is high **demand** for skilled workers today.",t:"Bugün vasıflı çalışanlara yüksek talep var."},{e:"Supply must always meet the **demand** of customers.",t:"Arz her zaman müşterilerin talebini karşılamalıdır."}]},
-{id:21,w:"solution",m:"çözüm",cat:"nouns",cl:"Akademik İsimler",ci:"📖",s:[{e:"We need to find a **solution** to this problem.",t:"Bu soruna bir çözüm bulmamız gerekiyor."},{e:"There is no easy **solution** for climate change.",t:"İklim değişikliği için kolay bir çözüm yoktur."},{e:"The **solution** was simpler than we first thought.",t:"Çözüm ilk düşündüğümüzden daha basitti."}]},
-{id:22,w:"response",m:"tepki / yanıt",cat:"nouns",cl:"Akademik İsimler",ci:"📖",s:[{e:"The **response** to the crisis was very quick.",t:"Krize verilen yanıt çok hızlıydı."},{e:"We received a positive **response** from customers.",t:"Müşterilerden olumlu bir tepki aldık."},{e:"His **response** to the question surprised everyone.",t:"Soruya verdiği yanıt herkesi şaşırttı."}]},
-{id:23,w:"attribute to",m:"atfetmek",cat:"abstract",cl:"Soyut Fiiller",ci:"💭",s:[{e:"She **attributes** her success **to** hard work.",t:"Başarısını çok çalışmaya atfediyor."},{e:"The accident was **attributed to** bad weather.",t:"Kaza kötü hava koşullarına atfedildi."},{e:"Experts **attribute** the decline **to** economic changes.",t:"Uzmanlar düşüşü ekonomik değişikliklere atfediyor."}]},
-{id:24,w:"outweigh",m:"ağır basmak",cat:"abstract",cl:"Soyut Fiiller",ci:"💭",s:[{e:"The benefits **outweigh** the risks in this case.",t:"Bu durumda faydalar risklerden ağır basmaktadır."},{e:"The advantages clearly **outweigh** the disadvantages.",t:"Avantajlar açıkça dezavantajlardan ağır basıyor."},{e:"For many, the positives **outweigh** the negatives.",t:"Birçok kişi için olumlu yönler olumsuzlardan ağır basar."}]},
-{id:25,w:"disrupt",m:"bozmak",cat:"abstract",cl:"Soyut Fiiller",ci:"💭",s:[{e:"The storm **disrupted** all travel plans yesterday.",t:"Fırtına dün tüm seyahat planlarını bozdu."},{e:"New technology can **disrupt** traditional industries.",t:"Yeni teknoloji geleneksel endüstrileri bozabilir."},{e:"The loud noise **disrupted** our important meeting.",t:"Yüksek ses önemli toplantımızı bozdu."}]},
-{id:26,w:"advocate",m:"savunmak",cat:"abstract",cl:"Soyut Fiiller",ci:"💭",s:[{e:"She **advocates** for equal rights for everyone.",t:"Herkes için eşit hakları savunuyor."},{e:"Many doctors **advocate** a healthy, balanced diet.",t:"Birçok doktor sağlıklı ve dengeli beslenmeyi savunur."},{e:"He **advocates** major change in the education system.",t:"Eğitim sisteminde büyük bir değişimi savunuyor."}]},
-{id:27,w:"lack",m:"yoksun olmak",cat:"abstract",cl:"Soyut Fiiller",ci:"💭",s:[{e:"Many students **lack** motivation to study hard.",t:"Birçok öğrenci çok çalışma motivasyonundan yoksun."},{e:"The project failed due to a **lack** of funding.",t:"Proje fon yetersizliği/yoksunluğu yüzünden başarısız oldu."},{e:"He **lacks** the experience needed for the job.",t:"İş için gerekli tecrübeden yoksun."}]},
-{id:28,w:"established",m:"yerleşmiş / köklü",cat:"abstract",cl:"Soyut Fiiller",ci:"💭",s:[{e:"This is a well-**established** company with 50 years.",t:"Bu 50 yıllık köklü bir şirkettir."},{e:"The **established** rules must be followed by all.",t:"Yerleşmiş kurallara herkes uymalıdır."},{e:"It is an **established** fact that exercise is healthy.",t:"Egzersizin sağlıklı olduğu yerleşmiş bir gerçektir."}]},
-{id:29,w:"regardless of",m:"fark etmeksizin",cat:"adjectives",cl:"Sıfatlar",ci:"🏷️",s:[{e:"Everyone is welcome, **regardless of** their age.",t:"Yaşına fark etmeksizin herkes davetlidir."},{e:"She will continue, **regardless of** the difficulties.",t:"Zorluklara fark etmeksizin devam edecek."},{e:"The rule applies to all, **regardless of** status.",t:"Kural statüye fark etmeksizin herkese uygulanır."}]},
-{id:30,w:"viable",m:"uygulanabilir",cat:"adjectives",cl:"Sıfatlar",ci:"🏷️",s:[{e:"This is not a **viable** option for our team.",t:"Bu ekibimiz için uygulanabilir bir seçenek değil."},{e:"We need to find a **viable** solution quickly.",t:"Hızlıca uygulanabilir bir çözüm bulmamız gerekiyor."},{e:"Solar energy is a **viable** alternative to oil.",t:"Güneş enerjisi petrole uygulanabilir bir alternatiftir."}]},
-{id:31,w:"conventional",m:"geleneksel",cat:"adjectives",cl:"Sıfatlar",ci:"🏷️",s:[{e:"She prefers **conventional** teaching methods.",t:"Geleneksel öğretim yöntemlerini tercih ediyor."},{e:"This is not a **conventional** approach to the problem.",t:"Bu soruna geleneksel bir yaklaşım değil."},{e:"**Conventional** wisdom says that practice makes perfect.",t:"Geleneksel bilgelik pratiğin mükemmelleştirdiğini söyler."}]},
-{id:32,w:"legitimate",m:"geçerli / meşru",cat:"adjectives",cl:"Sıfatlar",ci:"🏷️",s:[{e:"He raised a **legitimate** concern about safety.",t:"Güvenlik konusunda geçerli bir kaygı dile getirdi."},{e:"This is a completely **legitimate** business.",t:"Bu tamamen meşru bir iş."},{e:"Her complaint was **legitimate** and was taken seriously.",t:"Şikayeti geçerliydi ve ciddiye alındı."}]},
-{id:33,w:"competing",m:"çelişen / rakip",cat:"adjectives",cl:"Sıfatlar",ci:"🏷️",s:[{e:"There are **competing** theories about this topic.",t:"Bu konu hakkında çelişen teoriler var."},{e:"The two companies have **competing** interests.",t:"İki şirketin çelişen/rakip çıkarları var."},{e:"Scientists hold **competing** views on this issue.",t:"Bilim insanları bu konuda çelişen görüşlere sahip."}]},
-{id:34,w:"vulnerable",m:"savunmasız",cat:"adjectives",cl:"Sıfatlar",ci:"🏷️",s:[{e:"Children are more **vulnerable** to diseases.",t:"Çocuklar hastalıklara karşı daha savunmasızdır."},{e:"The old building is **vulnerable** to earthquakes.",t:"Eski bina depremlere karşı savunmasız."},{e:"Elderly people are particularly **vulnerable** in winter.",t:"Yaşlı insanlar kışın özellikle savunmasızdır."}]},
-{id:35,w:"unaware",m:"farkında olmayan",cat:"adjectives",cl:"Sıfatlar",ci:"🏷️",s:[{e:"He was completely **unaware** of the danger.",t:"Tehlikenin tamamen farkında değildi."},{e:"Many people are **unaware** of this serious problem.",t:"Birçok insan bu ciddi sorunun farkında değil."},{e:"She was **unaware** of the changes made to the plan.",t:"Plana yapılan değişikliklerin farkında değildi."}]}
-];
+      channel = pusher.subscribe(`chatrooms.${CONFIG.chatroomId}.v2`);
+      channel.bind('App\\Events\\ChatMessageEvent', (payload) => {
+        try {
+          const data = typeof payload === 'string' ? JSON.parse(payload) : payload;
+          handleIncomingMessage(data);
+        } catch (_) {}
+      });
+    }
 
-const LVS=[{l:1,n:"Başlangıç",r:0,t:100},{l:2,n:"Çırak",r:100,t:150},{l:3,n:"Öğrenci",r:250,t:200},{l:4,n:"Bilgili",r:450,t:250},{l:5,n:"Uzman",r:700,t:300},{l:6,n:"Usta",r:1000,t:400},{l:7,n:"Efsane",r:1400,t:600},{l:8,n:"Dahi",r:2000,t:1000},{l:9,n:"Sonsuzluk",r:3000,t:Infinity}];
-const CATS=[{id:"all",l:"Tümü",i:"✨"},{id:"verbs",l:"Değişim Fiilleri",i:"🔄"},{id:"modifiers",l:"Derece Belirteçleri",i:"📏"},{id:"nouns",l:"Akademik İsimler",i:"📖"},{id:"abstract",l:"Soyut Fiiller",i:"💭"},{id:"adjectives",l:"Sıfatlar",i:"🏷️"}];
+    function scheduleReconnect() {
+      if (reconnectAttempts >= CONFIG.maxReconnectAttempts) return;
+      reconnectAttempts++;
+      const delay = Math.min(2000 * reconnectAttempts, 15000);
+      reconnectTimer = setTimeout(() => {
+        if (pusher) { try { pusher.connect(); } catch (_) { initPusher(); } }
+        else initPusher();
+      }, delay);
+    }
 
-(function(){
-'use strict';
-const $=s=>document.querySelector(s),$$=s=>document.querySelectorAll(s);
-const S={idx:0,curCat:'all',fw:[...W],xp:0,lv:1,known:new Set(),learning:new Set(),rev:0,mode:'light',theme:'cherry',done:false,appMode:'cards'};
-const MS={batch:0,words:[],shuffled:[],selEn:null,matched:new Set(),count:0};
+    function handleIncomingMessage(data) {
+      if (!data || !data.sender) return;
+      if (Number(data.sender.id) !== CONFIG.allowedSenderId) return;
 
-const E={
-  cm:$('#card-mode'),mm:$('#match-mode'),ml:$('#match-left'),mr:$('#match-right'),
-  msc:$('#match-score'),mnxt:$('#match-next'),mgi:$('#match-group-info'),
-  prev:$('#prev-btn'),next:$('#next-btn'),cnt:$('#counter'),
-  ttog:$('#theme-tog'),cbtn:$('#color-btn'),tmod:$('#theme-modal'),
-  sbtn:$('#stats-btn'),smod:$('#stats-modal'),sg:$('#st-grid'),sc:$('#st-cats'),
-  xf:$('#xp-fill'),xt:$('#xp-txt'),lb:$('#lv-badge'),
-  lov:$('#lv-ov'),ltx:$('#lv-txt'),comp:$('#comp'),rbtn:$('#re-btn')
-};
+      const links = (data.content || '').match(URL_REGEX);
+      if (!links) return;
 
-function init(){load();applyTh();filterW();if(S.appMode==='match'){showMatchMode();}else{showCardMode();}updXP();bind();}
-function load(){try{const d=JSON.parse(localStorage.getItem('vm2_k'));if(d){S.xp=d.xp||0;S.lv=d.lv||1;S.known=new Set(d.kn||[]);S.learning=new Set(d.lr||[]);S.rev=d.rv||0;S.mode=d.md||'light';S.theme=d.th||'cherry';S.appMode=d.am||'cards';}}catch(e){}}
-function save(){try{localStorage.setItem('vm2_k',JSON.stringify({xp:S.xp,lv:S.lv,kn:[...S.known],lr:[...S.learning],rv:S.rev,md:S.mode,th:S.theme,am:S.appMode}));}catch(e){}}
+      links.forEach((rawLink) => {
+        const url = rawLink.replace(/[.,!?;:)\]]+$/, '');
 
-function applyTh(){document.documentElement.setAttribute('data-mode',S.mode);document.documentElement.setAttribute('data-theme',S.theme);$$('.th-o').forEach(b=>b.classList.toggle('active',b.dataset.theme===S.theme));}
-function togMode(){S.mode=S.mode==='dark'?'light':'dark';applyTh();save();}
-function setTh(t){S.theme=t;applyTh();save();}
+        const yt = url.match(YOUTUBE_REGEX);
+        if (yt) { addYoutubeCard(yt[1], url); return; }
 
-function filterW(){S.fw=S.curCat==='all'?[...W]:W.filter(w=>w.cat===S.curCat);S.idx=0;S.done=false;}
-function setCat(c){if(S.curCat===c)return;S.curCat=c;$$('.cb').forEach(b=>b.classList.toggle('active',b.dataset.cat===c));filterW();if(S.appMode==='cards'){renderCard(null,'none');updCnt();}else{MS.batch=0;loadBatch();}}
+        const tt = url.match(TIKTOK_REGEX);
+        if (tt) { addTikTokCard(tt[1] || tt[2]); return; }
 
-function setAppMode(m){
-  S.appMode=m;$$('.mt').forEach(b=>b.classList.toggle('active',b.dataset.mode===m));
-  if(m==='cards'){showCardMode();}else{showMatchMode();}
-  E.prev.style.display=m==='cards'?'':'none';E.next.style.display=m==='cards'?'':'none';E.cnt.style.display=m==='cards'?'':'none';
-  save();
-}
-function showCardMode(){E.cm.classList.add('active');E.cm.style.display='block';E.mm.classList.remove('active');E.mm.style.display='none';renderCard(null,'none');updCnt();}
-function showMatchMode(){E.mm.classList.add('active');E.mm.style.display='flex';E.cm.classList.remove('active');E.cm.style.display='none';MS.batch=0;loadBatch();}
+        const ig = url.match(INSTAGRAM_REGEX);
+        if (ig) {
+          let igType = ig[1];
+          if (igType === 'reels') igType = 'reel';
+          addInstagramCard(igType, ig[2]);
+          return;
+        }
 
-function getRandomChoices(correctMeaning){
-  const choices=[correctMeaning];
-  const otherMeanings=W.map(w=>w.m).filter(m=>m!==correctMeaning);
-  while(choices.length<3 && otherMeanings.length>0){
-    const randIndex=Math.floor(Math.random()*otherMeanings.length);
-    choices.push(otherMeanings.splice(randIndex,1)[0]);
-  }
-  return choices.sort(()=>Math.random()-.5);
-}
+        const tw = url.match(TWITTER_REGEX);
+        if (tw) { addTwitterCard(tw[1]); return; }
 
-function mkCard(wd,i){
-  const c=document.createElement('div');c.className='wc';c.dataset.wid=wd.id;
-  const sHTML=wd.s.map(s=>`<div class="s-item" onclick="VM.toggleTr(this)"><div>${s.e.replace(/\*\*(.*?)\*\*/g,'<span class="hl">$1</span>')}</div><div class="s-tr">🇹🇷 ${s.t}</div></div>`).join('');
-  const choices=getRandomChoices(wd.m);
-  const chHTML=choices.map(m=>`<button class="ch-btn" onclick="VM.checkChoice(this, '${wd.m.replace(/'/g,"\\'")}')">${m}</button>`).join('');
-  const isK=S.known.has(wd.id),isL=S.learning.has(wd.id);
-  let badge=isK?' ✨':isL?' 🎀':'';
-  
-  c.innerHTML=`
-    <div class="wc-cat">${wd.ci} ${wd.cl}</div>
-    <div class="wc-word"><h2>${wd.w}${badge}</h2><p>${i+1} / ${S.fw.length}</p></div>
-    <div class="wc-sents"><div class="s-label">💡 Cümleye tıklayarak Türkçe çevirisini gör</div>${sHTML}</div>
-    <div class="wc-div"></div>
-    <div class="wc-choices"><div class="ch-title">🎯 Doğru Anlamı Seç:</div><div class="ch-btns">${chHTML}</div></div>
-    <div class="wc-reveal"><button class="rv-btn" onclick="VM.reveal(this)">🌸 Anlamını Gör</button></div>
-    <div class="wc-meaning"><div class="mg-box"><div class="flag">🇹🇷</div><div class="mg-txt">${wd.m}</div></div><div class="sc-btns"><button class="sc-b know" onclick="VM.score(${wd.id},'k')">✅ Biliyorum (+10)</button><button class="sc-b learn" onclick="VM.score(${wd.id},'l')">📖 Öğreniyorum (+3)</button></div></div>
-  `;
-  return c;
-}
+        const st = url.match(STEAM_REGEX);
+        if (st) { addSteamCard(st[1], url); return; }
 
-function toggleTr(el){
-  const tr=el.querySelector('.s-tr');
-  if(tr){tr.style.display=tr.style.display==='block'?'none':'block';}
-}
+        const dc = url.match(DISCORD_REGEX);
+        if (dc) { addDiscordCard(dc[0]); return; }
+      });
+    }
 
-function checkChoice(btn, correctMeaning){
-  const card=btn.closest('.wc');
-  if(btn.textContent.trim()===correctMeaning.trim()){
-    btn.classList.add('correct');
-    addXP(5);
-    setTimeout(()=>reveal(card.querySelector('.rv-btn')), 300);
-  } else {
-    btn.classList.add('wrong');
-  }
-}
+    function addYoutubeCard(videoId, originalUrl) {
+      const card = document.createElement('a');
+      card.className = 'yt-card';
+      card.href = originalUrl;
+      card.target = '_blank';
+      card.rel = 'noopener noreferrer';
 
-function renderCard(dir=null,tr='default'){
-  if(!S.fw.length)return;const wd=S.fw[S.idx],nc=mkCard(wd,S.idx);
-  const oc=E.cm.querySelector('.wc.active');
-  if(tr==='none'||!oc){E.cm.innerHTML='';nc.classList.add('active');E.cm.appendChild(nc);return;}
-  if(dir==='next'){nc.classList.add('enter-b');E.cm.appendChild(nc);oc.classList.remove('active');oc.classList.add('exit-t');requestAnimationFrame(()=>requestAnimationFrame(()=>{nc.classList.remove('enter-b');nc.classList.add('active');}));setTimeout(()=>{if(oc.parentNode)oc.remove();},450);}
-  else if(dir==='prev'){nc.classList.add('enter-t');E.cm.appendChild(nc);oc.classList.remove('active');oc.classList.add('exit-b');requestAnimationFrame(()=>requestAnimationFrame(()=>{nc.classList.remove('enter-t');nc.classList.add('active');}));setTimeout(()=>{if(oc.parentNode)oc.remove();},450);}
-}
+      const hiRes    = `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`;
+      const fallback = `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`;
 
-function goN(){if(S.idx<S.fw.length-1){S.idx++;renderCard('next');updCnt();}else if(!S.done){showComp();}}
-function goP(){if(S.idx>0){S.idx--;renderCard('prev');updCnt();}}
-function updCnt(){E.cnt.textContent=`${S.idx+1} / ${S.fw.length}`;}
-function reveal(btn){const c=btn.closest('.wc');const rv=c.querySelector('.wc-reveal');if(rv)rv.style.display='none';c.querySelector('.wc-meaning').classList.add('show');}
-function scoreW(wid,t){
-  const xp=t==='k'?10:3;
-  if(t==='k'){S.known.add(wid);S.learning.delete(wid);}else{if(!S.known.has(wid))S.learning.add(wid);}
-  S.rev++;addXP(xp);save();setTimeout(goN,300);
-}
+      card.innerHTML = `
+        <div class="yt-thumb">
+          <img src="${hiRes}" onerror="this.onerror=null;this.src='${fallback}'" alt="">
+        </div>
+        <div class="yt-info">
+          <div class="yt-title">Yükleniyor…</div>
+          <div class="yt-author"></div>
+        </div>`;
 
-function shuffle(a){const b=[...a];for(let i=b.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[b[i],b[j]]=[b[j],b[i]];}return b;}
-function loadBatch(){
-  const batchSize=5,start=MS.batch*batchSize;
-  if(start>=S.fw.length){showComp();return;}
-  const end=Math.min(start+batchSize,S.fw.length);
-  MS.words=S.fw.slice(start,end);
-  MS.shuffled=shuffle(MS.words.map(w=>({id:w.id,m:w.m})));
-  MS.selEn=null;MS.matched=new Set();MS.count=0;
-  E.mgi.textContent=`Grup ${MS.batch+1} / ${Math.ceil(S.fw.length/batchSize)}`;
-  renderMatch();
-}
-function renderMatch(){
-  E.ml.innerHTML=MS.words.map((w,i)=>`<div class="mi${MS.matched.has(w.id)?' matched':''}${MS.selEn===i?' selected':''}" data-idx="${i}" data-id="${w.id}">${w.w}</div>`).join('');
-  E.mr.innerHTML=MS.shuffled.map((w,i)=>`<div class="mi${MS.matched.has(w.id)?' matched':''}" data-idx="${i}" data-id="${w.id}">${w.m}</div>`).join('');
-  E.msc.innerHTML=`Eşleşme: <b>${MS.count}</b> / <b>${MS.words.length}</b>`;
-  E.mnxt.classList.toggle('show',MS.count===MS.words.length);
-  E.ml.querySelectorAll('.mi:not(.matched)').forEach(el=>el.addEventListener('click',()=>selEnglish(parseInt(el.dataset.idx))));
-  E.mr.querySelectorAll('.mi:not(.matched)').forEach(el=>el.addEventListener('click',()=>selTurkish(parseInt(el.dataset.idx))));
-}
-function selEnglish(idx){MS.selEn=idx;renderMatch();}
-function selTurkish(idx){
-  if(MS.selEn===null)return;
-  const enWord=MS.words[MS.selEn],trWord=MS.shuffled[idx];
-  if(enWord.id===trWord.id){
-    MS.matched.add(enWord.id);MS.count++;MS.selEn=null;
-    S.known.add(enWord.id);S.learning.delete(enWord.id);S.rev++;
-    addXP(8);save();renderMatch();
-  } else {
-    const trEl=E.mr.querySelectorAll('.mi')[idx];
-    trEl.classList.add('wrong');setTimeout(()=>trEl.classList.remove('wrong'),400);
-  }
-}
+      row.prepend(card);
+      trimRow(row, CONFIG.maxYoutube);
 
-function addXP(a){const ol=S.lv;S.xp+=a;const nl=getLv(S.xp);S.lv=nl.l;updXP();xpPop(a);if(S.lv>ol)lvUp(nl);save();}
-function getLv(xp){let c=LVS[0];for(let i=LVS.length-1;i>=0;i--)if(xp>=LVS[i].r){c=LVS[i];break;}return c;}
-function updXP(){const d=getLv(S.xp),inL=S.xp-d.r,need=d.t;const p=need===Infinity?100:Math.min(inL/need*100,100);E.xf.style.width=p+'%';E.xt.textContent=need===Infinity?S.xp+' XP ⭐':inL+'/'+need;E.lb.textContent=`Lv.${d.l}`;}
-function xpPop(a){const p=document.createElement('div');p.className='xp-pop';p.textContent='+'+a+' XP ✨';document.body.appendChild(p);setTimeout(()=>p.remove(),1200);}
-function lvUp(d){E.ltx.textContent=`Seviye ${d.l} — ${d.n}`;E.lov.classList.add('show');setTimeout(()=>E.lov.classList.remove('show'),2200);}
+      fetch(`https://www.youtube.com/oembed?url=https://www.youtube.com/watch?v=${videoId}&format=json`)
+        .then((r) => r.ok ? r.json() : null)
+        .then((info) => {
+          if (!info) return;
+          card.querySelector('.yt-title').textContent  = info.title || '';
+          card.querySelector('.yt-author').textContent = info.author_name || '';
+        })
+        .catch(() => {});
+    }
 
-function showComp(){S.done=true;E.comp.classList.add('show');}
-function restart(){S.idx=0;S.done=false;E.comp.classList.remove('show');if(S.appMode==='cards'){renderCard(null,'none');updCnt();}else{MS.batch=0;loadBatch();}}
+    function addTikTokCard(videoId) {
+      const card = document.createElement('div');
+      card.className = 'v-card';
 
-function showStats(){
-  const kn=S.known.size,lr=S.learning.size;
-  E.sg.innerHTML=`<div class="st-c"><div class="sv">${S.xp}</div><div class="sl">XP</div></div><div class="st-c"><div class="sv">${S.lv}</div><div class="sl">Seviye</div></div><div class="st-c"><div class="sv">${kn}</div><div class="sl">Bilinen</div></div><div class="st-c"><div class="sv">${lr}</div><div class="sl">Öğrenilen</div></div>`;
-  openM('stats-modal');
-}
+      const params = new URLSearchParams({
+        autoplay: 0, loop: 0, volume_control: 0, timestamp: 0,
+      });
 
-function openM(id){const m=document.getElementById(id);if(m)m.classList.add('open');}
-function closeM(id){const m=document.getElementById(id);if(m)m.classList.remove('open');}
+      card.innerHTML = `
+        <iframe src="https://www.tiktok.com/player/v1/${videoId}?${params.toString()}"
+          width="220" height="391"
+          allow="encrypted-media; fullscreen; picture-in-picture"
+          loading="lazy" referrerpolicy="no-referrer-when-downgrade"
+          title="TikTok Video"></iframe>`;
 
-let tsy=0,tsx=0,drag=false,doff=0;
-function onTS(e){if(S.done||S.appMode!=='cards')return;const t=e.touches[0];tsy=t.clientY;tsx=t.clientX;drag=true;doff=0;const a=E.cm.querySelector('.wc.active');if(a)a.classList.add('drag');}
-function onTM(e){if(!drag||S.done||S.appMode!=='cards')return;const t=e.touches[0],dy=t.clientY-tsy,dx=t.clientX-tsx;if(Math.abs(dx)>Math.abs(dy)&&Math.abs(dy)<15)return;e.preventDefault();doff=dy;const a=E.cm.querySelector('.wc.active');if(a){let o=dy;if((S.idx===0&&dy>0)||(S.idx>=S.fw.length-1&&dy<0))o=dy*.3;a.style.transform=`translateY(${o}px)`;a.style.opacity=Math.max(.4,1-Math.abs(o)/400);}}
-function onTE(){if(!drag||S.done||S.appMode!=='cards')return;drag=false;const a=E.cm.querySelector('.wc.active');if(a){a.classList.remove('drag');a.style.transform='';a.style.opacity='';}if(Math.abs(doff)>60){if(doff<0)goN();else goP();}doff=0;}
+      row.prepend(card);
+      trimRow(row, CONFIG.maxVertical);
+    }
 
-function bind(){
-  E.prev.addEventListener('click',goP);E.next.addEventListener('click',goN);
-  const ma=$('#main');ma.addEventListener('touchstart',onTS,{passive:true});ma.addEventListener('touchmove',onTM,{passive:false});ma.addEventListener('touchend',onTE,{passive:true});
-  E.ttog.addEventListener('click',togMode);
-  E.cbtn.addEventListener('click',()=>openM('theme-modal'));
-  $$('.th-o').forEach(b=>b.addEventListener('click',()=>{setTh(b.dataset.theme);closeM('theme-modal');}));
-  E.sbtn.addEventListener('click',showStats);
-  $$('[data-close]').forEach(el=>el.addEventListener('click',()=>closeM(el.dataset.close)));
-  $$('.cb').forEach(b=>b.addEventListener('click',()=>setCat(b.dataset.cat)));
-  $$('.mt').forEach(b=>b.addEventListener('click',()=>setAppMode(b.dataset.mode)));
-  E.rbtn.addEventListener('click',restart);
-  E.mnxt.addEventListener('click',()=>{MS.batch++;loadBatch();});
-}
+    function addInstagramCard(type, shortcode) {
+      const card = document.createElement('div');
+      card.className = 'v-card';
 
-window.VM={reveal,score:scoreW,toggleTr,checkChoice};
-if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
-})();
-</script>
+      const blockquote = document.createElement('blockquote');
+      blockquote.className = 'instagram-media';
+      blockquote.setAttribute('data-instgrm-permalink',
+        `https://www.instagram.com/${type}/${shortcode}/`);
+      blockquote.setAttribute('data-instgrm-version', '14');
+      blockquote.style.margin = '0';
+      blockquote.style.width = '100%';
+
+      card.appendChild(blockquote);
+      row.prepend(card);
+      trimRow(row, CONFIG.maxVertical);
+
+      processInstagramEmbeds();
+    }
+
+    function processInstagramEmbeds() {
+      let tries = 0;
+      const timer = setInterval(() => {
+        if (window.instgrm && window.instgrm.Embeds) {
+          window.instgrm.Embeds.process();
+          clearInterval(timer);
+        } else if (++tries > 30) {
+          clearInterval(timer);
+        }
+      }, 400);
+    }
+
+    function addTwitterCard(tweetId) {
+      const card = document.createElement('div');
+      card.className = 'tw-card';
+
+      const container = document.createElement('div');
+      container.className = 'twitter-container';
+      card.appendChild(container);
+
+      row.prepend(card);
+      trimRow(row, CONFIG.maxVertical);
+
+      waitForTwitter(() => {
+        if (window.twttr && window.twttr.widgets) {
+          window.twttr.widgets.createTweet(tweetId, container, {
+            theme: 'dark',
+            dnt: true,
+            width: 300,
+            align: 'center',
+          }).catch(() => {});
+        }
+      });
+    }
+
+    function waitForTwitter(callback) {
+      if (window.twttr && window.twttr.widgets) { callback(); return; }
+      let tries = 0;
+      const timer = setInterval(() => {
+        if (window.twttr && window.twttr.widgets) {
+          clearInterval(timer);
+          callback();
+        } else if (++tries > 40) {
+          clearInterval(timer);
+        }
+      }, 300);
+    }
+
+    function addSteamCard(appId, originalUrl) {
+      const card = document.createElement('a');
+      card.className = 'steam-card';
+      card.href = originalUrl;
+      card.target = '_blank';
+      card.rel = 'noopener noreferrer';
+
+      const img = document.createElement('img');
+      img.alt = 'Steam Oyunu';
+      img.loading = 'lazy';
+
+      const placeholder = document.createElement('div');
+      placeholder.className = 'steam-placeholder';
+      placeholder.textContent = 'Steam Oyunu';
+      placeholder.style.display = 'none';
+
+      const urls = [
+        `https://cdn.akamai.steamstatic.com/steam/apps/${appId}/header.jpg`,
+        `https://cdn.cloudflare.steamstatic.com/steam/apps/${appId}/header.jpg`,
+        `https://steamcdn-a.akamaihd.net/steam/apps/${appId}/header.jpg`,
+        `https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/${appId}/header.jpg`,
+        `https://cdn.cloudflare.steamstatic.com/steam/apps/${appId}/capsule_616x353.jpg`,
+        `https://cdn.cloudflare.steamstatic.com/steam/apps/${appId}/capsule_467x181.jpg`,
+        `https://cdn.cloudflare.steamstatic.com/steam/apps/${appId}/capsule_231x87.jpg`,
+      ];
+
+      let idx = 0;
+      const tryNext = () => {
+        if (idx < urls.length) {
+          img.src = urls[idx++];
+        } else {
+          img.onerror = null;
+          img.style.display = 'none';
+          placeholder.style.display = 'flex';
+        }
+      };
+
+      img.onerror = tryNext;
+      tryNext();
+
+      card.appendChild(img);
+      card.appendChild(placeholder);
+      row.prepend(card);
+      trimRow(row, CONFIG.maxVertical);
+    }
+
+    function addDiscordCard(imageUrl) {
+      const card = document.createElement('div');
+      card.className = 'discord-card';
+
+      const cleanUrl = imageUrl.split('?')[0];
+      const img = document.createElement('img');
+      img.src = imageUrl;
+      img.alt = '';
+      img.loading = 'lazy';
+      img.onerror = () => {
+        img.onerror = null;
+        img.src = cleanUrl;
+      };
+
+      card.appendChild(img);
+      card.addEventListener('click', () => openFullscreen(imageUrl, cleanUrl));
+      row.prepend(card);
+      trimRow(row, CONFIG.maxVertical);
+    }
+
+    function openFullscreen(primaryUrl, fallbackUrl) {
+      const existing = document.querySelector('.fullscreen-overlay');
+      if (existing) existing.remove();
+
+      const overlay = document.createElement('div');
+      overlay.className = 'fullscreen-overlay';
+
+      const img = document.createElement('img');
+      img.src = primaryUrl;
+      img.alt = '';
+      img.onerror = () => {
+        img.onerror = null;
+        img.src = fallbackUrl;
+      };
+
+      const closeBtn = document.createElement('button');
+      closeBtn.className = 'fullscreen-close';
+      closeBtn.innerHTML = '✕';
+
+      const close = () => overlay.remove();
+      closeBtn.addEventListener('click', close);
+      overlay.addEventListener('click', (e) => { if (e.target === overlay) close(); });
+      document.addEventListener('keydown', function onKey(e) {
+        if (e.key === 'Escape') { close(); document.removeEventListener('keydown', onKey); }
+      });
+
+      overlay.appendChild(img);
+      overlay.appendChild(closeBtn);
+      document.body.appendChild(overlay);
+    }
+
+    function trimRow(rowEl, max) {
+      while (rowEl.children.length > max) rowEl.lastElementChild.remove();
+    }
+
+    initPusher();
+  </script>
 </body>
 </html>
