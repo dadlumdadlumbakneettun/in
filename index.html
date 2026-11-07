@@ -311,11 +311,19 @@
       }, delay);
     }
 
+    const DEBUG = new URLSearchParams(location.search).has('debug');
+    function dbg(...a) { console.log('[preview]', ...a); }
+
     function handleIncomingMessage(data) {
+      if (DEBUG) dbg('mesaj', data && data.sender && data.sender.id, data && data.content);
       if (!data || !data.sender) return;
-      if (Number(data.sender.id) !== CONFIG.allowedSenderId) return;
+      if (Number(data.sender.id) !== CONFIG.allowedSenderId) {
+        if (DEBUG) dbg('gönderen izinli değil:', data.sender.id);
+        return;
+      }
 
       const links = (data.content || '').match(URL_REGEX);
+      if (DEBUG) dbg('bulunan linkler:', links);
       if (!links) return;
 
       links.forEach((rawLink) => {
@@ -682,6 +690,15 @@
 
     function trimRow(rowEl, max) {
       while (rowEl.children.length > max) rowEl.lastElementChild.remove();
+    }
+
+    // Test modu: sayfa adresinin sonuna ?test ekle, sohbet olmadan Steam kartını dener
+    if (new URLSearchParams(location.search).has('test')) {
+      addSteamImageCard(
+        'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/4656000/99c086faba625a8d3bc459bab444087d257ccbe1/header.jpg?t=1792877964',
+        '4656000'
+      );
+      addSteamCard('4656000', 'https://store.steampowered.com/app/4656000/');
     }
 
     initPusher();
