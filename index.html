@@ -279,7 +279,7 @@
     const TWITTER_REGEX   = /(?:twitter\.com|x\.com)\/(?:#!\/)?(?:\w+)\/status(?:es)?\/(\d+)/i;
     const STEAM_REGEX     = /(?:store\.steampowered\.com|steamcommunity\.com)\/app\/(\d+)/i;
     const STEAM_IMG_REGEX = /steamstatic\.com\/(?:store_item_assets\/)?steam\/apps\/(\d+)\/[^\s]*?\.(?:jpg|jpeg|png|webp|gif)/i;
-    const DISCORD_REGEX   = /cdn\.discordapp\.com\/attachments\/\d+\/\d+\/[^\s?]+/i;
+    const DISCORD_REGEX   = /(?:cdn\.discordapp\.com|media\.discordapp\.net)\/attachments\/\d+\/\d+\/[^\s?]+/i;
 
     let pusher = null, channel = null, reconnectAttempts = 0, reconnectTimer = null;
 
@@ -371,7 +371,7 @@
         if (st) { addSteamCard(st[1], url); return; }
 
         const dc = url.match(DISCORD_REGEX);
-        if (dc) { addDiscordCard(dc[0]); return; }
+        if (dc) { addDiscordCard(url); return; }
       });
     }
 
