@@ -163,7 +163,18 @@
       width: 100%; height: 100%; object-fit: cover; display: block;
     }
     .yt-card, .steam-card, .discord-card { transition: transform 0.2s ease, opacity 0.25s ease; }
-    .yt-card.clicked, .steam-card.clicked, .discord-card.clicked { opacity: 0.4; }
+    .v-card, .tw-card { transition: opacity 0.25s ease, filter 0.25s ease; }
+    .clicked { filter: grayscale(1); opacity: 0.4; }
+    .leaving { opacity: 0 !important; transform: scale(0.95); transition: opacity 0.4s ease, transform 0.4s ease; }
+    .open-btn {
+      position: absolute; top: 6px; right: 6px; z-index: 5;
+      width: 26px; height: 26px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      background: rgba(0,0,0,0.65); color: #fff; text-decoration: none;
+      font-size: 14px; line-height: 1;
+      border: 1px solid rgba(255,255,255,0.25);
+    }
+    .open-btn:hover { background: rgba(0,0,0,0.9); }
     .fullscreen-overlay {
       position: fixed;
       inset: 0;
@@ -234,7 +245,9 @@
 
   <div class="app-body">
     <main class="preview-pane">
-      <div id="row" class="row"></div>
+      <div id="ytRow" class="row"></div>
+      <div id="vRow" class="row"></div>
+      <div id="otherRow" class="row"></div>
     </main>
   </div>
 
@@ -252,7 +265,10 @@
       maxReconnectAttempts: 8,
     };
 
-    const row        = document.getElementById('row');
+    const pane       = document.querySelector('.preview-pane');
+    const ytRow      = document.getElementById('ytRow');      // YouTube (en üstte)
+    const vRow       = document.getElementById('vRow');       // TikTok + Reels (yan yana)
+    const otherRow   = document.getElementById('otherRow');   // Twitter, Steam, Discord
     const statusDot  = document.getElementById('statusDot');
     const statusText = document.getElementById('statusText');
 
@@ -335,18 +351,18 @@
         if (yt) { addYoutubeCard(yt[1], url); return; }
 
         const tt = url.match(TIKTOK_REGEX);
-        if (tt) { addTikTokCard(tt[1] || tt[2]); return; }
+        if (tt) { addTikTokCard(tt[1] || tt[2], url); return; }
 
         const ig = url.match(INSTAGRAM_REGEX);
         if (ig) {
           let igType = ig[1];
           if (igType === 'reels') igType = 'reel';
-          addInstagramCard(igType, ig[2]);
+          addInstagramCard(igType, ig[2], url);
           return;
         }
 
         const tw = url.match(TWITTER_REGEX);
-        if (tw) { addTwitterCard(tw[1]); return; }
+        if (tw) { addTwitterCard(tw[1], url); return; }
 
         const si = url.match(STEAM_IMG_REGEX);
         if (si) { addSteamImageCard(url, si[1]); return; }
@@ -378,8 +394,7 @@
           <div class="yt-author"></div>
         </div>`;
 
-      row.prepend(card);
-      trimRow(row, CONFIG.maxYoutube);
+      ytRow.prepend(card);
 
       fetch(`https://www.youtube.com/oembed?url=https://www.youtube.com/watch?v=${videoId}&format=json`)
         .then((r) => r.ok ? r.json() : null)
@@ -391,7 +406,7 @@
         .catch(() => {});
     }
 
-    function addTikTokCard(videoId) {
+    function addTikTokCard(videoId, originalUrl) {
       const card = document.createElement('div');
       card.className = 'v-card';
 
@@ -405,12 +420,12 @@
           allow="encrypted-media; fullscreen; picture-in-picture"
           loading="lazy" referrerpolicy="no-referrer-when-downgrade"
           title="TikTok Video"></iframe>`;
+      addOpenButton(card, originalUrl || `https://www.tiktok.com/player/v1/${videoId}`);
 
-      row.prepend(card);
-      trimRow(row, CONFIG.maxVertical);
+      vRow.prepend(card);
     }
 
-    function addInstagramCard(type, shortcode) {
+    function addInstagramCard(type, shortcode, originalUrl) {
       const card = document.createElement('div');
       card.className = 'v-card';
 
@@ -423,8 +438,8 @@
       blockquote.style.width = '100%';
 
       card.appendChild(blockquote);
-      row.prepend(card);
-      trimRow(row, CONFIG.maxVertical);
+      addOpenButton(card, originalUrl || `https://www.instagram.com/${type}/${shortcode}/`);
+      vRow.prepend(card);
 
       processInstagramEmbeds();
     }
@@ -441,16 +456,16 @@
       }, 400);
     }
 
-    function addTwitterCard(tweetId) {
+    function addTwitterCard(tweetId, originalUrl) {
       const card = document.createElement('div');
       card.className = 'tw-card';
 
       const container = document.createElement('div');
       container.className = 'twitter-container';
       card.appendChild(container);
+      addOpenButton(card, originalUrl || `https://x.com/i/status/${tweetId}`);
 
-      row.prepend(card);
-      trimRow(row, CONFIG.maxVertical);
+      otherRow.prepend(card);
 
       waitForTwitter(() => {
         if (window.twttr && window.twttr.widgets) {
@@ -541,8 +556,7 @@
 
       card.appendChild(placeholder);
       card.appendChild(img);
-      row.prepend(card);
-      trimRow(row, CONFIG.maxVertical);
+      otherRow.prepend(card);
     }
 
     function addSteamCard(appId, originalUrl) {
@@ -564,8 +578,7 @@
 
       card.appendChild(placeholder);
       card.appendChild(img);
-      row.prepend(card);
-      trimRow(row, CONFIG.maxVertical);
+      otherRow.prepend(card);
 
       img.onload = () => {
         img.style.display = 'block';
@@ -655,8 +668,7 @@
 
       card.appendChild(img);
       card.addEventListener('click', () => openFullscreen(imageUrl, cleanUrl));
-      row.prepend(card);
-      trimRow(row, CONFIG.maxVertical);
+      otherRow.prepend(card);
     }
 
     function openFullscreen(primaryUrl, fallbackUrl) {
@@ -690,24 +702,34 @@
       document.body.appendChild(overlay);
     }
 
-    // Sadece yeni eklenen kartın türündekileri sınırla; diğer türlere dokunma
-    function trimRow(rowEl, max) {
-      const newest = rowEl.firstElementChild;
-      if (!newest) return;
-      const cls = ['yt-card', 'v-card', 'tw-card', 'steam-card', 'discord-card']
-        .find((c) => newest.classList.contains(c));
-      if (!cls) return;
-      const same = Array.from(rowEl.children).filter((el) => el.classList.contains(cls));
-      same.slice(max).forEach((el) => el.remove());
-    }
+    // Tıklanınca kart siyah-beyaz + soluk olur, 20 sn sonra otomatik silinir
+    const REMOVE_AFTER_MS = 20000;
 
-    // Tıklanan link kartı soluklaşsın (TikTok/Instagram/Twitter gömmeleri hariç)
     function markClicked(e) {
-      const card = e.target.closest('a.yt-card, a.steam-card, .discord-card');
-      if (card) card.classList.add('clicked');
+      const el = e.target.closest('a.yt-card, a.steam-card, .discord-card, .open-btn');
+      if (!el) return;
+      const card = el.closest('.yt-card, .steam-card, .discord-card, .v-card, .tw-card');
+      if (!card || card._timer) return;
+      card.classList.add('clicked');
+      card._timer = setTimeout(() => {
+        card.classList.add('leaving');
+        setTimeout(() => card.remove(), 400);
+      }, REMOVE_AFTER_MS);
     }
-    row.addEventListener('click', markClicked);
-    row.addEventListener('auxclick', markClicked);
+    pane.addEventListener('click', markClicked);
+    pane.addEventListener('auxclick', markClicked);
+
+    // TikTok / Instagram / Twitter gömmelerine "yeni sekmede aç" düğmesi
+    function addOpenButton(card, url) {
+      const a = document.createElement('a');
+      a.className = 'open-btn';
+      a.href = url;
+      a.target = '_blank';
+      a.rel = 'noopener noreferrer';
+      a.title = 'Yeni sekmede aç';
+      a.textContent = '↗';
+      card.appendChild(a);
+    }
 
     // Test modu: sayfa adresinin sonuna ?test ekle, sohbet olmadan Steam kartını dener
     if (new URLSearchParams(location.search).has('test')) {
