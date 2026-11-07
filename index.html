@@ -195,6 +195,11 @@
       border-radius: 12px;
       box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
     }
+    .big-frame { border: 0; border-radius: 12px; background: #000; }
+    .big-yt { width: min(92vw, 150vh); aspect-ratio: 16 / 9; }
+    .big-tt { height: 90vh; aspect-ratio: 9 / 16; max-width: 92vw; }
+    .big-ig { height: 90vh; width: min(92vw, 540px); background: #fff; }
+    .big-tw { width: min(92vw, 550px); max-height: 90vh; overflow-y: auto; }
     .fullscreen-close {
       position: absolute;
       top: 20px;
@@ -263,6 +268,7 @@
       maxYoutube: 4,
       maxVertical: 6,
       maxReconnectAttempts: 8,
+      bigKeyword: 'sakovata',   // linkten önce bu kelime yazılırsa ekranda kocaman açılır
     };
 
     const pane       = document.querySelector('.preview-pane');
@@ -340,7 +346,13 @@
         return;
       }
 
-      const links = (data.content || '').match(URL_REGEX);
+      const content = data.content || '';
+      const links = content.match(URL_REGEX);
+      const firstIdx = content.search(/https?:\/\//i);
+      const bigRequested = firstIdx >= 0 &&
+        content.slice(0, firstIdx).toLowerCase().includes(CONFIG.bigKeyword.toLowerCase());
+      let bigUsed = false;
+      const wantBig = () => (bigRequested && !bigUsed) ? (bigUsed = true) : false;
       if (DEBUG) dbg('bulunan linkler:', links);
       if (!links) return;
 
@@ -348,34 +360,35 @@
         const url = rawLink.replace(/[.,!?;:)\]]+$/, '');
 
         const yt = url.match(YOUTUBE_REGEX);
-        if (yt) { addYoutubeCard(yt[1], url); return; }
+        if (yt) { addYoutubeCard(yt[1], url, wantBig()); return; }
 
         const tt = url.match(TIKTOK_REGEX);
-        if (tt) { addTikTokCard(tt[1] || tt[2], url); return; }
+        if (tt) { addTikTokCard(tt[1] || tt[2], url, wantBig()); return; }
 
         const ig = url.match(INSTAGRAM_REGEX);
         if (ig) {
           let igType = ig[1];
           if (igType === 'reels') igType = 'reel';
-          addInstagramCard(igType, ig[2], url);
+          addInstagramCard(igType, ig[2], url, wantBig());
           return;
         }
 
         const tw = url.match(TWITTER_REGEX);
-        if (tw) { addTwitterCard(tw[1], url); return; }
+        if (tw) { addTwitterCard(tw[1], url, wantBig()); return; }
 
         const si = url.match(STEAM_IMG_REGEX);
-        if (si) { addSteamImageCard(url, si[1]); return; }
+        if (si) { addSteamImageCard(url, si[1], wantBig()); return; }
 
         const st = url.match(STEAM_REGEX);
-        if (st) { addSteamCard(st[1], url); return; }
+        if (st) { addSteamCard(st[1], url, wantBig()); return; }
 
         const dc = url.match(DISCORD_REGEX);
-        if (dc) { addDiscordCard(url); return; }
+        if (dc) { addDiscordCard(url, wantBig()); return; }
       });
     }
 
-    function addYoutubeCard(videoId, originalUrl) {
+    function addYoutubeCard(videoId, originalUrl, big) {
+      if (big) showBigFrame('big-yt', `https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0`, 'autoplay; encrypted-media; fullscreen; picture-in-picture');
       const card = document.createElement('a');
       card.className = 'yt-card';
       card.href = originalUrl;
@@ -406,7 +419,8 @@
         .catch(() => {});
     }
 
-    function addTikTokCard(videoId, originalUrl) {
+    function addTikTokCard(videoId, originalUrl, big) {
+      if (big) showBigFrame('big-tt', `https://www.tiktok.com/player/v1/${videoId}?autoplay=1&loop=0`, 'autoplay; encrypted-media; fullscreen; picture-in-picture');
       const card = document.createElement('div');
       card.className = 'v-card';
 
@@ -425,7 +439,8 @@
       vRow.prepend(card);
     }
 
-    function addInstagramCard(type, shortcode, originalUrl) {
+    function addInstagramCard(type, shortcode, originalUrl, big) {
+      if (big) showBigFrame('big-ig', `https://www.instagram.com/${type}/${shortcode}/embed`, 'encrypted-media; fullscreen');
       const card = document.createElement('div');
       card.className = 'v-card';
 
@@ -456,7 +471,8 @@
       }, 400);
     }
 
-    function addTwitterCard(tweetId, originalUrl) {
+    function addTwitterCard(tweetId, originalUrl, big) {
+      if (big) showBigTweet(tweetId);
       const card = document.createElement('div');
       card.className = 'tw-card';
 
@@ -530,7 +546,8 @@
     }
 
     // Doğrudan Steam CDN görsel adresi atıldığında
-    function addSteamImageCard(imageUrl, appId) {
+    function addSteamImageCard(imageUrl, appId, big) {
+      if (big) openFullscreen(imageUrl, imageUrl.split('?')[0]);
       const card = document.createElement('a');
       card.className = 'steam-card';
       card.href = `https://store.steampowered.com/app/${appId}/`;
@@ -559,7 +576,7 @@
       otherRow.prepend(card);
     }
 
-    function addSteamCard(appId, originalUrl) {
+    function addSteamCard(appId, originalUrl, big) {
       const card = document.createElement('a');
       card.className = 'steam-card';
       card.href = `https://store.steampowered.com/app/${appId}/`;
@@ -583,6 +600,7 @@
       img.onload = () => {
         img.style.display = 'block';
         placeholder.style.display = 'none';
+        if (big && !card._bigShown) { card._bigShown = true; openFullscreen(img.src, img.src); }
       };
 
       const urls = [
@@ -652,7 +670,8 @@
 
     /* ---------- DISCORD ---------- */
 
-    function addDiscordCard(imageUrl) {
+    function addDiscordCard(imageUrl, big) {
+      if (big) openFullscreen(imageUrl, imageUrl.split('?')[0]);
       const card = document.createElement('div');
       card.className = 'discord-card';
 
@@ -671,35 +690,65 @@
       otherRow.prepend(card);
     }
 
-    function openFullscreen(primaryUrl, fallbackUrl) {
+    /* ---------- BÜYÜK (ekran ortası) GÖSTERİM ---------- */
+
+    function openOverlay(node) {
       const existing = document.querySelector('.fullscreen-overlay');
       if (existing) existing.remove();
 
       const overlay = document.createElement('div');
       overlay.className = 'fullscreen-overlay';
 
-      const img = document.createElement('img');
-      img.src = primaryUrl;
-      img.alt = '';
-      img.onerror = () => {
-        img.onerror = null;
-        img.src = fallbackUrl;
-      };
-
       const closeBtn = document.createElement('button');
       closeBtn.className = 'fullscreen-close';
       closeBtn.innerHTML = '✕';
 
-      const close = () => overlay.remove();
+      function onKey(e) { if (e.key === 'Escape') close(); }
+      function close() {
+        overlay.remove();
+        document.removeEventListener('keydown', onKey);
+      }
       closeBtn.addEventListener('click', close);
       overlay.addEventListener('click', (e) => { if (e.target === overlay) close(); });
-      document.addEventListener('keydown', function onKey(e) {
-        if (e.key === 'Escape') { close(); document.removeEventListener('keydown', onKey); }
-      });
+      document.addEventListener('keydown', onKey);
 
-      overlay.appendChild(img);
+      overlay.appendChild(node);
       overlay.appendChild(closeBtn);
       document.body.appendChild(overlay);
+    }
+
+    function openFullscreen(primaryUrl, fallbackUrl) {
+      const img = document.createElement('img');
+      img.src = primaryUrl;
+      img.alt = '';
+      img.referrerPolicy = 'no-referrer';
+      img.onerror = () => {
+        img.onerror = null;
+        if (fallbackUrl && fallbackUrl !== primaryUrl) img.src = fallbackUrl;
+      };
+      openOverlay(img);
+    }
+
+    function showBigFrame(cls, src, allow) {
+      const f = document.createElement('iframe');
+      f.className = 'big-frame ' + cls;
+      f.src = src;
+      f.allow = allow || '';
+      f.setAttribute('allowfullscreen', '');
+      openOverlay(f);
+    }
+
+    function showBigTweet(tweetId) {
+      const box = document.createElement('div');
+      box.className = 'big-tw';
+      openOverlay(box);
+      waitForTwitter(() => {
+        if (window.twttr && window.twttr.widgets) {
+          window.twttr.widgets.createTweet(tweetId, box, {
+            theme: 'dark', dnt: true, width: 550, align: 'center',
+          }).catch(() => {});
+        }
+      });
     }
 
     // Tıklanınca kart siyah-beyaz + soluk olur, 20 sn sonra otomatik silinir
